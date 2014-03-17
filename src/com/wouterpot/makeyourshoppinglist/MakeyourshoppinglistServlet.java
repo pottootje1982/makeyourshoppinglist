@@ -1,10 +1,13 @@
 package com.wouterpot.makeyourshoppinglist;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
@@ -15,9 +18,7 @@ import org.jsoup.select.Elements;
 
 @SuppressWarnings("serial")
 public class MakeyourshoppinglistServlet extends HttpServlet {
-	public MakeyourshoppinglistServlet()
-	{
-	}
+	public MakeyourshoppinglistServlet() {}
 	
 	public void init(ServletConfig config) 
 	{
@@ -27,8 +28,9 @@ public class MakeyourshoppinglistServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		IngredientsScraper ingredientsScraper = new IngredientsScraper(getServletContext());
-		
+		ServletContext servletContext = getServletContext();
+		URL ingredientsScraperUrl;
+		IngredientsScraper ingredientsScraper = new IngredientsScraper();
 	}
 	
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -40,8 +42,5 @@ public class MakeyourshoppinglistServlet extends HttpServlet {
 		for (Element element : newsHeadlines) {
 			resp.getWriter().println(element.text());
 		}
-		
-
-		
 	}
 }
