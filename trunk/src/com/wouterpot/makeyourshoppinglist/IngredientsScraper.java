@@ -24,7 +24,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 public class IngredientsScraper {
-	SiteInfo[] siteInfos;
+	List<SiteInfo> siteInfos = new ArrayList<>();
 	
 	public IngredientsScraper()
 	{
@@ -39,12 +39,11 @@ public class IngredientsScraper {
 			org.w3c.dom.Document doc = dBuilder.parse("res/ingredientsClasses.xml");
 			Node sites = doc.getElementsByTagName("sites").item(0);
 			NodeList childNodes = sites.getChildNodes();
-			siteInfos = new SiteInfo[childNodes.getLength()];
 			for (int i = 0; i < childNodes.getLength(); i++) {
 				Node child = childNodes.item(i);
 				NamedNodeMap attributes = child.getAttributes();
 				if (attributes != null)
-					siteInfos[i] = new SiteInfo(attributes);
+					siteInfos.add(new SiteInfo(attributes));
 			}
 		} catch (MalformedURLException e1) {
 			// TODO Auto-generated catch block
@@ -64,11 +63,9 @@ public class IngredientsScraper {
 	public IngredientsList getIngredients(String url) throws IOException
 	{
 		Document document = Jsoup.connect(url).get();
-		
-	    for (int i = 0; i < siteInfos.length; i++) { 
-	        SiteInfo siteInfo = siteInfos[i]; 
-	    
-	        if (!siteInfo.matchesSite(url)) continue; 
+
+	    for (SiteInfo siteInfo : siteInfos) { 
+	    	if (!siteInfo.matchesSite(url)) continue; 
 	    
 	        Elements ingredients = new Elements();
 	        if (siteInfo.getClassName() != null) { 
