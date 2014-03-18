@@ -1,0 +1,407 @@
+#herbs
+Anise hyssop
+Anise
+Artemisia
+Basil
+Bee balm
+Borage
+Burnet
+Calendula
+Caraway
+Catnip
+Chamomile
+Chervil
+Chives
+Clary sage
+Coriander
+Costmary
+Courgette
+Dill
+Fennel
+Feverfew
+Geranium
+Germander
+Horehound
+Hyssop
+Lavender
+Lemon verbena
+Lemon balm
+Lovage
+Mint
+Marjoram
+Nasturtium
+Oregano
+Parsley
+Peppermint
+Perilla
+Rosemary
+Rue
+Sage
+Santolina
+Sorrel
+Southernwood
+Spearmint
+Summer savory
+Angelica
+Sweet woodruff
+Sweet rocket
+Sweet marjoram
+Tansy
+Tarragon
+Thyme
+Valerian
+Winter savory
+Wormwood
+Yarrow
+
+#Misc Vegetables
+Artichoke
+Arugula
+Asparagus
+Green, Purple, White
+Avocado
+Bamboo Shoots
+Bean Sprouts
+Beet
+Belgian Endive
+Bell Pepper
+Bitter Melon
+Bitter Gourd
+Bok Choy
+Bok Choi
+Pak Choy
+Broccoli
+Brussels Sprouts
+Burdock Root
+Gobo
+Cabbage
+Calabash
+Capers
+Carrot
+Cassava
+Yuca
+Cauliflower
+Celery
+Celery Root
+Celeriac
+Celtuce
+Chayote
+Chinese Broccoli
+Kai-lan
+Corn
+Maize
+Baby Corn
+Candle Corn
+Cucumber
+English Cucumber
+Pickling Cucumbers
+Daikon Radish
+Edamame
+Eggplant
+Aubergine
+Elephant Garlic
+Endive
+Escarole
+Fennel
+Fiddlehead
+Galangal
+Garlic
+Ginger
+haricot
+Grape Leaves
+Green Beans
+String Beans
+Snap Beans
+Wax Beans
+Greens
+Amaranth Leaves
+Chinese Spinach
+Beet Greens
+Collard Greens
+Dandelion Greens
+Kale
+Kohlrabi Greens
+Mustard Greens
+Rapini
+Spinach
+Swiss Chard
+Turnip Greens
+Hearts of Palm
+Horseradish
+Jerusalem Artichoke
+Sunchokes
+Jícama
+Kale
+Curly
+Lacinato
+Ornamental
+Kohlrabi
+Leeks
+Lemongrass
+Lettuce
+Butterhead- Bibb
+Boston
+Iceberg
+Romaine
+Lotus Root
+Lotus Seed
+Napa Cabbage
+Nopales
+Okra
+Olive
+spring onion
+Green Onion
+Red Onion
+Onion
+Scallions
+Parsley
+Parsley Root
+Parsnip
+Peas
+green peas
+snow peas
+sugar snap peas
+Plantain
+Potato
+Pumpkin
+Purslane
+Radicchio
+Radish
+Rutabaga
+Sea Vegetables
+Shallots
+Spinach
+Sweet Potato
+Swiss Chard
+Taro
+Tomatillo
+Tomato
+Turnip
+Water Chestnut
+Water Spinach
+Watercress
+Winter Melon
+Yams
+Zucchini
+
+#Peppers
+red pepper
+Anaheim pepper
+Banana pepper
+Cayenne pepper
+Cherry pepper
+Chipotle
+Fresno pepper
+Habanero pepper
+Hungarian pepper
+Yellow Wax
+Jalapeno
+New Mexico pepper
+Poblano pepper
+Serrano pepper
+Sport pepper
+Thai pepper
+Bell pepper
+Cubanelle pepper
+Pimento pepper
+Sweet Banana pepper
+pepper
+green chilli
+red chilli
+chili
+chilli
+
+#squash
+Patty Pan squash
+Yellow squash
+Straightneck squash
+Crookneck squash
+Zucchini squash
+Acorn squash
+Banana squash
+Buttercup squash
+Butternut squash
+Cushaw squash
+Delicata squash
+Hubbard squash
+Kabocha squash
+Pumpkin squash
+Spaghetti squash
+Turban squash
+squash
+
+#Fruits
+Apple
+Apricot
+Avocado
+Banana
+Breadfruit
+Carob
+Cherry
+Citron
+Date
+Dragon Fruit
+Pitaya
+Durian
+Fig
+Ginger
+Grapes
+Grapefruit
+Guava
+Jackfruit
+Jujube
+Kiwifruit
+Kumquat
+Lemon
+Lime
+Longan
+Loquat
+Lucuma
+Lychee
+Mamey Sapote
+Mango
+Mangosteen
+Nance
+Nectarine
+Noni
+#Oranges
+Blood Orange
+Mandarin
+Clementine
+Satsuma
+Navel
+Seville
+Valencia
+Orange
+Papaya
+Passion Fruit
+Peach
+Asian Pear
+Pear
+Persimmon
+Pineapple
+Plantain
+Damson plum
+Prunes
+Plum
+Pomegranate
+Pomelo
+Prickly Pear/Cactus Pear
+Quince
+Rambutan
+Rhubarb
+Starfruit
+Tamarillo
+Tamarind
+Tangerine
+Tangelo
+Tomato
+#Melons
+Canary
+Juan Canary Melon
+Cantaloupe
+Muskmelon
+Casaba Melon
+Charentais
+Crenshaw
+Galia
+Honeydew
+Kiwano
+Horned Melon
+African Horned Cucumber
+Ogen
+Persian
+Santa Claus
+Christmas Melon
+Sharlyn
+Watermelon
+melon
+
+#Berries
+Acai Berry
+Barberry
+Bilberry
+Blackberry
+Blackcurrant
+Blueberry
+Boysenberry
+Cloudberry
+Cranberry
+Elderberry
+Goji berry
+Gooseberry
+Huckleberry
+Lingonberry
+Loganberry
+Marionberry
+Mulberry
+Raspberry(Black/Golden/Red)
+Redcurrant
+Salmonberry
+Sea buckthorn Berry
+Serviceberry
+Strawberry
+
+#Mushrooms
+Chanterelle
+Crimini
+Baby Bella
+Enoki
+Maitake
+Morel
+Oyster
+Porcini
+Portobello
+Portabella
+Royal Trumpet
+King Oyster
+Shiitake
+Truffles
+White Button
+mushroom
+
+#Sea Vegetables
+Alaria
+Dabberlocks
+Badderlocks
+Winged Kelp
+Agar Agar
+Kanten
+Aonori
+Arame
+Bladderwrack
+Carrageen Moss
+Irish Moss
+Chlorella
+Digitata Kelp
+Oarweed
+Dulse
+Hijiki
+Hiziki
+Kelp
+Kombu
+Laver
+Gim
+Kim
+Nori
+Mozuku
+Nori
+Ogonori
+Rockweed
+Sea Grape
+Sea Lettuce
+Spirulina
+Wakame
+
+#Misc
+pomegranate
+
+[COMMON]
+
+[EXCLUDE]
+can
+frozen
+puree
+dried
+oil
+salt

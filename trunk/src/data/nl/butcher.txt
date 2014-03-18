@@ -1,0 +1,11 @@
+[COMMON]
+rund
+kip
+lam
+steak
+varken
+spek
+braadworst
+kalf
+kalfsschenkel
+vlees

@@ -1,0 +1,7 @@
+[COMMON]
+beef
+chicken
+lamb
+steak
+pork
+venison

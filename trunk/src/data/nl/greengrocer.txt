@@ -1,0 +1,267 @@
+aardaker
+aardamandel
+knolcyperus
+aardappel
+aardpeer
+topinamboer
+abc-kruid
+champagneblad
+adelaarsvaren
+Afrikaanse baobab
+alfalfa
+luzerne
+alocasie
+reuzentaro
+amsoi
+andijvie
+antroewa
+arrowroot
+artisjok
+asperge
+asperge-erwt
+aubergine
+augurk
+avocado
+ayote
+bamboescheut
+bamboespruit
+bieslook
+biet
+bindsla
+bladpeterselie
+bleekselderij
+bloemkool
+boomkalebas
+boon
+boerenkool
+bospeen
+bosui
+brandnetel
+brave hendrik
+broccoli
+broodvrucht
+cassave
+maniok
+chayote
+pepers
+chilipeper
+chinese kool
+citroengras
+courgette
+doperwt
+erwt
+duizendkoppige kool
+duizendkop
+duizendknop
+eeuwig moes
+duizendkoppige kool
+erwt
+fleskalebas
+groene kool
+savooiekool
+groenlof
+haverwortel
+paarse morgenster
+boksbaard
+hertshoornweegbree
+ijsbergsla
+ijskruid
+ingerolde palmvaren
+jackfruit
+nangka
+kannibaaltomaat
+kapucijner
+kardoen
+kervel
+kikkererwt
+keker
+garbanzo
+kiwano
+kliswortel
+klit
+knolcapucien
+knolkervel
+knolribzaad
+knoflook
+knolraap
+meiknol
+knolselderij
+kroot
+rode biet
+knolvenkel
+venkel
+komkommer
+konjak
+kool
+koolraap
+koolrabi
+kousenband
+kudzu
+lamsoor
+zulte
+zeeaster
+lente-ui
+linzen
+lotuswortel
+heilige lotus
+mais
+meiraap
+knolraap
+molsla
+paardenbloem
+melindjoe
+mergkool
+mungboon
+muskaatpompoen
+oca
+okra
+olifantenyam
+paksoi
+paprika
+pastinaak
+patisson
+pereskia
+peterselie
+peul
+pompoen
+postelein
+pijlkruid
+pijpajuin
+prei
+pronkboon
+raapstelen
+bladmoes
+rabarber
+radijs
+rammenas
+rettich
+repelsteeltje
+rode biet
+rode kool
+romanesco
+rucola
+raketsla
+sago
+savooiekool
+schorseneren
+selderij
+selderie
+sint-jansuitjes
+sjalot
+sla
+snijbiet
+snijboon
+snijselderij
+spekboo?n
+sopropo
+paré
+sperzieboon
+spinazie
+spinaziezuring
+spitskool
+splijtkool
+duizendkoppige kool
+sponskomkommer
+nenwa
+spruitkool
+suikermaïs
+suikerwortel
+sugar snaps
+suikererwt
+Sojaboon
+takako
+taro
+taugé
+tayer
+tetragonia
+Nieuw-Zeelandse spinazie
+teunisbloem
+tindola
+papasan
+tomaa?t
+tuinkers
+tuinboo?n
+tuinmelde
+ui
+veldsla
+veldzuring
+venkel
+vijgenbladpompoen
+vleugelkomkommer
+vleugelboon
+waspompoen
+witte waterkers
+waterspinazie
+winterpostelein
+witlof
+witte kool
+witte mimosa
+wortel
+wortelpeterselie
+yam
+yamboon
+zeekool
+zeekraal
+zoete aardappel
+bataat
+zonnewortel
+
+# Fruit
+Aalbessen
+Aardbeien
+Abrikozen vers
+Ananas
+Appel
+Avocado
+Banaan
+Bosbessen
+Bramen
+Citroen
+Druiven
+Frambozen
+Grapefruit
+Guave
+Kersen
+Kiwi
+Lychee
+Mandarijn
+Mango
+Meloen
+Nectarine
+Netmeloen
+Papaja
+Passievrucht
+Peer
+Perzik
+Pruim
+Rode bessen
+Sinaasappel
+Suikermeloen
+Vijgen
+Watergruwel
+Watermeloen
+Zwarte bessen
+
+# Kruiden
+basilicum
+kervel
+dille
+tijm
+munt
+uien
+oregano
+rozemarijn
+koriander
+
+# Diversen
+Granaatappel
+
+[COMMON]
+groente
+
+[EXCLUDE]
+blik
+ingevroren
+puree
+gedroogde
+olie
