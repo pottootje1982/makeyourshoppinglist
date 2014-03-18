@@ -1,0 +1,9 @@
+salmon
+sea bass
+trout
+prawn
+crab
+cod
+clam
+squid
+tilapia

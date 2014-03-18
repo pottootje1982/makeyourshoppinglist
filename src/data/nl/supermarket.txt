@@ -1,0 +1,26 @@
+worcestershire
+karnemelk
+boter
+tomatotenpuree
+tomatenpasta
+zonnebloem olie
+kaneel
+kidney bonen
+zure room
+plantaardige olie
+parmesaanse kaas
+olijfolie
+chilli poeder
+zout
+
+#lentils
+linzen
+
+[COMMON]
+blik
+bouillon
+bonen
+bier
+bloem
+room
+pak
