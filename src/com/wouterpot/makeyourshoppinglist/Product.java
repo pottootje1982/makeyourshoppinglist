@@ -8,7 +8,7 @@ public class Product {
 
 	public Product(String productKey, boolean isExcluded, boolean isCommon) {
 		this.productKey = productKey;
-		this.isExcluded = isExcluded;
+		this.setExcluded(isExcluded);
 		this.isCommon = isCommon;
 	}
 
@@ -16,4 +16,11 @@ public class Product {
 		return productKey;
 	}
 
+	public boolean isExcluded() {
+		return isExcluded;
+	}
+
+	private void setExcluded(boolean isExcluded) {
+		this.isExcluded = isExcluded;
+	}
 }
