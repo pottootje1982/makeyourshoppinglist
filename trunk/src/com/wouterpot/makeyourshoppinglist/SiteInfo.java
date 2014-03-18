@@ -1,6 +1,5 @@
 package com.wouterpot.makeyourshoppinglist;
 
-import java.net.URL;
 import java.util.ArrayList;
 
 import org.jsoup.nodes.Element;

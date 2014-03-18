@@ -1,11 +1,8 @@
 package com.wouterpot.makeyourshoppinglist;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
