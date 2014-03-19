@@ -2,6 +2,8 @@ package com.wouterpot.makeyourshoppinglist;
 
 import java.util.ArrayList;
 
+import com.wouterpot.makeyourshoppinglist.config.SiteInfo;
+
 public class IngredientsList {
 
 	private SiteInfo siteInfo;

@@ -1,13 +1,15 @@
-package com.wouterpot.makeyourshoppinglist;
+package com.wouterpot.makeyourshoppinglist.config;
 
 import java.util.ArrayList;
 
+import org.datanucleus.util.StringUtils;
+import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
-import org.w3c.dom.NamedNodeMap;
 
+import com.wouterpot.makeyourshoppinglist.IngredientsList;
 
 public class SiteInfo
 {
@@ -19,12 +21,12 @@ public class SiteInfo
 	private String childClassName;
 	private String url;
 
-	private static String getAttribute(NamedNodeMap attributes, String name) {
-		org.w3c.dom.Node item = attributes.getNamedItem(name);
-		return item != null ? item.getNodeValue() : null;
+	private static String getAttribute(Attributes attributes, String name) {
+		String item = attributes.get(name);
+		return !StringUtils.isEmpty(item) ? item : null;
 	}
 	
-	public SiteInfo(NamedNodeMap attributes) {
+	public SiteInfo(Attributes attributes) {
 		this(getAttribute(attributes, "language"),
 			getAttribute(attributes, "tagName"),
 			getAttribute(attributes, "class"),
@@ -90,7 +92,6 @@ public class SiteInfo
 		return id;
 	}
 
-
 	public String getTagName() {
 		return tagName;
 	}
@@ -101,5 +102,13 @@ public class SiteInfo
 
 	public String getChildClassName() {
 		return childClassName;
+	}
+
+	@Override
+	public String toString() {
+		return "SiteInfo [language=" + language + ", tagName=" + tagName
+				+ ", className=" + className + ", id=" + id + ", childTagName="
+				+ childTagName + ", childClassName=" + childClassName
+				+ ", url=" + url + "]";
 	}
 }

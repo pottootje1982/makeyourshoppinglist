@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 
 import com.wouterpot.makeyourshoppinglist.IngredientsList;
-import com.wouterpot.makeyourshoppinglist.SiteInfo;
+import com.wouterpot.makeyourshoppinglist.config.SiteInfo;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

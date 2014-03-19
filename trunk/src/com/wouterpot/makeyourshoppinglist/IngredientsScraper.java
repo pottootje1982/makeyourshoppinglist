@@ -1,5 +1,6 @@
 package com.wouterpot.makeyourshoppinglist;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -10,32 +11,32 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
+
+import com.wouterpot.makeyourshoppinglist.config.SiteInfo;
 
 public class IngredientsScraper {
 	List<SiteInfo> siteInfos = new ArrayList<>();
 	
 	public IngredientsScraper()
 	{
-		getIngredientsClasses("res/ingredientsClasses.xml");
+		getIngredientsClasses("src/config/ingredientsClasses.xml");
 	}
 	
 	private void getIngredientsClasses(String url)
 	{
 		try {
-			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-			org.w3c.dom.Document doc = dBuilder.parse("res/ingredientsClasses.xml");
-			Node sites = doc.getElementsByTagName("sites").item(0);
-			NodeList childNodes = sites.getChildNodes();
-			for (int i = 0; i < childNodes.getLength(); i++) {
-				Node child = childNodes.item(i);
-				NamedNodeMap attributes = child.getAttributes();
+			File file = new File(url);
+			Document doc = Jsoup.parse(file, "UTF-8");
+			Element sites = doc.getElementsByTag("sites").get(0);
+			List<Element> elements = sites.children();
+			for (int i = 0; i < elements.size(); i++) {
+				Node child = elements.get(i);
+				Attributes attributes = child.attributes();
 				if (attributes != null)
 					siteInfos.add(new SiteInfo(attributes));
 			}
@@ -45,36 +46,41 @@ public class IngredientsScraper {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SAXException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 	
-	public IngredientsList getIngredients(String url) throws IOException
-	{
-		Document document = Jsoup.connect(url).get();
-
+	private IngredientsList getIngredients(Document document) {
 	    for (SiteInfo siteInfo : siteInfos) { 
-	    	if (!siteInfo.matchesSite(url)) continue; 
-	    
+	    	if (!siteInfo.matchesSite(document.baseUri())) continue; 
+	    	
 	        Elements ingredients = new Elements();
 	        if (siteInfo.getClassName() != null) { 
 	        	ingredients = document.getElementsByClass(siteInfo.getClassName());
 	        } 
-	        else if (siteInfo.getId() != null) 
-	        	ingredients.add(document.getElementById(siteInfo.getId())); 
+	        else if (siteInfo.getId() != null)
+	        {
+	        	Element element = document.getElementById(siteInfo.getId());
+	        	if (element != null)
+	        		ingredients.add(element);
+	        }
 	        String tagName = siteInfo.getTagName();
 			if (tagName != null) { 
-	        	ingredients = ingredients.size() != 0 ? ingredients.get(0).getElementsByTag(tagName) : document.getElementsByTag(tagName); 
+	        	ingredients = ingredients != null && ingredients.size() != 0 ? ingredients.get(0).getElementsByTag(tagName) : document.getElementsByTag(tagName); 
 	        } 
 	        if (ingredients.size() > 0) { 
 	          return siteInfo.createIngredientsList(ingredients); 
 	        } 
 	    }
 	    return null;
+	}
+
+	public IngredientsList getIngredients(File file) throws IOException {
+		Document document = Jsoup.parse(file, "UTF-8");
+		return getIngredients(document);
+	}
+
+	public IngredientsList getIngredients(String url) throws IOException {
+		Document document = Jsoup.connect(url).get();
+		return getIngredients(document);
 	}
 }

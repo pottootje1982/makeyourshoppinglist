@@ -29,13 +29,6 @@ public class IngredientsScraperTest {
 	}
 	
 	@Test
-	public void test() throws ParserConfigurationException, SAXException, IOException {
-		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-		org.w3c.dom.Document doc = dBuilder.parse("res/ingredientsClasses.xml");
-	}
-	
-	@Test
 	public void testSiteWithItemList() throws MalformedURLException, IOException {
 		String url = "https://sites.google.com/site/walterreddock/recepten/zeebrasemfilets-met-kleine-groentes";
 		IngredientsList ingredientsList = ingredientsScraper.getIngredients(url);
