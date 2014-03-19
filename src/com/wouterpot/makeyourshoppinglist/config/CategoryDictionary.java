@@ -1,4 +1,4 @@
-package com.wouterpot.makeyourshoppinglist;
+package com.wouterpot.makeyourshoppinglist.config;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,7 +10,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.google.appengine.labs.repackaged.com.google.common.base.Strings;
-import com.wouterpot.makeyourshoppinglist.test.Resources;
+import com.wouterpot.makeyourshoppinglist.Product;
+import com.wouterpot.makeyourshoppinglist.helpers.RegEx;
+import com.wouterpot.makeyourshoppinglist.helpers.Resources;
 
 public class CategoryDictionary {
 	private static final String COMMON = "[common]";
@@ -19,7 +21,7 @@ public class CategoryDictionary {
 	ArrayList<String> categories = new ArrayList<>();
 	private String[] categoryFiles;
 
-	Map<String, ArrayList<Product>> categoriesToProducts = new HashMap<String, ArrayList<Product>>();
+	Map<String, ArrayList<ProductInfo>> categoriesToProductInfos = new HashMap<String, ArrayList<ProductInfo>>();
 	private String language;
 
 	private String getFileBase(String name) {
@@ -39,9 +41,9 @@ public class CategoryDictionary {
 		fillStoresTable(path);
 	}
 
-	private void put(Map<String, ArrayList<Product>> categoriesToProducts,
-			String category, Product product) {
-		ArrayList<Product> products = categoriesToProducts.get(category);
+	private void put(Map<String, ArrayList<ProductInfo>> categoriesToProducts,
+			String category, ProductInfo product) {
+		ArrayList<ProductInfo> products = categoriesToProducts.get(category);
 		if (products == null) {
 			products = new ArrayList<>();
 			categoriesToProducts.put(category, products);
@@ -71,10 +73,9 @@ public class CategoryDictionary {
 					else if (productKey.startsWith("#")) {}
 					else if (!Strings.isNullOrEmpty(productKey)) {
 						boolean isExcluded = section.equals(EXCLUDE);
-						Product product = new Product(productKey, isExcluded, section.equals(COMMON));
+						ProductInfo product = new ProductInfo(productKey, category, isExcluded, section.equals(COMMON));
 
-
-						put(categoriesToProducts, category, product);
+						put(categoriesToProductInfos, category, product);
 					}
 				}
 			} catch (IOException e) {
@@ -83,19 +84,17 @@ public class CategoryDictionary {
 		}
 	}
 
-	public String getCategory(String productName) {
-		productName = RegEx.escapeStrangeChars(productName);
-		for (String category : categoriesToProducts.keySet()) {
-			ArrayList<Product> products = categoriesToProducts.get(category);
-			for (Product product : products) {
-				String matchString =  "\\S*" + product.getProductKey() + "\\S*";
-				String match = RegEx.find(productName, matchString);
-				if (match != null 
-						&& (double)product.getProductKey().length() / match.length() >= 0.5
-						&& productName.startsWith(match))
-					return product.isExcluded() ? null : category;
+	public Product getProduct(String ingredient) {
+		ingredient = RegEx.escapeStrangeChars(ingredient);
+		for (String category : categoriesToProductInfos.keySet()) {
+			ArrayList<ProductInfo> products = categoriesToProductInfos.get(category);
+			for (ProductInfo productInfo : products) {
+				if (productInfo.productMatches(ingredient))
+					return productInfo.isExcluded() ? null : new Product(ingredient, productInfo);
 			}
 		}
 		return null;
 	}
+
+
 }

@@ -1,4 +1,4 @@
-package com.wouterpot.makeyourshoppinglist.test;
+package com.wouterpot.makeyourshoppinglist.helpers;
 
 import java.io.File;
 import java.io.IOException;
