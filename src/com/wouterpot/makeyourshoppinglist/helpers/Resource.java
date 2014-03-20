@@ -11,8 +11,18 @@ import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-public class Resources {
+import com.google.appengine.api.utils.SystemProperty;
 
+public class Resource {
+
+    public static boolean isTesting() {
+        return SystemProperty.environment.value() == null;
+    }
+    
+	public static String getResource(String path) {
+		return isTesting() ? "src/" + path : "WEB-INF/classes/" + path;
+	}
+	
 	public static String[] getResourceListing(Class className, String path)
 			throws URISyntaxException, IOException {
 		URL dirURL = className.getClassLoader().getResource(path);

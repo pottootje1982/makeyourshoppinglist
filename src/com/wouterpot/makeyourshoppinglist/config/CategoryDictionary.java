@@ -12,7 +12,7 @@ import java.util.Map;
 import com.google.appengine.labs.repackaged.com.google.common.base.Strings;
 import com.wouterpot.makeyourshoppinglist.Product;
 import com.wouterpot.makeyourshoppinglist.helpers.RegEx;
-import com.wouterpot.makeyourshoppinglist.helpers.Resources;
+import com.wouterpot.makeyourshoppinglist.helpers.Resource;
 
 public class CategoryDictionary {
 	private static final String COMMON = "[common]";
@@ -32,7 +32,7 @@ public class CategoryDictionary {
 	public CategoryDictionary(String language, String path)
 			throws URISyntaxException, IOException {
 		this.language = language;
-		categoryFiles = Resources.getResourceListing(getClass(), path + "/" + language + "/");
+		categoryFiles = Resource.getResourceListing(getClass(), path + "/" + language + "/");
 
 		for (String categoryFile : categoryFiles) {
 			categories.add(getFileBase(categoryFile));

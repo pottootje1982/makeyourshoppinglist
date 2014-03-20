@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.wouterpot.makeyourshoppinglist.config.CategoryDictionary;
 
@@ -27,8 +28,12 @@ public class ShoppingList {
 		}
 		products.add(product);
 	}
+	
+	public Set<String> getCategories() {
+		return categoriesToProducts.keySet();
+	}
 
-	public List<Product> getShoppingItems(String category) {
+	public List<Product> getProducts(String category) {
 		return categoriesToProducts.get(category);
 	}
 }

@@ -17,14 +17,16 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 
+import com.google.appengine.labs.repackaged.com.google.common.io.Resources;
 import com.wouterpot.makeyourshoppinglist.config.SiteInfo;
+import com.wouterpot.makeyourshoppinglist.helpers.Resource;
 
 public class IngredientsScraper {
 	List<SiteInfo> siteInfos = new ArrayList<>();
 	
 	public IngredientsScraper()
 	{
-		getIngredientsClasses("src/config/ingredientsClasses.xml");
+		getIngredientsClasses(Resource.getResource("config/ingredientsClasses.xml"));
 	}
 	
 	private void getIngredientsClasses(String url)

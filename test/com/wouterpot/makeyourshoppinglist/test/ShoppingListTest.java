@@ -18,8 +18,8 @@ public class ShoppingListTest {
 	public void getShoppingList() throws IOException {
 		ShoppingListFactory shoppingListFactory = new ShoppingListFactory();
 		File file = new File("test/testdata/pages/sites.google.com.html");
-		ShoppingList shoppingList = shoppingListFactory.createShoppingList(file, "nl");
-		List<Product> shoppingItems = shoppingList.getShoppingItems("greengrocer");
+		ShoppingList shoppingList = shoppingListFactory.createShoppingList(file);
+		List<Product> shoppingItems = shoppingList.getProducts("greengrocer");
 		assertEquals(5, shoppingItems.size());
 		assertEquals("3 bospeentjes", shoppingItems.get(0).getIngredient());
 		assertEquals("1 meiknolletje", shoppingItems.get(1).getIngredient());
