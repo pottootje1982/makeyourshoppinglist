@@ -5,7 +5,7 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.wouterpot.makeyourshoppinglist.helpers.Resources;
+import com.wouterpot.makeyourshoppinglist.helpers.Resource;
 
 
 public class LanguageDictionary {
@@ -15,7 +15,7 @@ public class LanguageDictionary {
 
 	public LanguageDictionary(String path) {
 		try {
-			languageDirs = Resources.getResourceListing(getClass(), path);
+			languageDirs = Resource.getResourceListing(getClass(), path);
 			for (String dir : languageDirs) {
 				categoryDictionaries.put(dir, new CategoryDictionary(dir, path));
 			}

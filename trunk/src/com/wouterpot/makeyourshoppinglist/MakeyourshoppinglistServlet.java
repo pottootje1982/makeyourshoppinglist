@@ -15,6 +15,8 @@ import org.jsoup.select.Elements;
 
 @SuppressWarnings("serial")
 public class MakeyourshoppinglistServlet extends HttpServlet {
+	private ShoppingListFactory shoppingListFactory;
+
 	public MakeyourshoppinglistServlet() {}
 	
 	public void init(ServletConfig config) 
@@ -25,19 +27,20 @@ public class MakeyourshoppinglistServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		ServletContext servletContext = getServletContext();
-		URL ingredientsScraperUrl;
-		IngredientsScraper ingredientsScraper = new IngredientsScraper();
+		shoppingListFactory = new ShoppingListFactory();
 	}
 	
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
 		resp.setContentType("text/plain");
 		resp.getWriter().println("Hello, world");
-		Document doc = Jsoup.connect("http://en.wikipedia.org/").get();
-		Elements newsHeadlines = doc.select("#mp-itn b a");
-		for (Element element : newsHeadlines) {
-			resp.getWriter().println(element.text());
+		ShoppingList shoppingList = shoppingListFactory.createShoppingList("https://sites.google.com/site/walterreddock/recepten/zeebrasemfilets-met-kleine-groentes");
+		
+		for (String category : shoppingList.getCategories()) {
+			resp.getWriter().println(category);
+			for (Product product : shoppingList.getProducts(category)) {
+				resp.getWriter().println(product.getIngredient());				
+			}
 		}
 	}
 }

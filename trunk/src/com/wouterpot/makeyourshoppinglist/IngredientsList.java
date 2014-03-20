@@ -18,4 +18,8 @@ public class IngredientsList {
 		return ingredients;
 	}
 
+	public SiteInfo getSiteInfo() {
+		return siteInfo;
+	}
+
 }

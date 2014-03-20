@@ -17,17 +17,33 @@ public class ShoppingListFactory {
 		languageDictionary = new LanguageDictionary("data");
 	}
 
-	public ShoppingList createShoppingList(File file, String language) {
-		ArrayList<String> ingredients;
+	private ShoppingList createShoppingList(IngredientsList ingredientsList) {
+		ArrayList<String> ingredients = ingredientsList.getIngredients();
+		String language = ingredientsList.getSiteInfo().getLanguage();
+		CategoryDictionary categoryDictionary = languageDictionary.getCategoryDictionary(language);
+		ShoppingList shoppingList = new ShoppingList(categoryDictionary, ingredients);
+		return shoppingList;
+	}
+
+	public ShoppingList createShoppingList(File file) {
 		try {
-			ingredients = ingredientsScraper.getIngredients(file).getIngredients();
-			CategoryDictionary categoryDictionary = languageDictionary.getCategoryDictionary(language);
-			ShoppingList shoppingList = new ShoppingList(categoryDictionary, ingredients);
-			return shoppingList;
+			IngredientsList ingredientsList = ingredientsScraper.getIngredients(file);
+			return createShoppingList(ingredientsList);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public ShoppingList createShoppingList(String url) {
+		try {
+			IngredientsList ingredientsList = ingredientsScraper.getIngredients(url);
+			return createShoppingList(ingredientsList);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;		
 	}
 
 }

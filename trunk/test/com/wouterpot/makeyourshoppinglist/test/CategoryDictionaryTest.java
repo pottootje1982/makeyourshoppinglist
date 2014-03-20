@@ -11,7 +11,7 @@ import org.junit.Test;
 import com.wouterpot.makeyourshoppinglist.Product;
 import com.wouterpot.makeyourshoppinglist.config.CategoryDictionary;
 import com.wouterpot.makeyourshoppinglist.helpers.RegEx;
-import com.wouterpot.makeyourshoppinglist.helpers.Resources;
+import com.wouterpot.makeyourshoppinglist.helpers.Resource;
 
 public class CategoryDictionaryTest {
 
@@ -26,7 +26,7 @@ public class CategoryDictionaryTest {
 	@Test
 	public void testGetFiles() throws IOException, URISyntaxException
 	{
-		String[] files = Resources.getResourceListing(getClass(), "testdata/en");
+		String[] files = Resource.getResourceListing(getClass(), "testdata/en");
 		assertEquals(2, files.length);
 	}
 	
