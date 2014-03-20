@@ -7,11 +7,18 @@ import java.util.Map;
 import java.util.Set;
 
 import com.wouterpot.makeyourshoppinglist.config.CategoryDictionary;
+import com.wouterpot.makeyourshoppinglist.config.LanguageDictionary;
 
 public class ShoppingList {
 	Map<String, ArrayList<Product>> categoriesToProducts = new HashMap<String, ArrayList<Product>>();
+	private LanguageDictionary languageDictionary;
 
-	public ShoppingList(CategoryDictionary categoryDictionary, ArrayList<String> ingredients) {
+	public ShoppingList(LanguageDictionary languageDictionary) {
+		this.languageDictionary = languageDictionary;
+	}
+
+	public void addIngredients(ArrayList<String> ingredients, String language) {
+		CategoryDictionary categoryDictionary = languageDictionary.getCategoryDictionary(language);
 		for (String ingredient : ingredients) {
 			Product product = categoryDictionary.getProduct(ingredient);
 			if (product == null) product = new Product(ingredient);
