@@ -33,10 +33,10 @@ public class ShoppingListTest {
 	}
 
 	@Test
-	public void test() throws IOException {
-		Document document = Jsoup.parse(new File("test/testdata/pages/bbcgoodfood.com.html"), "UTF-8");
-		Elements elementsByClass = document.getElementsByAttributeValue("class", "recipe-ingredients separator separator-dashed-bottom");
-		elementsByClass.size();
+	public void initialShoppingListIsEmpty() throws IOException {
+		ShoppingListFactory shoppingListFactory = new ShoppingListFactory();
+		ShoppingList shoppingList = shoppingListFactory.getShoppingList();
+		assertTrue(shoppingList.isEmpty());
 	}
 	
 	@Test

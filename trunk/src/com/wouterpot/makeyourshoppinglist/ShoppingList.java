@@ -1,6 +1,7 @@
 package com.wouterpot.makeyourshoppinglist;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,11 +37,19 @@ public class ShoppingList {
 		products.add(product);
 	}
 	
-	public Set<String> getCategories() {
-		return categoriesToProducts.keySet();
+	public String[] getCategories() {
+		Set<String> keySet = categoriesToProducts.keySet();
+		String[] categories = new String[keySet.size()];
+		keySet.toArray(categories);
+		Arrays.sort(categories);
+		return categories;
 	}
 
 	public List<Product> getProducts(String category) {
 		return categoriesToProducts.get(category);
+	}
+
+	public boolean isEmpty() {
+		return categoriesToProducts.isEmpty();
 	}
 }
