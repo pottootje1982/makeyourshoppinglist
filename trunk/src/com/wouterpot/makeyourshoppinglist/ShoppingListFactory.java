@@ -1,7 +1,6 @@
 package com.wouterpot.makeyourshoppinglist;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import com.wouterpot.makeyourshoppinglist.config.CategoryDictionary;
@@ -11,39 +10,42 @@ public class ShoppingListFactory {
 
 	private IngredientsScraper ingredientsScraper;
 	private LanguageDictionary languageDictionary;
+	private ShoppingList shoppingList;
+
+	public ShoppingList getShoppingList() {
+		return shoppingList;
+	}
 
 	public ShoppingListFactory() {
 		ingredientsScraper = new IngredientsScraper();
 		languageDictionary = new LanguageDictionary("data");
+		shoppingList = new ShoppingList(languageDictionary);
 	}
 
-	private ShoppingList createShoppingList(IngredientsList ingredientsList) {
+	private void addToShoppingList(IngredientsList ingredientsList) {
 		ArrayList<String> ingredients = ingredientsList.getIngredients();
 		String language = ingredientsList.getSiteInfo().getLanguage();
-		CategoryDictionary categoryDictionary = languageDictionary.getCategoryDictionary(language);
-		ShoppingList shoppingList = new ShoppingList(categoryDictionary, ingredients);
-		return shoppingList;
+		shoppingList.addIngredients(ingredients, language);
 	}
 
-	public ShoppingList createShoppingList(File file) {
+	public void addToShoppingList(File file) {
 		try {
 			IngredientsList ingredientsList = ingredientsScraper.getIngredients(file);
-			return createShoppingList(ingredientsList);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	public ShoppingList createShoppingList(String url) {
-		try {
-			IngredientsList ingredientsList = ingredientsScraper.getIngredients(url);
-			return createShoppingList(ingredientsList);
-		} catch (IOException e) {
+			addToShoppingList(ingredientsList);
+		} catch (IngredientsScraperException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;		
+	}
+
+	public void addToShoppingList(String url) {
+		try {
+			IngredientsList ingredientsList = ingredientsScraper.getIngredients(url);
+			addToShoppingList(ingredientsList);
+		} catch (IngredientsScraperException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

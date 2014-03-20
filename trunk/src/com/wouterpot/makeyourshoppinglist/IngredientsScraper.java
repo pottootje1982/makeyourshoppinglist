@@ -51,13 +51,14 @@ public class IngredientsScraper {
 		}
 	}
 	
-	private IngredientsList getIngredients(Document document) {
+	private IngredientsList getIngredients(Document document) throws IngredientsScraperException {
 	    for (SiteInfo siteInfo : siteInfos) { 
 	    	if (!siteInfo.matchesSite(document.baseUri())) continue; 
 	    	
 	        Elements ingredients = new Elements();
 	        if (siteInfo.getClassName() != null) { 
-	        	ingredients = document.getElementsByClass(siteInfo.getClassName());
+	        	// Unfortunately we cannot use getElementsByClass() because this method requires the class name to not contain spaces
+	        	ingredients = document.getElementsByAttributeValue("class", siteInfo.getClassName());
 	        } 
 	        else if (siteInfo.getId() != null)
 	        {
@@ -73,16 +74,24 @@ public class IngredientsScraper {
 	          return siteInfo.createIngredientsList(ingredients); 
 	        } 
 	    }
-	    return null;
+	    throw new IngredientsScraperException("No ingredients were found for " + document.baseUri());
 	}
 
-	public IngredientsList getIngredients(File file) throws IOException {
-		Document document = Jsoup.parse(file, "UTF-8");
-		return getIngredients(document);
+	public IngredientsList getIngredients(File file) throws IngredientsScraperException {
+		try {
+			Document document = Jsoup.parse(file, "UTF-8");
+			return getIngredients(document);
+		} catch (IOException e) {
+			throw new IngredientsScraperException("File " + file + " could not be opened!");
+		}
 	}
 
-	public IngredientsList getIngredients(String url) throws IOException {
-		Document document = Jsoup.connect(url).get();
-		return getIngredients(document);
+	public IngredientsList getIngredients(String url) throws IngredientsScraperException {
+		try {
+			Document document = Jsoup.connect(url).get();
+			return getIngredients(document);
+		} catch (IOException e) {
+			throw new IngredientsScraperException("File " + url + " could not be opened!");
+		}
 	}
 }

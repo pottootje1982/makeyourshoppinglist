@@ -16,6 +16,7 @@ import org.xml.sax.SAXException;
 
 import com.wouterpot.makeyourshoppinglist.IngredientsList;
 import com.wouterpot.makeyourshoppinglist.IngredientsScraper;
+import com.wouterpot.makeyourshoppinglist.IngredientsScraperException;
 
 public class IngredientsScraperTest {
 
@@ -29,7 +30,7 @@ public class IngredientsScraperTest {
 	}
 	
 	@Test
-	public void testSiteWithItemList() throws MalformedURLException, IOException {
+	public void testSiteWithItemList() throws MalformedURLException, IOException, IngredientsScraperException {
 		String url = "https://sites.google.com/site/walterreddock/recepten/zeebrasemfilets-met-kleine-groentes";
 		IngredientsList ingredientsList = ingredientsScraper.getIngredients(url);
 		ArrayList<String> ingredients = ingredientsList.getIngredients();
