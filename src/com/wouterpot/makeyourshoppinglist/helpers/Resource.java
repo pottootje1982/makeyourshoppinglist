@@ -5,16 +5,21 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
 import com.google.appengine.api.utils.SystemProperty;
 
 public class Resource {
-
+	
     public static boolean isTesting() {
         return SystemProperty.environment.value() == null;
     }
@@ -23,7 +28,7 @@ public class Resource {
 		return isTesting() ? "src/" + path : "WEB-INF/classes/" + path;
 	}
 	
-	public static String[] getResourceListing(Class className, String path)
+	public static String[] getResourceListing(Class<?> className, String path)
 			throws URISyntaxException, IOException {
 		URL dirURL = className.getClassLoader().getResource(path);
 		if (dirURL != null && dirURL.getProtocol().equals("file")) {
@@ -64,11 +69,20 @@ public class Resource {
 					result.add(entry);
 				}
 			}
+			jar.close();
 			return result.toArray(new String[result.size()]);
 		}
 
 		throw new UnsupportedOperationException("Cannot list files for URL "
 				+ dirURL);
 	}
-
+	
+	public static List<String> splitBlobByBreak(String html) {
+		List<String> resIngredients;
+		Document document = Jsoup.parse(html);
+		document.select("br").after("\\n");
+		document.select("p").after("\\n");
+		resIngredients = Arrays.asList(document.text().split("\\s*\\\\n\\s*"));
+		return resIngredients;
+	}
 }

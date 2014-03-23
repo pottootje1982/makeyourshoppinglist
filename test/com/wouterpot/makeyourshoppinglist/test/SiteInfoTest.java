@@ -3,9 +3,10 @@ package com.wouterpot.makeyourshoppinglist.test;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import com.wouterpot.makeyourshoppinglist.IngredientsList;
 import com.wouterpot.makeyourshoppinglist.config.SiteInfo;
+import com.wouterpot.makeyourshoppinglist.server.IngredientsList;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -16,13 +17,13 @@ public class SiteInfoTest {
 
 	@Test
 	public void testList() throws Exception {
-		String itemList = "<ul><li>3 bospeentjes</li><li>1 meiknolletje</li><li>100 gram peultjes</li><li>1 kleine courgette</li><li>2 sjalotten, gesnipperd</li><li>3 eetlepels roomboter</li><li>1/2 glas witte wijn</li><li>125 ml slagroom</li><li>125 ml crème fraîche</li><li>4 dauradefilets (of een andere vis)</li></ul>";
+		String itemList = "<ul><li>3 bospeentjes</li><li>1 meiknolletje</li><li>100 gram peultjes</li><li>1 kleine courgette</li><li>2 sjalotten, gesnipperd</li><li>3 eetlepels roomboter</li><li>1/2 glas witte wijn</li><li>125 ml slagroom</li><li>125 ml crï¿½me fraï¿½che</li><li>4 dauradefilets (of een andere vis)</li></ul>";
 
 		Document doc = Jsoup.parse(itemList);
 		Elements elements = doc.getElementsByTag("ul");
 		SiteInfo siteInfo = new SiteInfo("nl", "ul", null, "sites-canvas-main-content", "li", null, null);
 		IngredientsList ingredientsList = siteInfo.createIngredientsList(elements);
-		ArrayList<String> ingredients = ingredientsList.getIngredients();
+		List<String> ingredients = ingredientsList.getIngredients();
 		assertEquals(10, ingredients.size());
 		assertEquals("3 bospeentjes", ingredients.get(0));
 		assertEquals("4 dauradefilets (of een andere vis)", ingredients.get(9));
@@ -35,7 +36,7 @@ public class SiteInfoTest {
 		Elements elements = doc.getElementsByTag("p");
 		SiteInfo siteInfo = new SiteInfo();
 		IngredientsList ingredientsList = siteInfo.createIngredientsList(elements);
-		ArrayList<String> ingredients = ingredientsList.getIngredients();
+		List<String> ingredients = ingredientsList.getIngredients();
 		assertEquals(10, ingredients.size());
 		assertEquals("3 middelgrote courgettes", ingredients.get(0));
 		assertEquals("zout en peper", ingredients.get(9));

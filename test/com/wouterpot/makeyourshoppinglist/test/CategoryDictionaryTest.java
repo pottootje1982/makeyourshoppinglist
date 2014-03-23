@@ -8,10 +8,10 @@ import java.net.URISyntaxException;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.wouterpot.makeyourshoppinglist.Product;
 import com.wouterpot.makeyourshoppinglist.config.CategoryDictionary;
 import com.wouterpot.makeyourshoppinglist.helpers.RegEx;
 import com.wouterpot.makeyourshoppinglist.helpers.Resource;
+import com.wouterpot.makeyourshoppinglist.server.Product;
 
 public class CategoryDictionaryTest {
 
@@ -69,12 +69,12 @@ public class CategoryDictionaryTest {
 	
 	@Test
 	public void testEscapeStrangeChar() {
-		assertEquals("bread", RegEx.escapeStrangeChars("bréad"));
+		assertEquals("bread", RegEx.escapeStrangeChars("brÃ©ad"));
 	}
 	
 	@Test
 	public void testGetCategoryStrangeChar() {
-		String category = getCategory("bréad");
+		String category = getCategory("brÃ©ad");
 		assertEquals("baker", category);
 	}
 		

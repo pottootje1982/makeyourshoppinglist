@@ -33,15 +33,15 @@ public class RegEx {
 	public static String escapeStrangeChars(String input)
 	{
 	  input = input.toLowerCase();
-	  input = input.replaceAll("[aàáâãäåæ]", "a");
-	  input = input.replaceAll("[cç]", "c");
-	  input = input.replaceAll("[eèéêëæ]", "e");
-	  input = input.replaceAll("[iìíîï]", "i");
-	  input = input.replaceAll("[nñ]", "n");
-	  input = input.replaceAll("[oòóôõöø]", "o");
-	  input = input.replaceAll("[sß]", "s");
-	  input = input.replaceAll("[uùúûü]", "u");
-	  input = input.replaceAll("[yÿ]", "y");
+	  input = input.replaceAll("[aÃ Ã¡Ã¢Ã£Ã¤Ã¥Ã¦]", "a");
+	  input = input.replaceAll("[cÃ§]", "c");
+	  input = input.replaceAll("[eÃ¨Ã©ÃªÃ«Ã¦]", "e");
+	  input = input.replaceAll("[iÃ¬Ã­Ã®Ã¯]", "i");
+	  input = input.replaceAll("[nÃ±]", "n");
+	  input = input.replaceAll("[oÃ²Ã³Ã´ÃµÃ¶Ã¸]", "o");
+	  input = input.replaceAll("[sÃŸ]", "s");
+	  input = input.replaceAll("[uÃ¹ÃºÃ»Ã¼]", "u");
+	  input = input.replaceAll("[yÃ¿]", "y");
 	  return input;
 	}
 

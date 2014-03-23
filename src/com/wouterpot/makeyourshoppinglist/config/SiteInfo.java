@@ -1,15 +1,18 @@
 package com.wouterpot.makeyourshoppinglist.config;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
 
 import org.datanucleus.util.StringUtils;
 import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Element;
-import org.jsoup.nodes.Node;
-import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 
-import com.wouterpot.makeyourshoppinglist.IngredientsList;
+import com.wouterpot.makeyourshoppinglist.helpers.Resource;
+import com.wouterpot.makeyourshoppinglist.server.IngredientsList;
 
 public class SiteInfo
 {
@@ -19,6 +22,8 @@ public class SiteInfo
 	private String id;
 	private String childTagName;
 	private String childClassName;
+	@PrimaryKey
+	@Persistent
 	private String url;
 
 	private static String getAttribute(Attributes attributes, String name) {
@@ -37,28 +42,31 @@ public class SiteInfo
 	}
 
 	public IngredientsList createIngredientsList(Elements ingredients) {
-		ArrayList<String> resIngredients = new ArrayList<>();
+		List<String> resIngredients = new ArrayList<String>();
 		if (getChildTagName() != null) {
 			for (int i = 0; i < ingredients.size(); i++) {
-				Elements innerIngredients = ingredients.get(i)
-						.getElementsByTag(getChildTagName());
-				for (int j = 0; j < innerIngredients.size(); j++) {
-					Element innerIngredient = innerIngredients.get(j);
-					if (getChildClassName() == null || innerIngredient.attr("class") == getChildClassName())
-						resIngredients.add(innerIngredient.text());
-				}
-			}
-		} else {
-			for (int i = 0; i < ingredients.size(); i++) {
-				Element innerIngredients = ingredients.get(i);
-				for (int j = 0; j < innerIngredients.childNodeSize(); j++) {
-					Node ingredientNode = innerIngredients.childNode(j);
-					if (ingredientNode instanceof TextNode)
-						resIngredients.add(ingredientNode.toString());
+				Elements innerIngredients = ingredients.get(i).getElementsByTag(getChildTagName());
+				for (Element element : innerIngredients) {
+					if (	childClassName == null || element.attr("class").equals(childClassName) && 
+							childTagName == null || element.attr("tag").equals(childTagName)) {
+						addIngredient(resIngredients, element);
+					}
 				}
 			}
 		}
+		else {
+			// If site doesn't have a child tag name, it's a blob so we should replace
+			// <br> with newline
+			String html = ingredients.html();
+			resIngredients = Resource.splitBlobByBreak(html);
+		}
 		return new IngredientsList(this, resIngredients);
+	}
+
+	private void addIngredient(List<String> resIngredients, Element element) {
+		String ingredient = element.text().trim();
+		if (!StringUtils.isEmpty(ingredient))
+			resIngredients.add(ingredient);
 	}
 
 	public SiteInfo(String language, String tagName, String className,
