@@ -1,8 +1,9 @@
-package com.wouterpot.makeyourshoppinglist.server;
+package com.wouterpot.makeyourshoppinglist.server.datastore;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -12,6 +13,7 @@ import javax.jdo.annotations.Element;
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
@@ -19,24 +21,20 @@ import javax.jdo.annotations.PrimaryKey;
 import com.wouterpot.makeyourshoppinglist.config.CategoryDictionary;
 import com.wouterpot.makeyourshoppinglist.config.LanguageDictionary;
 
-@PersistenceCapable(
-	    identityType = IdentityType.APPLICATION,
-	    detachable   = "true"
-	)
+@PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
 
 public class ShoppingList {
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    @Extension(
-        vendorName = "datanucleus",
-        key        = "gae.encoded-pk",
-        value      = "true"
-    )
+    @Extension(vendorName = "datanucleus", key = "gae.encoded-pk", value = "true")
     private String      id;
 	
+    @NotPersistent
+	Map<String, ArrayList<Product>> categoriesToProducts = new HashMap<String, ArrayList<Product>>();
+    
     @Persistent(mappedBy = "shoppingList")
     @Element(dependent = "true")
-	Map<String, ArrayList<Product>> categoriesToProducts = new HashMap<String, ArrayList<Product>>();
+	Set<Product> products = new HashSet<Product>();
         
 	private LanguageDictionary languageDictionary;
 
@@ -63,7 +61,7 @@ public class ShoppingList {
 		products.add(product);
 	}
 	
-	public String[] getCategories() {
+	private String[] getCategories() {
 		Set<String> keySet = categoriesToProducts.keySet();
 		String[] categories = new String[keySet.size()];
 		keySet.toArray(categories);

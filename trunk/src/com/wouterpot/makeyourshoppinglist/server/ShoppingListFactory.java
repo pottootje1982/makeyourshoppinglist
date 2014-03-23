@@ -1,10 +1,10 @@
 package com.wouterpot.makeyourshoppinglist.server;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.wouterpot.makeyourshoppinglist.config.LanguageDictionary;
+import com.wouterpot.makeyourshoppinglist.server.datastore.ShoppingList;
 
 public class ShoppingListFactory {
 
