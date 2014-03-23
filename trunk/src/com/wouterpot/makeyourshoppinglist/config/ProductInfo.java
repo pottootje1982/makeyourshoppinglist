@@ -1,12 +1,26 @@
 package com.wouterpot.makeyourshoppinglist.config;
 
+import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
+
 import com.wouterpot.makeyourshoppinglist.helpers.RegEx;
 
-public class ProductInfo {
+@PersistenceCapable(
+	    identityType = IdentityType.APPLICATION,
+	    detachable   = "true"
+	)
 
+public class ProductInfo {
+    @PrimaryKey
+    @Persistent
 	private String productKey;
+    @Persistent
 	private String category;
+    @Persistent
 	private boolean isExcluded;
+    @Persistent
 	private boolean isCommon;
 
 	public ProductInfo(String productKey, String category, boolean isExcluded, boolean isCommon) {

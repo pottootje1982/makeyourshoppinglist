@@ -2,7 +2,7 @@
   <site url='bbcgoodfood.com' language='en' class="ingredient-lists separator-serated tab-content" childTagName='li'/> 
   <site url='hoggan.co.uk' language='en' class="recipe" childTagName='li'/> 
   <site url='volkskrant.nl' language='nl' class="ingredient"/> 
-  <site url='smulweb.nl' language='nl' class="span-310" tagName='p'  /> 
+  <site url='smulweb.nl' language='nl' class="ingredienten" tagName='p'  /> 
   <site url='vlees.nl' language='nl' class="ingredients" childTagName='li' /> 
   <site url='ah.nl' language='nl' class="ingredients" childTagName='li' /> 
   <site url='ah.nl' language='nl' id="ingredients" childTagName='li' /> 

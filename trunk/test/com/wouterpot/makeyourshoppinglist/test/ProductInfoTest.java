@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import com.wouterpot.makeyourshoppinglist.config.ProductInfo;
-import com.wouterpot.makeyourshoppinglist.helpers.RegEx;
 
 public class ProductInfoTest {
 

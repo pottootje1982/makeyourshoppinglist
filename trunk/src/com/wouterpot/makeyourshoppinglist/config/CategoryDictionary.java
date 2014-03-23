@@ -10,15 +10,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.google.appengine.labs.repackaged.com.google.common.base.Strings;
-import com.wouterpot.makeyourshoppinglist.Product;
 import com.wouterpot.makeyourshoppinglist.helpers.RegEx;
 import com.wouterpot.makeyourshoppinglist.helpers.Resource;
+import com.wouterpot.makeyourshoppinglist.server.Product;
 
 public class CategoryDictionary {
 	private static final String COMMON = "[common]";
 	private static final String EXCLUDE = "[exclude]";
 	
-	ArrayList<String> categories = new ArrayList<>();
+	ArrayList<String> categories = new ArrayList<String>();
 	private String[] categoryFiles;
 
 	Map<String, ArrayList<ProductInfo>> categoriesToProductInfos = new HashMap<String, ArrayList<ProductInfo>>();
@@ -45,7 +45,7 @@ public class CategoryDictionary {
 			String category, ProductInfo product) {
 		ArrayList<ProductInfo> products = categoriesToProducts.get(category);
 		if (products == null) {
-			products = new ArrayList<>();
+			products = new ArrayList<ProductInfo>();
 			categoriesToProducts.put(category, products);
 		}
 		if (product.isExcluded())
