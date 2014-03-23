@@ -1,4 +1,4 @@
-package com.wouterpot.makeyourshoppinglist.server;
+package com.wouterpot.makeyourshoppinglist.server.datastore;
 
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
@@ -7,10 +7,7 @@ import javax.jdo.annotations.PrimaryKey;
 
 import com.wouterpot.makeyourshoppinglist.config.ProductInfo;
 
-@PersistenceCapable(
-	    identityType = IdentityType.APPLICATION,
-	    detachable   = "true"
-	)
+@PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
 
 public class Product {
 

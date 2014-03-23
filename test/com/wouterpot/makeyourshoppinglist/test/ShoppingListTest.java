@@ -6,12 +6,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.commons.lang3.StringEscapeUtils;
+import javax.jdo.PersistenceManager;
+
 import org.junit.Test;
 
-import com.wouterpot.makeyourshoppinglist.server.Product;
-import com.wouterpot.makeyourshoppinglist.server.ShoppingList;
+import com.wouterpot.makeyourshoppinglist.server.PMF;
 import com.wouterpot.makeyourshoppinglist.server.ShoppingListFactory;
+import com.wouterpot.makeyourshoppinglist.server.datastore.Product;
+import com.wouterpot.makeyourshoppinglist.server.datastore.ShoppingList;
 
 public class ShoppingListTest {
 
@@ -62,6 +64,7 @@ public class ShoppingListTest {
 		assertEquals("3 eetlepels roomboter", shoppingItems.get(0).getIngredient());
 		// TODO: no good!!
 		assertEquals("125 ml cr�me fra�che", shoppingItems.get(3).getIngredient());
+
 	}
 
 
