@@ -34,7 +34,9 @@ GreetingService {
 			PersistenceManager pm = PMF.get().getPersistenceManager();
 			Query newQuery = pm.newQuery(ShoppingList.class);
 			List<ShoppingList> streamingQueryResult = (List<ShoppingList>)newQuery.execute();
-			ShoppingList shoppingList2 = streamingQueryResult.get(0);
+			ShoppingList shoppingList2 = null;
+			if (streamingQueryResult.size() > 0)
+				shoppingList2 = streamingQueryResult.get(0);
 
 			shoppingList = pm.makePersistent(shoppingList);
 			pm.close();

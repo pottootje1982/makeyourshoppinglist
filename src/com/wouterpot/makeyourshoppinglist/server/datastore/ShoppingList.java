@@ -34,7 +34,7 @@ public class ShoppingList {
     
     @Persistent(mappedBy = "shoppingList")
     @Element(dependent = "true")
-	Set<Product> products = new HashSet<Product>();
+	ArrayList<Product> products = new ArrayList<Product>();
         
 	private LanguageDictionary languageDictionary;
 
@@ -59,6 +59,7 @@ public class ShoppingList {
 			categoriesToProducts.put(category, products);
 		}
 		products.add(product);
+		this.products.add(product);
 	}
 	
 	private String[] getCategories() {
