@@ -7,6 +7,7 @@
 	<servlet>
 		<servlet-name>shoppingListService</servlet-name>
 		<servlet-class>com.wouterpot.makeyourshoppinglist.server.ShoppingListService</servlet-class>
+		<load-on-startup>1</load-on-startup>
 	</servlet>
 
 	<servlet-mapping>

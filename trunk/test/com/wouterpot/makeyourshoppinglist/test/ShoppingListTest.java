@@ -6,11 +6,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import javax.jdo.PersistenceManager;
-
 import org.junit.Test;
 
-import com.wouterpot.makeyourshoppinglist.server.PMF;
 import com.wouterpot.makeyourshoppinglist.server.ShoppingListFactory;
 import com.wouterpot.makeyourshoppinglist.server.datastore.Product;
 import com.wouterpot.makeyourshoppinglist.server.datastore.ShoppingList;
@@ -19,7 +16,7 @@ public class ShoppingListTest {
 
 	@Test
 	public void getShoppingList() throws IOException {
-		ShoppingListFactory shoppingListFactory = new ShoppingListFactory();
+		ShoppingListFactory shoppingListFactory = ShoppingListFactory.get();
 		File file = new File("test/testdata/pages/sites.google.com.html");
 		shoppingListFactory.addToShoppingList(file);
 		ShoppingList shoppingList = shoppingListFactory.getShoppingList();
@@ -34,14 +31,14 @@ public class ShoppingListTest {
 
 	@Test
 	public void initialShoppingListIsEmpty() throws IOException {
-		ShoppingListFactory shoppingListFactory = new ShoppingListFactory();
+		ShoppingListFactory shoppingListFactory = ShoppingListFactory.get();
 		ShoppingList shoppingList = shoppingListFactory.getShoppingList();
 		assertTrue(shoppingList.isEmpty());
 	}
 	
 	@Test
 	public void getEnglishShoppingList() throws IOException {
-		ShoppingListFactory shoppingListFactory = new ShoppingListFactory();
+		ShoppingListFactory shoppingListFactory = ShoppingListFactory.get();
 		File file = new File("test/testdata/pages/bbcgoodfood.com.html");
 		shoppingListFactory.addToShoppingList(file);
 		ShoppingList shoppingList = shoppingListFactory.getShoppingList();
@@ -55,7 +52,7 @@ public class ShoppingListTest {
 	
 	@Test
 	public void getSpecialCharRecipeList() throws IOException {
-		ShoppingListFactory shoppingListFactory = new ShoppingListFactory();
+		ShoppingListFactory shoppingListFactory = ShoppingListFactory.get();
 		File file = new File("test/testdata/pages/sites.google.com.nl.html");
 		shoppingListFactory.addToShoppingList(file);
 		ShoppingList shoppingList = shoppingListFactory.getShoppingList();
@@ -70,7 +67,7 @@ public class ShoppingListTest {
 
 	@Test
 	public void getSmulwebShoppingList() throws IOException {
-		ShoppingListFactory shoppingListFactory = new ShoppingListFactory();
+		ShoppingListFactory shoppingListFactory = ShoppingListFactory.get();
 		File file = new File("test/testdata/pages/smulweb.nl.html");
 		shoppingListFactory.addToShoppingList(file);
 		ShoppingList shoppingList = shoppingListFactory.getShoppingList();

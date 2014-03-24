@@ -3,12 +3,12 @@ package com.wouterpot.makeyourshoppinglist.server.datastore;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import javax.jdo.PersistenceManager;
 import javax.jdo.annotations.Element;
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -20,6 +20,7 @@ import javax.jdo.annotations.PrimaryKey;
 
 import com.wouterpot.makeyourshoppinglist.config.CategoryDictionary;
 import com.wouterpot.makeyourshoppinglist.config.LanguageDictionary;
+import com.wouterpot.makeyourshoppinglist.server.PMF;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
 
@@ -35,6 +36,9 @@ public class ShoppingList {
     @Persistent(mappedBy = "shoppingList")
     @Element(dependent = "true")
 	ArrayList<Product> products = new ArrayList<Product>();
+    
+    @Persistent
+    ArrayList<String> sites = new ArrayList<String>();
         
 	private LanguageDictionary languageDictionary;
 
@@ -42,16 +46,19 @@ public class ShoppingList {
 		this.languageDictionary = languageDictionary;
 	}
 
-	public void addIngredients(List<String> ingredients, String language) {
-		CategoryDictionary categoryDictionary = languageDictionary.getCategoryDictionary(language);
-		for (String ingredient : ingredients) {
-			Product product = categoryDictionary.getProduct(ingredient);
-			if (product == null) product = new Product(ingredient);
-			put(product);
+	public void addIngredients(String recipeId, List<String> ingredients, String language) {
+		if (!sites.contains(recipeId)) {
+			CategoryDictionary categoryDictionary = languageDictionary.getCategoryDictionary(language);
+			for (String ingredient : ingredients) {
+				Product product = categoryDictionary.getProduct(ingredient);
+				if (product == null) product = new Product(ingredient);
+				addProduct(product);
+			}
+			sites.add(recipeId);
 		}
 	}
 
-	private void put(Product product) {
+	private void addProduct(Product product) {
 		String category = product.getCategory();
 		ArrayList<Product> products = categoriesToProducts.get(category);
 		if (products == null) {
@@ -60,6 +67,14 @@ public class ShoppingList {
 		}
 		products.add(product);
 		this.products.add(product);
+		persistProduct(product);
+	}
+
+	private void persistProduct(Product product) {
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		ShoppingList shoppingList = pm.makePersistent(this);
+		shoppingList.products.add(product);
+		pm.close();
 	}
 	
 	private String[] getCategories() {
@@ -74,6 +89,9 @@ public class ShoppingList {
 		return categoriesToProducts.get(category);
 	}
 	
+	public ArrayList<Product> getProducts() {
+		return products;
+	}
 	public Map<String, ArrayList<String>> getShoppingList() {
 		Map<String, ArrayList<String>> result = new TreeMap<>();
 		String[] categories = getCategories();

@@ -16,34 +16,27 @@ GreetingService {
 
 	public ShoppingListService() {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
-
+		Query newQuery = pm.newQuery(ShoppingList.class);
+		List<ShoppingList> shoppingLists = (List<ShoppingList>)newQuery.execute();
+		ShoppingList shoppingList = null;
+		if (shoppingLists.size() > 0) {
+			shoppingList = shoppingLists.get(0);
+			pm.retrieve(shoppingList);
+			ShoppingListFactory.get().setShoppingList(shoppingList);
+		}
+		pm.close();
 	}
 
 	private static final long serialVersionUID = 1L;
 
 	@Override
 	public Map<String, ArrayList<String>> greetServer(String[] sites) throws IllegalArgumentException {
-		ShoppingListFactory shoppingListFactory = new ShoppingListFactory();
+		ShoppingListFactory shoppingListFactory = ShoppingListFactory.get();
 		for (String site : sites) {
 			shoppingListFactory.addToShoppingList(site);	
 		}
 		
 		ShoppingList shoppingList = shoppingListFactory.getShoppingList();
-		
-		try {
-			PersistenceManager pm = PMF.get().getPersistenceManager();
-			Query newQuery = pm.newQuery(ShoppingList.class);
-			List<ShoppingList> streamingQueryResult = (List<ShoppingList>)newQuery.execute();
-			ShoppingList shoppingList2 = null;
-			if (streamingQueryResult.size() > 0)
-				shoppingList2 = streamingQueryResult.get(0);
-
-			shoppingList = pm.makePersistent(shoppingList);
-			pm.close();
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
 		
 		return shoppingList.getShoppingList();
 	}

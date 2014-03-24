@@ -3,35 +3,52 @@ package com.wouterpot.makeyourshoppinglist.server;
 import java.io.File;
 import java.util.List;
 
+import javax.jdo.PersistenceManager;
+
 import com.wouterpot.makeyourshoppinglist.config.LanguageDictionary;
 import com.wouterpot.makeyourshoppinglist.server.datastore.ShoppingList;
 
 public class ShoppingListFactory {
 
+	private static final ShoppingListFactory shoppingListFactoryInstance = new ShoppingListFactory();
+	
 	private IngredientsScraper ingredientsScraper;
 	private LanguageDictionary languageDictionary;
-	private ShoppingList shoppingList;
+	private ShoppingList shoppingList = null;
+
+	private ShoppingListFactory() {
+		ingredientsScraper = new IngredientsScraper();
+		languageDictionary = new LanguageDictionary("data");
+	}
+
+	public static ShoppingListFactory get() {
+		return shoppingListFactoryInstance;
+	}
+	
+	public void setShoppingList(ShoppingList shoppingList) {
+		this.shoppingList = shoppingList;
+	}
 
 	public ShoppingList getShoppingList() {
+		if (shoppingList == null) {
+			shoppingList = new ShoppingList(languageDictionary);
+			PersistenceManager pm = PMF.get().getPersistenceManager();
+			shoppingList = pm.makePersistent(shoppingList);
+			pm.close();
+		}
 		return shoppingList;
 	}
 
-	public ShoppingListFactory() {
-		ingredientsScraper = new IngredientsScraper();
-		languageDictionary = new LanguageDictionary("data");
-		shoppingList = new ShoppingList(languageDictionary);
-	}
-
-	private void addToShoppingList(IngredientsList ingredientsList) {
+	private void addToShoppingList(String recipeId, IngredientsList ingredientsList) {
 		List<String> ingredients = ingredientsList.getIngredients();
 		String language = ingredientsList.getSiteInfo().getLanguage();
-		shoppingList.addIngredients(ingredients, language);
+		getShoppingList().addIngredients(recipeId, ingredients, language);
 	}
 
 	public void addToShoppingList(File file) {
 		try {
 			IngredientsList ingredientsList = ingredientsScraper.getIngredients(file);
-			addToShoppingList(ingredientsList);
+			addToShoppingList(file.getAbsolutePath(), ingredientsList);
 		} catch (IngredientsScraperException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -41,7 +58,7 @@ public class ShoppingListFactory {
 	public void addToShoppingList(String url) {
 		try {
 			IngredientsList ingredientsList = ingredientsScraper.getIngredients(url);
-			addToShoppingList(ingredientsList);
+			addToShoppingList(url, ingredientsList);
 		} catch (IngredientsScraperException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
