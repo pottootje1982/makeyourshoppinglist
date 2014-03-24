@@ -1,5 +1,7 @@
 package com.wouterpot.makeyourshoppinglist.server.datastore;
 
+import javax.jdo.annotations.Extension;
+import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
@@ -12,9 +14,19 @@ import com.wouterpot.makeyourshoppinglist.config.ProductInfo;
 public class Product {
 
 	private static final String DEFAULT_CATEGORY = "supermarket";
+
     @PrimaryKey
-	@Persistent
+    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+    @Extension(
+        vendorName = "datanucleus",
+        key        = "gae.encoded-pk",
+        value      = "true"
+    )
+    private String      id;
+
+    @Persistent
 	private String ingredient;
+
 	@Persistent
 	private ProductInfo productInfo;
 	
