@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
+import javax.servlet.ServletConfig;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.wouterpot.makeyourshoppinglist.client.GreetingService;
@@ -15,6 +16,11 @@ public class ShoppingListService extends RemoteServiceServlet implements
 GreetingService {
 
 	public ShoppingListService() {
+		initShoppingList();
+	}
+
+	private void initShoppingList() {
+		ServletConfig servletConfig = getServletConfig();
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		Query newQuery = pm.newQuery(ShoppingList.class);
 		List<ShoppingList> shoppingLists = (List<ShoppingList>)newQuery.execute();
@@ -25,7 +31,7 @@ GreetingService {
 			ShoppingListFactory.get().setShoppingList(shoppingList);
 		}
 		pm.close();
-	}
+	};
 
 	private static final long serialVersionUID = 1L;
 
