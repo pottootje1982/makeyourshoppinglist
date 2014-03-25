@@ -45,6 +45,10 @@ public class Product {
 		this(ingredient, null);
 	}
 
+	public void setShoppingList(ShoppingList shoppingList) {
+		this.shoppingList = shoppingList;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

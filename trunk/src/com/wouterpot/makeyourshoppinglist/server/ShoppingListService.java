@@ -20,10 +20,10 @@ GreetingService {
 	}
 
 	private void initShoppingList() {
-		ServletConfig servletConfig = getServletConfig();
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		Query newQuery = pm.newQuery(ShoppingList.class);
 		List<ShoppingList> shoppingLists = (List<ShoppingList>)newQuery.execute();
+		pm.retrieveAll(shoppingLists);
 		ShoppingList shoppingList = null;
 		if (shoppingLists.size() > 0) {
 			shoppingList = shoppingLists.get(0);
