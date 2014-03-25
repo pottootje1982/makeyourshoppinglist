@@ -52,6 +52,7 @@ public class ShoppingList {
 			for (String ingredient : ingredients) {
 				Product product = categoryDictionary.getProduct(ingredient);
 				if (product == null) product = new Product(ingredient);
+				product.setShoppingList(this);
 				addProduct(product);
 			}
 			sites.add(recipeId);
@@ -66,7 +67,6 @@ public class ShoppingList {
 			categoriesToProducts.put(category, products);
 		}
 		products.add(product);
-		this.products.add(product);
 		persistProduct(product);
 	}
 
