@@ -52,8 +52,10 @@ public class DataStoreTest {
 	@Test
 	public void loadPersistedShoppingList() {
 		ShoppingListFactory shoppingListFactory = ShoppingListFactory.get();
-		File file = new File("test/testdata/pages/sites.google.com.nl.html");
+		File file = new File("test/testdata/pages/smulweb.nl.html");
 		shoppingListFactory.addToShoppingList(file);
+		
+		
 		
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		Query newQuery = pm.newQuery(ShoppingList.class);

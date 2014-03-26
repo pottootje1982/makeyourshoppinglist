@@ -3,6 +3,7 @@ package com.wouterpot.makeyourshoppinglist.server.datastore;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -72,8 +73,10 @@ public class ShoppingList {
 
 	private void persistProduct(Product product) {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
+		pm.currentTransaction().begin();
 		ShoppingList shoppingList = pm.makePersistent(this);
 		shoppingList.products.add(product);
+		pm.currentTransaction().commit();
 		pm.close();
 	}
 	

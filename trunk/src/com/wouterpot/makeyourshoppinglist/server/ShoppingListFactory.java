@@ -33,7 +33,9 @@ public class ShoppingListFactory {
 		if (shoppingList == null) {
 			shoppingList = new ShoppingList(languageDictionary);
 			PersistenceManager pm = PMF.get().getPersistenceManager();
+			pm.currentTransaction().begin();
 			shoppingList = pm.makePersistent(shoppingList);
+			pm.currentTransaction().commit();
 			pm.close();
 		}
 		return shoppingList;
