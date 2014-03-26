@@ -32,10 +32,9 @@ public class Category implements Comparable<Category> {
 	
     @Persistent(mappedBy = "category")
     @Element(dependent = "true")
-	private List<Product> products = new ArrayList<>();
+	private List<Product> products;
 
-    @SuppressWarnings("unused")
-    @Persistent
+    @Persistent(defaultFetchGroup = "true")
 	private ShoppingList shoppingList;
 	
 	public List<Product> getProducts() {
@@ -52,17 +51,12 @@ public class Category implements Comparable<Category> {
 
 	public Category(String categoryName) {
 		this.categoryName = categoryName;
+		products = new ArrayList<Product>();
 	}
 	
 	public void addProduct(Product product) {
-		PersistenceManager pm = PMF.get().getPersistenceManager();
-		pm.currentTransaction().begin();
-		Category category = pm.makePersistent(this);
-		//Category category = this;
-		product.setCategory(category);
-		category.products.add(product);
-		pm.currentTransaction().commit();
-		pm.close();
+		product.setCategory(this);
+		products.add(product);
 	}
 
 	@Override
@@ -111,4 +105,17 @@ public class Category implements Comparable<Category> {
 				+ ", products=" + StringUtils.join(products, '\n') + "]";
 	}
 
+	public void clearProducts() {
+		products.clear();		
+	}
+
+	public void retrieve() {
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		pm.currentTransaction().begin();
+		Category category = pm.makePersistent(this);
+		pm.retrieve(category);
+		pm.retrieveAll(products);
+		pm.currentTransaction().commit();
+		pm.close();
+	}
 }
