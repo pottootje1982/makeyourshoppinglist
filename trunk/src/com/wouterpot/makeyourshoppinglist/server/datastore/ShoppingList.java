@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import javax.jdo.PersistenceManager;
+import javax.jdo.PersistenceManagerFactory;
 import javax.jdo.annotations.Element;
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -29,7 +30,7 @@ public class ShoppingList {
 	
     @Persistent(mappedBy = "shoppingList")
     @Element(dependent = "true")
-    List<Category> categoriesToProducts = new ArrayList<Category>();
+    List<Category> categoriesToProducts;
     
     @Persistent
     ArrayList<String> sites = new ArrayList<String>();
@@ -38,16 +39,33 @@ public class ShoppingList {
 
 	public ShoppingList(LanguageDictionary languageDictionary) {
 		this.languageDictionary = languageDictionary;
+		categoriesToProducts = new ArrayList<Category>();
 	}
 
 	public void addIngredients(String recipeId, List<String> ingredients, String language) {
 		if (!sites.contains(recipeId)) {
 			CategoryDictionary categoryDictionary = languageDictionary.getCategoryDictionary(language);
+			List<Product> products = new ArrayList<Product>();
 			for (String ingredient : ingredients) {
 				Product product = categoryDictionary.getProduct(ingredient);
 				addProduct(product);
+				products.add(product);
 			}
 			sites.add(recipeId);
+			
+			PersistenceManager pm = PMF.get().getPersistenceManager();
+			pm.currentTransaction().begin();
+			ShoppingList shoppingList = pm.makePersistent(this);
+			for (Category category : categoriesToProducts) {
+				shoppingList.categoriesToProducts.add(category);
+			}
+			for (Product product : products) {
+				Category category = getCategory(product.getCategoryName());
+				category = pm.makePersistent(category);
+				category.addProduct(product);			
+			}
+			pm.currentTransaction().commit();
+			pm.close();
 		}
 	}
 	
@@ -64,28 +82,35 @@ public class ShoppingList {
 		Category category = getCategory(categoryName);
 		product.setCategory(category);
 		if (category != null) {
-			category.addProduct(product);
+			//category.addProduct(product);
 		}
 		else {
 			category = createCategory(categoryName);
-			category.addProduct(product);
+			//category.addProduct(product);
 		}
 	}
 
+	
 	private Category createCategory(String categoryName) {
 		Category category = new Category(categoryName);
+		category.setShoppingList(this);
+		categoriesToProducts.add(category);
+		return category;
+	}
+	
+/*	private Category createCategory(String categoryName) {
+		Category category = new Category(categoryName);
+		category.setShoppingList(this);
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		pm.currentTransaction().begin();
 		ShoppingList shoppingList = pm.makePersistent(this);
-		//ShoppingList shoppingList = this;
-		category.setShoppingList(shoppingList);
 		shoppingList.categoriesToProducts.add(category);
 		pm.currentTransaction().commit();
 		pm.close();
 		return category;
-	}
+	}*/
 	
-	private List<Category> getCategories() {
+	public List<Category> getCategories() {
 		Collections.sort(categoriesToProducts);
 		return categoriesToProducts;
 	}
@@ -105,7 +130,8 @@ public class ShoppingList {
 		for (Category category : categories) {
 			ArrayList<String> productStrings = new ArrayList<String>();
 			result.put(category.getCategoryName(), productStrings);
-			List<Product> products = category.getProducts();
+			category.retrieve();
+			List<Product> products = category.getProducts();			
 			for (Product product : products) {
 				productStrings.add(product.getIngredient());
 			}			

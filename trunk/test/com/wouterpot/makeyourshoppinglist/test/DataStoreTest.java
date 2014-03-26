@@ -28,26 +28,15 @@ public class DataStoreTest extends DataStoreTestBase {
     
 	@Test
 	public void loadPersistedShoppingList() {
-		PersistenceManager pm = PMF.get().getPersistenceManager();
-
 		ShoppingListFactory shoppingListFactory = ShoppingListFactory.get();
 		File file = new File("test/testdata/pages/smulweb.nl.html");
 		shoppingListFactory.addToShoppingList(file);
 		
+		PersistenceManager pm = PMF.get().getPersistenceManager();
 		Query newQuery = pm.newQuery(ShoppingList.class);
 		List<ShoppingList> shoppingLists = (List<ShoppingList>)newQuery.execute();
 		pm.retrieveAll(shoppingLists);
-		Query prodQuery = pm.newQuery(ShoppingList.class);
-		List<Product> prods = (List<Product>)prodQuery.execute();
-		pm.retrieveAll(prods);
-		assertEquals(10, prods.size());
-		assertEquals(1, shoppingLists.size());
-		ShoppingList shoppingList = null;
-		
-		for (ShoppingList s : shoppingLists) {
-			shoppingList = s;
-			pm.retrieve(shoppingList);
-		}
+		ShoppingList shoppingList = shoppingLists.get(shoppingLists.size()-1);
 		List<Product> products = shoppingList.getProducts("greengrocer");
 		assertEquals(5, products.size());
 		

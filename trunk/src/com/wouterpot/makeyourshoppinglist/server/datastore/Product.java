@@ -1,5 +1,6 @@
 package com.wouterpot.makeyourshoppinglist.server.datastore;
 
+import javax.jdo.annotations.Embedded;
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -8,7 +9,6 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
-import com.google.appengine.datanucleus.annotations.Unowned;
 import com.wouterpot.makeyourshoppinglist.config.ProductInfo;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
@@ -30,11 +30,10 @@ public class Product {
 	private String ingredient;
 
 	@NotPersistent
-	@Unowned
+	@Embedded
 	private ProductInfo productInfo;
 	
-    @SuppressWarnings("unused")
-    @Persistent
+    @Persistent(defaultFetchGroup = "true")
     private Category category;
 
 	public Product(String ingredient, ProductInfo productInfo) {
