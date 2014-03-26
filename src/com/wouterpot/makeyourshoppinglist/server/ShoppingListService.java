@@ -6,8 +6,6 @@ import java.util.Map;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
-import javax.servlet.ServletConfig;
-
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.wouterpot.makeyourshoppinglist.client.GreetingService;
 import com.wouterpot.makeyourshoppinglist.server.datastore.ShoppingList;
