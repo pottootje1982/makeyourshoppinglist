@@ -87,13 +87,16 @@ public class CategoryDictionary {
 	public Product getProduct(String ingredient) {
 		ingredient = RegEx.escapeStrangeChars(ingredient);
 		for (String category : categoriesToProductInfos.keySet()) {
-			ArrayList<ProductInfo> products = categoriesToProductInfos.get(category);
-			for (ProductInfo productInfo : products) {
+			ArrayList<ProductInfo> productInfos = categoriesToProductInfos.get(category);
+			for (ProductInfo productInfo : productInfos) {
 				if (productInfo.productMatches(ingredient))
-					return productInfo.isExcluded() ? null : new Product(ingredient, productInfo);
+					if (productInfo.isExcluded())
+						break;
+					else
+						return new Product(ingredient, productInfo);
 			}
 		}
-		return null;
+		return new Product(ingredient);
 	}
 
 

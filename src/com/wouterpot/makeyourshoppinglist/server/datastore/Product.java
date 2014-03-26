@@ -35,7 +35,7 @@ public class Product {
 	
     @SuppressWarnings("unused")
     @Persistent
-    private ShoppingList shoppingList;
+    private Category category;
 
 	public Product(String ingredient, ProductInfo productInfo) {
 		this.ingredient = ingredient;
@@ -46,8 +46,8 @@ public class Product {
 		this(ingredient, null);
 	}
 
-	public void setShoppingList(ShoppingList shoppingList) {
-		this.shoppingList = shoppingList;
+	public void setCategory(Category category) {
+		this.category = category;
 	}
 
 	@Override
@@ -71,7 +71,7 @@ public class Product {
 		return ingredient;		
 	}
 
-	public String getCategory() {
+	public String getCategoryName() {
 		return productInfo != null ? productInfo.getCategory() : DEFAULT_CATEGORY;
 	}
 

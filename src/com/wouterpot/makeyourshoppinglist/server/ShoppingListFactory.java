@@ -26,6 +26,7 @@ public class ShoppingListFactory {
 	}
 	
 	public void setShoppingList(ShoppingList shoppingList) {
+		shoppingList.setLanguageDictionary(languageDictionary);
 		this.shoppingList = shoppingList;
 	}
 
@@ -39,6 +40,11 @@ public class ShoppingListFactory {
 			pm.close();
 		}
 		return shoppingList;
+	}
+	
+	public ShoppingList createNewShoppingList() {
+		shoppingList = null;
+		return getShoppingList();
 	}
 
 	private void addToShoppingList(String recipeId, IngredientsList ingredientsList) {
