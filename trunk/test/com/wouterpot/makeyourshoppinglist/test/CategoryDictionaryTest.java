@@ -32,7 +32,7 @@ public class CategoryDictionaryTest {
 	
 	private String getCategory(String ingredient) {
 		Product product = categoryDictionary.getProduct(ingredient);
-		return product != null ? product.getCategory() : null;
+		return product != null ? product.getCategoryName() : null;
 	}
 	
 	@Test

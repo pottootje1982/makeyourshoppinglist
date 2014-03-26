@@ -1,12 +1,9 @@
 package com.wouterpot.makeyourshoppinglist.server.datastore;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 
 import javax.jdo.PersistenceManager;
@@ -14,7 +11,6 @@ import javax.jdo.annotations.Element;
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
@@ -31,12 +27,9 @@ public class ShoppingList {
     @Extension(vendorName = "datanucleus", key = "gae.encoded-pk", value = "true")
     private String      id;
 	
-    @NotPersistent
-	Map<String, ArrayList<Product>> categoriesToProducts = new HashMap<String, ArrayList<Product>>();
-    
     @Persistent(mappedBy = "shoppingList")
     @Element(dependent = "true")
-	ArrayList<Product> products = new ArrayList<Product>();
+    List<Category> categoriesToProducts = new ArrayList<Category>();
     
     @Persistent
     ArrayList<String> sites = new ArrayList<String>();
@@ -52,56 +45,67 @@ public class ShoppingList {
 			CategoryDictionary categoryDictionary = languageDictionary.getCategoryDictionary(language);
 			for (String ingredient : ingredients) {
 				Product product = categoryDictionary.getProduct(ingredient);
-				if (product == null) product = new Product(ingredient);
-				product.setShoppingList(this);
 				addProduct(product);
 			}
 			sites.add(recipeId);
 		}
 	}
-
-	private void addProduct(Product product) {
-		String category = product.getCategory();
-		ArrayList<Product> products = categoriesToProducts.get(category);
-		if (products == null) {
-			products = new ArrayList<Product>();
-			categoriesToProducts.put(category, products);
+	
+	private Category getCategory(String categoryName) {
+		for (Category category : categoriesToProducts) {
+			if (category.equals(categoryName))
+				return category;
 		}
-		products.add(product);
-		persistProduct(product);
+		return null;
 	}
 
-	private void persistProduct(Product product) {
+	private void addProduct(Product product) {
+		String categoryName = product.getCategoryName();
+		Category category = getCategory(categoryName);
+		product.setCategory(category);
+		if (category != null) {
+			category.addProduct(product);
+		}
+		else {
+			category = createCategory(categoryName);
+			category.addProduct(product);
+		}
+	}
+
+	private Category createCategory(String categoryName) {
+		Category category = new Category(categoryName);
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		pm.currentTransaction().begin();
 		ShoppingList shoppingList = pm.makePersistent(this);
-		shoppingList.products.add(product);
+		//ShoppingList shoppingList = this;
+		category.setShoppingList(shoppingList);
+		shoppingList.categoriesToProducts.add(category);
 		pm.currentTransaction().commit();
 		pm.close();
+		return category;
 	}
 	
-	private String[] getCategories() {
-		Set<String> keySet = categoriesToProducts.keySet();
-		String[] categories = new String[keySet.size()];
-		keySet.toArray(categories);
-		Arrays.sort(categories);
-		return categories;
+	private List<Category> getCategories() {
+		Collections.sort(categoriesToProducts);
+		return categoriesToProducts;
 	}
 
-	public List<Product> getProducts(String category) {
-		return categoriesToProducts.get(category);
+	public List<Product> getProducts(String categoryName) {
+		Category category = getCategory(categoryName);
+		return category.getProducts();
 	}
 	
-	public ArrayList<Product> getProducts() {
-		return products;
+	public void setLanguageDictionary(LanguageDictionary languageDictionary) {
+		this.languageDictionary = languageDictionary;
 	}
+
 	public Map<String, ArrayList<String>> getShoppingList() {
 		Map<String, ArrayList<String>> result = new TreeMap<>();
-		String[] categories = getCategories();
-		for (String category : categories) {
+		List<Category> categories = getCategories();
+		for (Category category : categories) {
 			ArrayList<String> productStrings = new ArrayList<String>();
-			result.put(category, productStrings);
-			List<Product> products = getProducts(category);
+			result.put(category.getCategoryName(), productStrings);
+			List<Product> products = category.getProducts();
 			for (Product product : products) {
 				productStrings.add(product.getIngredient());
 			}			

@@ -12,8 +12,8 @@ import com.wouterpot.makeyourshoppinglist.server.ShoppingListFactory;
 import com.wouterpot.makeyourshoppinglist.server.datastore.Product;
 import com.wouterpot.makeyourshoppinglist.server.datastore.ShoppingList;
 
-public class ShoppingListTest {
-
+public class ShoppingListTest extends DataStoreTestBase {
+	
 	@Test
 	public void getShoppingList() throws IOException {
 		ShoppingListFactory shoppingListFactory = ShoppingListFactory.get();
