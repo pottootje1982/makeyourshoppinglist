@@ -33,7 +33,7 @@ public class Product {
 	@Embedded
 	private ProductInfo productInfo;
 	
-    @Persistent(defaultFetchGroup = "true")
+    @Persistent
     private Category category;
 
 	public Product(String ingredient, ProductInfo productInfo) {

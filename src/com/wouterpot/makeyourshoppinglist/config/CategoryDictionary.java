@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.google.appengine.labs.repackaged.com.google.common.base.Strings;
 import com.wouterpot.makeyourshoppinglist.helpers.RegEx;
 import com.wouterpot.makeyourshoppinglist.helpers.Resource;
@@ -99,7 +97,7 @@ public class CategoryDictionary {
 						return new Product(ingredient, productInfo);
 			}
 		}
-		return !StringUtils.isEmpty(ingredient) ? new Product(ingredient) : null;
+		return !Strings.isNullOrEmpty(ingredient) ? new Product(ingredient) : null;
 	}
 
 
