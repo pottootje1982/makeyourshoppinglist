@@ -112,7 +112,8 @@ public class Ingredient {
 	public void add(Ingredient otherIngredient) {
 		for (Quantity quantity : quantities) {
 			Quantity otherQuantity = otherIngredient.getCompatibleQuantity(quantity);
-			quantity.add(otherQuantity);
+			if (otherQuantity != null)
+				quantity.add(otherQuantity);
 		}
 	}
 
