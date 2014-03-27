@@ -30,15 +30,16 @@ public class Ingredient {
     private String      id;
     
     private static Quantity[] availableQuantities = {
-		new Quantity("volume", new Unit("l", 1000), new Unit("dl", 100), new Unit("cl", 10), new Unit("ml", 1)),
-		new Quantity("weight", new Unit("kg", 1000), new Unit("g", 1)),
-		new Quantity("tbsp"),
-		new Quantity("tsp"),
-		new Quantity("splashes"),
-		new Quantity("drops"),
-		new Quantity("tl"),
-		new Quantity("el"),
+		new Quantity(QuantityType.Volume, new Unit(UnitType.l), new Unit(UnitType.dl), new Unit(UnitType.cl), new Unit(UnitType.ml)),
+		new Quantity(QuantityType.Weight, new Unit(UnitType.kg), new Unit(UnitType.g)),
+		new Quantity(QuantityType.MeasurableQuantity, new Unit(UnitType.tbsp)),
+		new Quantity(QuantityType.MeasurableQuantity, new Unit(UnitType.ts)),
+		new Quantity(QuantityType.MeasurableQuantity, new Unit(UnitType.splashes)),
+		new Quantity(QuantityType.MeasurableQuantity, new Unit(UnitType.drops)),
+		new Quantity(QuantityType.MeasurableQuantity, new Unit(UnitType.tl)),
+		new Quantity(QuantityType.MeasurableQuantity, new Unit(UnitType.el)),
 	};
+    private static Quantity defaultQuantity = new Quantity(QuantityType.Countable);
 	
 	@Persistent(embeddedElement = "true", defaultFetchGroup = "true")
 	private List<Quantity> quantities = new ArrayList<Quantity>();
@@ -46,57 +47,71 @@ public class Ingredient {
 	private String productName;
 
 	public Ingredient(String ingredient) {
-		String[] groups = RegEx.findGroups(ingredient, "^(\\d+[.,]?\\d*)\\s*(\\S*)\\s*(.*)$");
-		double amount;
-		String measure;
-		if (!StringUtils.isEmpty(groups[0])) {
-			amount = Double.parseDouble(groups[0]);
-			if (!StringUtils.isEmpty(groups[1])) {
-				measure = groups[1];
-				Quantity quantity = getAvailableQuantityByUnit(measure);
-				if (quantity == null)
-					quantity = getQuantity(measure);
-				quantity.add(new Unit(measure, amount));
-				if (!StringUtils.isEmpty(groups[2]))
-					productName = groups[2];
-			}
-		}
-		else
-			productName = groups[1] + " " + groups[2];
+		String[] groups = RegEx.findGroups(ingredient, "^(\\d*[.,]?\\d*)\\s*(\\S*)\\s*(.*)$");
 		
+		List<String> productNameParts = new ArrayList<String>();
+		if (!StringUtils.isEmpty(groups[0])) {
+			double amount = Double.parseDouble(groups[0]);
+			UnitType unitType = null;
+			if (!StringUtils.isEmpty(groups[1])) {
+				unitType = UnitType.parse(groups[1]);
+				if (unitType == null)
+					productNameParts.add(groups[1]);
+			}
+			addToQuantity(unitType, amount);
+		}
+		if (!StringUtils.isEmpty(groups[2]))
+			productNameParts.add(groups[2]);
+		productName = StringUtils.join(productNameParts, " ");
+		
+	}
+
+	private void addToQuantity(UnitType unitType, double amount) {
+		Quantity quantity = getAvailableQuantityByUnit(unitType);
+		quantity.add(new Unit(unitType, amount));
+		quantities.add(quantity);	
 	}
 
 	public String getProductName() {
 		return productName;
 	}
 	
-	public Quantity getAvailableQuantityByUnit(String unitId) {
+	public Quantity getAvailableQuantityByUnit(UnitType unitType) {
 		for (Quantity quantity : availableQuantities) {
-			if (quantity.contains(unitId))
-				return quantity;
+			if (quantity.contains(unitType))
+				return new Quantity(quantity);
 		}
-		return null;
+		return new Quantity(defaultQuantity);
 	}
 
-	public Quantity getAvailableQuantityByName(String name) {
-		for (Quantity quantity : availableQuantities) {
-			if (quantity.getName().equals(name))
-				return quantity;
-		}
-		return null;
-	}
-
-	public Quantity getQuantity(String name) {
+	private Quantity getCompatibleQuantity(Quantity otherQuantity) {
 		for (Quantity quantity : quantities) {
-			if (quantity.getName().equals(name))
+			if (quantity.isAddable(otherQuantity))
 				return quantity;
 		}
 		return null;
 	}
+	
+	public Quantity getQuantity(QuantityType quantityType) {
+		for (Quantity quantity : quantities) {
+			if (quantity.getType() == quantityType)
+				return quantity;
+		}
+		return null;
+	}
+
+	public Quantity getQuantity(UnitType unitType) {
+		for (Quantity quantity : quantities) {
+			if (quantity.getUnitType() == unitType)
+				return quantity;
+		}
+		return null;
+	}
+
 
 	public void add(Ingredient otherIngredient) {
 		for (Quantity quantity : quantities) {
-			Quantity otherQuantity = otherIngredient.getQuantity(quantity.getName());
+			Quantity otherQuantity = otherIngredient.getCompatibleQuantity(quantity);
 			quantity.add(otherQuantity);
 		}
 	}

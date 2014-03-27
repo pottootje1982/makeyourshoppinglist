@@ -74,6 +74,12 @@ public class CategoryDictionaryTest {
 	}
 	
 	@Test
+	public void bla() {
+		String[] groups = RegEx.findGroups("can tomatoes", "^(\\d+[.,]?\\d*)\\s*(\\S*)\\s*(.*)$");
+		int length = groups.length;
+	}
+	
+	@Test
 	public void testExcludedProduct() throws URISyntaxException, IOException {
 		String category = getCategory("can tomatoes");
 		assertEquals(Product.DEFAULT_CATEGORY, category);
