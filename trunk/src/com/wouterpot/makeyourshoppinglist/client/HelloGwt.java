@@ -86,7 +86,7 @@ public class HelloGwt implements EntryPoint {
 		greetingService.greetServer(sites.toArray(sitesArray),
 				new AsyncCallback<Map<String, ArrayList<String>>>() {
 					public void onFailure(Throwable caught) {
-						RootPanel.get().add(new Label("Error while trying to contact server..."));
+						RootPanel.get().add(new Label("Error while trying to contact server...\n" + caught.getMessage()));
 					}
 
 					public void onSuccess(Map<String, ArrayList<String>> shoppingList) {
@@ -100,6 +100,7 @@ public class HelloGwt implements EntryPoint {
 							ArrayList<String> products = entry.getValue();
 							for (String product : products) {
 								CheckBox checkBox = new CheckBox(product);
+								checkBox.setTitle(product);
 								verticalPanel.add(checkBox);
 							}				
 						}
@@ -115,8 +116,6 @@ public class HelloGwt implements EntryPoint {
 		buttonPanel.add(hideButton);
 		buttonPanel.add(unhideButton);
 		RootPanel.get().add(buttonPanel);
-
-
 	}
 	
 	@SuppressWarnings("unchecked")

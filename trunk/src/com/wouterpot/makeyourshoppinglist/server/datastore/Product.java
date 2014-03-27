@@ -1,5 +1,8 @@
 package com.wouterpot.makeyourshoppinglist.server.datastore;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.jdo.annotations.Embedded;
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -12,7 +15,6 @@ import javax.jdo.annotations.PrimaryKey;
 import com.wouterpot.makeyourshoppinglist.config.ProductInfo;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
-
 public class Product {
 
 	public static final String DEFAULT_CATEGORY = "supermarket";
@@ -26,18 +28,19 @@ public class Product {
     )
     private String      id;
 
-    @Persistent
-	private String ingredient;
-
-	@NotPersistent
+	@Persistent
 	@Embedded
 	private ProductInfo productInfo;
 	
     @Persistent
     private Category category;
+    
+    @Persistent
+    @Embedded
+    Ingredient ingredient;
 
-	public Product(String ingredient, ProductInfo productInfo) {
-		this.ingredient = ingredient;
+	public Product(String ingredientName, ProductInfo productInfo) {
+		this.ingredient = new Ingredient(ingredientName);
 		this.productInfo = productInfo;
 	}
 
@@ -66,10 +69,6 @@ public class Product {
 		return true;
 	}
 
-	public String getIngredient() {
-		return ingredient;		
-	}
-
 	public String getCategoryName() {
 		return productInfo != null ? productInfo.getCategory() : DEFAULT_CATEGORY;
 	}
@@ -80,8 +79,10 @@ public class Product {
 
 	@Override
 	public String toString() {
-		return "Product [ingredient=" + ingredient + ", productInfo="
-				+ productInfo + "]";
+		return ingredient.toString();
 	}
 
+	public void add(Product product) {
+		ingredient.add(product.ingredient);
+	}	
 }

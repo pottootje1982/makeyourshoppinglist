@@ -20,6 +20,10 @@ public class ProductInfo {
 		this.isCommon = isCommon;
 	}
 
+	public ProductInfo(String productKey) {
+		this(productKey, null, false, false);
+	}
+
 	public String getProductKey() {
 		return productKey;
 	}
