@@ -81,13 +81,10 @@ public class ShoppingList {
 		String categoryName = product.getCategoryName();
 		Category category = getCategory(categoryName);
 		product.setCategory(category);
-		if (category != null) {
-			//category.addProduct(product);
-		}
-		else {
+		if (category == null) {
 			category = createCategory(categoryName);
-			//category.addProduct(product);
 		}
+		//category.addProduct(product);
 	}
 
 	
@@ -130,7 +127,6 @@ public class ShoppingList {
 		for (Category category : categories) {
 			ArrayList<String> productStrings = new ArrayList<String>();
 			result.put(category.getCategoryName(), productStrings);
-			category.retrieve();
 			List<Product> products = category.getProducts();			
 			for (Product product : products) {
 				productStrings.add(product.getIngredient());
