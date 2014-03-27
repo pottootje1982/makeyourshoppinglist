@@ -112,7 +112,7 @@ public class ShoppingList {
 			result.put(category.getCategoryName(), productStrings);
 			List<Product> products = category.getProducts();			
 			for (Product product : products) {
-				productStrings.add(product.getIngredient());
+				productStrings.add(product.toString());
 			}			
 		}
 		return result;

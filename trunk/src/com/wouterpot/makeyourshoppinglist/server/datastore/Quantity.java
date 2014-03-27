@@ -4,65 +4,67 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.jdo.annotations.Extension;
-import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
-import org.apache.commons.lang3.ArrayUtils;
+import org.eclipse.jetty.webapp.FragmentDescriptor.OtherType;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
 public class Quantity {
 	
     @PrimaryKey
-	private String name;
+	private QuantityType type;
 
     @Persistent(embeddedElement = "true", defaultFetchGroup = "true")
-	private Unit[] units;
+	private ArrayList<Unit> units = new ArrayList<Unit>();
 
 	private Unit baseUnit;
 
-	public Quantity(String name, Unit... units) {
-		this.name = name;
-		this.units = units;
-		baseUnit = units.length > 0 ? units[0] : null;
-		for (int i = 0; i < units.length; i++) {
-			units[i] = new Unit(units[i]);
-			if (units[i].getFactor() < baseUnit.getFactor())
-				baseUnit = units[i];
-		}
+	public Quantity(QuantityType type, Unit... units) {
+		this(type, Arrays.asList(units));
 	}
 	
-	public Quantity(Quantity other) {
-		this(other.name, other.units);
+	public Quantity(QuantityType type, List<Unit> units) {
+		this.type = type;
+		baseUnit = units.size() > 0 ? units.get(0) : null;
+		for (Unit unit : units) {
+			Unit newUnit = new Unit(unit);
+			this.units.add(newUnit);
+			if (newUnit.getFactor() < baseUnit.getFactor())
+				baseUnit = newUnit;
+		}
 	}
 
-	public String getName() {
-		return name;
+	public Quantity(Quantity other) {
+		this(other.type, other.units);
+	}
+
+	public QuantityType getType() {
+		return type;
 	}
 
 	public void add(Quantity quantity) {
-		for (int i = 0; i < units.length; i++) {
-			units[i] = units[i].add(quantity.units[i]);
+		for (int i = 0; i < units.size(); i++) {
+			units.set(i, units.get(i).add(quantity.units.get(i)));
 		}
 	}
 	
-	public boolean contains(String unitId) {
-		Unit unit = getUnit(unitId);
+	public boolean contains(UnitType unitType) {
+		Unit unit = getUnit(unitType);
 		return unit != null;
 	}
 
-	private Unit getUnit(String unitId) {
-		int index = getUnitIndex(unitId);
-		return index != -1 ? units[index] : null; 
+	private Unit getUnit(UnitType unitType) {
+		int index = getUnitIndex(unitType);
+		return index != -1 ? units.get(index) : null; 
 	}
 
-	private int getUnitIndex(String unitId) {
+	private int getUnitIndex(UnitType unitType) {
 		int index = 0;
 		for	(Unit unit : units) {
-			if (unit.getId().equals(unitId))
+			if (unit.getUnitType().equals(unitType))
 				return index;
 			index++;
 		}
@@ -70,9 +72,11 @@ public class Quantity {
 	}
 
 	public void add(Unit otherUnit) {
-		int unitIndex = getUnitIndex(otherUnit.getId());
+		int unitIndex = getUnitIndex(otherUnit.getUnitType());
 		if (unitIndex != -1)
-			units[unitIndex] = units[unitIndex].add(otherUnit);
+			units.set(unitIndex, units.get(unitIndex).add(otherUnit));
+		else
+			units.add(otherUnit);
 	}
 	
 	@Override
@@ -87,5 +91,16 @@ public class Quantity {
 					added.add(unit);
 		}
 		return added != null ? added.toString() : "";
+	}
+
+	public UnitType getUnitType() {
+		if (units.size() == 1) {
+			return units.get(0).getUnitType();
+		}
+		return null;
+	}
+
+	public boolean isAddable(Quantity otherQuantity) {
+		return type == otherQuantity.type && getUnitType() == otherQuantity.getUnitType();
 	}
 }
