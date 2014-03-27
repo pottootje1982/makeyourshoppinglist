@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.google.appengine.labs.repackaged.com.google.common.base.Strings;
 import com.wouterpot.makeyourshoppinglist.helpers.RegEx;
 import com.wouterpot.makeyourshoppinglist.helpers.Resource;
@@ -86,6 +88,7 @@ public class CategoryDictionary {
 
 	public Product getProduct(String ingredient) {
 		ingredient = RegEx.escapeStrangeChars(ingredient);
+		ingredient = ingredient.trim();
 		for (String category : categoriesToProductInfos.keySet()) {
 			ArrayList<ProductInfo> productInfos = categoriesToProductInfos.get(category);
 			for (ProductInfo productInfo : productInfos) {
@@ -96,7 +99,7 @@ public class CategoryDictionary {
 						return new Product(ingredient, productInfo);
 			}
 		}
-		return new Product(ingredient);
+		return !StringUtils.isEmpty(ingredient) ? new Product(ingredient) : null;
 	}
 
 

@@ -35,11 +35,23 @@ public class CategoryDictionaryTest {
 		return product != null ? product.getCategoryName() : null;
 	}
 	
+	// Test whether [exclude] isn't returned as greengrocer (because this string is present in that file),
+	// but the default category
 	@Test
 	public void testGetExcludeString()
 	{
 		String category = getCategory("[exclude]");
-		assertNull(category);
+		assertEquals(Product.DEFAULT_CATEGORY, category);
+		category = getCategory("[EXCLUDE]");
+		assertEquals(Product.DEFAULT_CATEGORY, category);
+	}
+
+	// Test whether #herbs isn't returned as greengrocer (because this string is present in that file),
+	// but the default category
+	@Test
+	public void testGetCategoryComment() {
+		String category = getCategory("#herbs");
+		assertEquals(Product.DEFAULT_CATEGORY, category);
 	}
 
 	@Test
@@ -64,7 +76,7 @@ public class CategoryDictionaryTest {
 	@Test
 	public void testExcludedProduct() throws URISyntaxException, IOException {
 		String category = getCategory("can tomatoes");
-		assertNull(category);
+		assertEquals(Product.DEFAULT_CATEGORY, category);
 	}
 	
 	@Test
@@ -78,9 +90,4 @@ public class CategoryDictionaryTest {
 		assertEquals("baker", category);
 	}
 		
-	@Test
-	public void testGetCategoryComment() {
-		String category = getCategory("#herbs");
-		assertNull(category);
-	}
 }
