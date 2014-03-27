@@ -35,7 +35,7 @@ public class Category implements Comparable<Category> {
     @Element(dependent = "true")
 	private List<Product> products = new ArrayList<Product>();
 
-    @Persistent(defaultFetchGroup = "true")
+    @Persistent
 	private ShoppingList shoppingList;
 	
 	public Category(String categoryName) {
