@@ -24,7 +24,7 @@ public class Unit {
 	}
 
 	public int getFactor() {
-		return unitType.getFactor();
+		return unitType != null ? unitType.getFactor() : 1;
 	}
 
 	public double getAmount() {

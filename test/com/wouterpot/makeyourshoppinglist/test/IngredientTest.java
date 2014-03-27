@@ -7,6 +7,7 @@ import org.junit.Test;
 import com.wouterpot.makeyourshoppinglist.server.datastore.Ingredient;
 import com.wouterpot.makeyourshoppinglist.server.datastore.Quantity;
 import com.wouterpot.makeyourshoppinglist.server.datastore.QuantityType;
+import com.wouterpot.makeyourshoppinglist.server.datastore.Unit;
 import com.wouterpot.makeyourshoppinglist.server.datastore.UnitType;
 
 public class IngredientTest {
@@ -65,5 +66,22 @@ public class IngredientTest {
 		Quantity quantity = ingredient.getQuantity(QuantityType.Countable);
 		assertEquals("2", quantity.toString());
 		assertEquals("gele paprikas", ingredient.getProductName());
+	}
+	
+	
+	@Test
+	public void testAddSameType() {
+		Ingredient ingredient1 = new Ingredient("2 gele paprikas");
+		Ingredient ingredient2 = new Ingredient("3 gele paprikas");
+		ingredient1.add(ingredient2);
+		assertEquals("5 gele paprikas", ingredient1.toString());
+	}
+	
+	@Test
+	public void testAddDifferentType() {
+		Ingredient ingredient1 = new Ingredient("2 el olie");
+		Ingredient ingredient2 = new Ingredient("20 ml olie");
+		ingredient1.add(ingredient2);
+		assertEquals("2 el olie + 20 ml olie", ingredient1.toString());
 	}
 }

@@ -28,7 +28,7 @@ public class QuantityTest {
 	}
 	
 	@Test
-	public void testClone() throws CloneNotSupportedException {
+	public void testClone() {
 		Quantity quantity = new Quantity(volume);
 		assertTrue(quantity.contains(UnitType.l));
 		assertTrue(quantity.contains(UnitType.dl));
@@ -37,7 +37,7 @@ public class QuantityTest {
 	}
 
 	@Test
-	public void testAdd() throws CloneNotSupportedException {
+	public void testAdd() {
 		Quantity quantity = new Quantity(volume);
 		quantity.add(new Unit(UnitType.l, 3));
 		assertEquals("3l", quantity.toString());

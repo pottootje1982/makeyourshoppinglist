@@ -1,5 +1,9 @@
 package com.wouterpot.makeyourshoppinglist.server.datastore;
 
+import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.PersistenceCapable;
+
+@PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
 public enum QuantityType {
 	Volume, Weight, Countable, MeasurableQuantity;
 
