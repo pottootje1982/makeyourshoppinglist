@@ -15,7 +15,7 @@ import com.wouterpot.makeyourshoppinglist.config.ProductInfo;
 
 public class Product {
 
-	private static final String DEFAULT_CATEGORY = "supermarket";
+	public static final String DEFAULT_CATEGORY = "supermarket";
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -72,6 +72,10 @@ public class Product {
 
 	public String getCategoryName() {
 		return productInfo != null ? productInfo.getCategory() : DEFAULT_CATEGORY;
+	}
+	
+	public ProductInfo getProductInfo() {
+		return productInfo;
 	}
 
 	@Override
