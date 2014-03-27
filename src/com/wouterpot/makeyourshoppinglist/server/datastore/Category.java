@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.jdo.PersistenceManager;
+import javax.jdo.Query;
 import javax.jdo.annotations.Element;
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -32,12 +33,28 @@ public class Category implements Comparable<Category> {
 	
     @Persistent(mappedBy = "category")
     @Element(dependent = "true")
-	private List<Product> products;
+	private List<Product> products = new ArrayList<Product>();
 
     @Persistent(defaultFetchGroup = "true")
 	private ShoppingList shoppingList;
 	
+	public Category(String categoryName) {
+		this.categoryName = categoryName;
+	}
+	
 	public List<Product> getProducts() {
+		if (products == null) {
+			// Products can be null due to lazy evaluation
+			PersistenceManager pm = PMF.get().getPersistenceManager();
+			pm.currentTransaction().begin();
+			Category category = pm.getObjectById(Category.class, id);
+			if (category != null) {
+				pm.retrieve(category);
+				products = category.products;
+			}
+			pm.currentTransaction().commit();
+			pm.close();
+		}
 		return products;
 	}
 
@@ -49,11 +66,6 @@ public class Category implements Comparable<Category> {
 		this.shoppingList = shoppingList;
 	}
 
-	public Category(String categoryName) {
-		this.categoryName = categoryName;
-		products = new ArrayList<Product>();
-	}
-	
 	public void addProduct(Product product) {
 		product.setCategory(this);
 		products.add(product);
@@ -107,15 +119,5 @@ public class Category implements Comparable<Category> {
 
 	public void clearProducts() {
 		products.clear();		
-	}
-
-	public void retrieve() {
-		PersistenceManager pm = PMF.get().getPersistenceManager();
-		pm.currentTransaction().begin();
-		Category category = pm.makePersistent(this);
-		pm.retrieve(category);
-		pm.retrieveAll(products);
-		pm.currentTransaction().commit();
-		pm.close();
 	}
 }
