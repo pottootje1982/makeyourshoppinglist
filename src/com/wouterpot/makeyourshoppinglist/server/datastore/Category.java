@@ -17,6 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.wouterpot.makeyourshoppinglist.server.PMF;
 
+@SuppressWarnings("unused")
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
 public class Category implements Comparable<Category> {
     @PrimaryKey

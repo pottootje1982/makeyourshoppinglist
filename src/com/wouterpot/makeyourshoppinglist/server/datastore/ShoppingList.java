@@ -47,25 +47,29 @@ public class ShoppingList {
 			List<Product> products = new ArrayList<Product>();
 			for (String ingredient : ingredients) {
 				Product product = categoryDictionary.getProduct(ingredient);
-				addProduct(product);
+				Category category = getOrCreateCategory(product.getCategoryName());
+				product.setCategory(category);
 				products.add(product);
 			}
 			sites.add(recipeId);
-			
-			PersistenceManager pm = PMF.get().getPersistenceManager();
-			pm.currentTransaction().begin();
-			ShoppingList shoppingList = pm.makePersistent(this);
-			for (Category category : categoriesToProducts) {
-				shoppingList.categoriesToProducts.add(category);
-			}
-			for (Product product : products) {
-				Category category = getCategory(product.getCategoryName());
-				category = pm.makePersistent(category);
-				category.addProduct(product);			
-			}
-			pm.currentTransaction().commit();
-			pm.close();
+			persistCategoriesToProducts(products);
 		}
+	}
+
+	private void persistCategoriesToProducts(List<Product> products) {
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		pm.currentTransaction().begin();
+		ShoppingList shoppingList = pm.makePersistent(this);
+		for (Category category : categoriesToProducts) {
+			shoppingList.categoriesToProducts.add(category);
+		}
+		for (Product product : products) {
+			Category category = getCategory(product.getCategoryName());
+			category = pm.makePersistent(category);
+			category.addProduct(product);			
+		}
+		pm.currentTransaction().commit();
+		pm.close();
 	}
 	
 	private Category getCategory(String categoryName) {
@@ -76,36 +80,16 @@ public class ShoppingList {
 		return null;
 	}
 
-	private void addProduct(Product product) {
-		String categoryName = product.getCategoryName();
+	private Category getOrCreateCategory(String categoryName) {
 		Category category = getCategory(categoryName);
-		product.setCategory(category);
 		if (category == null) {
-			category = createCategory(categoryName);
+			category = new Category(categoryName);
+			category.setShoppingList(this);
+			categoriesToProducts.add(category);
 		}
-		//category.addProduct(product);
+		return category;
 	}
 
-	
-	private Category createCategory(String categoryName) {
-		Category category = new Category(categoryName);
-		category.setShoppingList(this);
-		categoriesToProducts.add(category);
-		return category;
-	}
-	
-/*	private Category createCategory(String categoryName) {
-		Category category = new Category(categoryName);
-		category.setShoppingList(this);
-		PersistenceManager pm = PMF.get().getPersistenceManager();
-		pm.currentTransaction().begin();
-		ShoppingList shoppingList = pm.makePersistent(this);
-		shoppingList.categoriesToProducts.add(category);
-		pm.currentTransaction().commit();
-		pm.close();
-		return category;
-	}*/
-	
 	public List<Category> getCategories() {
 		Collections.sort(categoriesToProducts);
 		return categoriesToProducts;

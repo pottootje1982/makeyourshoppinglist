@@ -3,9 +3,6 @@ package com.wouterpot.makeyourshoppinglist.config;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.PrimaryKey;
-
 import org.datanucleus.util.StringUtils;
 import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Element;
@@ -14,7 +11,6 @@ import org.jsoup.select.Elements;
 import com.wouterpot.makeyourshoppinglist.helpers.Resource;
 import com.wouterpot.makeyourshoppinglist.server.IngredientsList;
 
-@PersistenceCapable
 public class SiteInfo
 {
 	private String language;
@@ -24,7 +20,6 @@ public class SiteInfo
 	private String childTagName;
 	private String childClassName;
 	
-	@PrimaryKey
 	private String url;
 
 	private static String getAttribute(Attributes attributes, String name) {
