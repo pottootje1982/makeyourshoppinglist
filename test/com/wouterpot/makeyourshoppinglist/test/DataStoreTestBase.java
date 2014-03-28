@@ -16,7 +16,7 @@ public class DataStoreTestBase {
 
     @Before
     public void setUp() {
-        ShoppingListFactory.get().createNewShoppingList();
+        //ShoppingListFactory.get().createNewShoppingList();
     }
     
     @After

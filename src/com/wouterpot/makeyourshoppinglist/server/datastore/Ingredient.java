@@ -3,9 +3,11 @@ package com.wouterpot.makeyourshoppinglist.server.datastore;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jdo.annotations.Element;
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
@@ -36,9 +38,9 @@ public class Ingredient {
 		new Unit(UnitType.tl),
 		new Unit(UnitType.el),
 	};
-    private static Unit defaultUnit = new Unit(QuantityType.Countable);
 	
-	@Persistent(embeddedElement = "true", defaultFetchGroup = "true")
+	@NotPersistent//(mappedBy = "parent")
+    @Element(dependent = "true")
 	private List<Unit> units = new ArrayList<Unit>();
 	@Persistent
 	private String productName;
@@ -47,26 +49,35 @@ public class Ingredient {
 		String[] groups = RegEx.findGroups(ingredient, "^(\\d*[.,]?\\d*)\\s*(\\S*)\\s*(.*)$");
 		
 		List<String> productNameParts = new ArrayList<String>();
+		UnitType unitType = null;
+		double amount = 0;
 		if (!StringUtils.isEmpty(groups[0])) {
-			double amount = Double.parseDouble(groups[0]);
-			UnitType unitType = null;
+			amount = Double.parseDouble(groups[0]);
 			if (!StringUtils.isEmpty(groups[1])) {
 				unitType = UnitType.parse(groups[1]);
 				if (unitType == null) {
 					productNameParts.add(groups[1]);
 				}
 			}
-			addToQuantity(unitType != null ? unitType : UnitType.number, amount);
+			unitType = unitType != null ? unitType : UnitType.number;
+		}
+		else {
+			if (!StringUtils.isEmpty(groups[1]))
+				productNameParts.add(groups[1]);
+			unitType = UnitType.NaN;
 		}
 		if (!StringUtils.isEmpty(groups[2]))
 			productNameParts.add(groups[2]);
+		addUnit(unitType, amount);
 		productName = StringUtils.join(productNameParts, " ");
 		
 	}
 
-	private void addToQuantity(UnitType unitType, double amount) {
+	private void addUnit(UnitType unitType, double amount) {
 		Unit unit = getAvailableUnit(unitType);
-		units.add(new Unit(unit.getQuantityType(), unitType, amount));	
+		Unit newUnit = new Unit(unit.getQuantityType(), unitType, amount);
+		newUnit.setParent(this);
+		getUnits().add(newUnit);	
 	}
 
 	public String getProductName() {
@@ -78,12 +89,12 @@ public class Ingredient {
 			if (unit.getUnitType() == unitType)
 				return new Unit(unit);
 		}
-		return new Unit(defaultUnit);
+		return new Unit(unitType);
 	}
 
 	private int getCompatibleUnit(Unit otherUnit) {
 		int unitIndex = 0;
-		for (Unit unit : units) {
+		for (Unit unit : getUnits()) {
 			if (unit.isAddable(otherUnit))
 				return unitIndex;
 			unitIndex++;
@@ -92,7 +103,7 @@ public class Ingredient {
 	}
 	
 	public Unit getUnit(UnitType unitType) {
-		for (Unit unit : units) {
+		for (Unit unit : getUnits()) {
 			if (unit.getUnitType() == unitType)
 				return unit;
 		}
@@ -100,14 +111,14 @@ public class Ingredient {
 	}
 
 	public Unit getUnit(QuantityType quantityType) {
-		for (Unit unit : units) {
+		for (Unit unit : getUnits()) {
 			if (unit.getQuantityType() == quantityType)
 				return unit;
 		}
 		return null;
 	}
 
-	public List<Unit> getUnits() {
+	private List<Unit> getUnits() {
 		return units;
 	}
 
@@ -115,15 +126,19 @@ public class Ingredient {
 		for (Unit otherUnit : otherIngredient.getUnits()) {
 			int unitIndex = getCompatibleUnit(otherUnit);
 			if (unitIndex != -1)
-				units.set(unitIndex, units.get(unitIndex).add(otherUnit));
+				getUnits().set(unitIndex, getUnits().get(unitIndex).add(otherUnit));
 			else
-				units.add(otherUnit);
+				getUnits().add(otherUnit);
 		}
 	}
 
 	@Override
 	public String toString() {
-		return StringUtils.join(units, " + ") + " " + productName.toString();
+		String unitsString = StringUtils.join(getUnits(), " + ");
+		if (StringUtils.isEmpty(unitsString))
+			return productName;
+		else
+			return unitsString + " " + productName.toString();
 	}
 
 	@Override

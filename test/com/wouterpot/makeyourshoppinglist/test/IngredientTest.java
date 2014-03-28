@@ -68,6 +68,15 @@ public class IngredientTest {
 	}
 	
 	@Test
+	public void noQuantity() {
+		Ingredient ingredient = new Ingredient("handful flat-leaf parsley, roughly chopped");
+		Unit unit = ingredient.getUnit(QuantityType.Uncountable);
+		assertEquals("", unit.toString());
+		assertEquals("handful flat-leaf parsley, roughly chopped", ingredient.getProductName());
+		assertEquals("handful flat-leaf parsley, roughly chopped", ingredient.toString());
+	}
+	
+	@Test
 	public void testAddSameType() {
 		Ingredient ingredient1 = new Ingredient("2 gele paprikas");
 		Ingredient ingredient2 = new Ingredient("3 gele paprikas");
