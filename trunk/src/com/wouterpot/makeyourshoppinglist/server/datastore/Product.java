@@ -36,14 +36,9 @@ public class Product {
     @Embedded
     private Ingredient ingredient;
 
-	public Product(Category category, ProductInfo productInfo) {
-		this.parent = category;
+	public Product(ProductInfo productInfo) {
 		this.ingredient = null;
 		this.productInfo = productInfo;
-	}
-
-	public Product(ProductInfo productInfo) {
-		this(null, productInfo);
 	}
 	
 	@Override
@@ -81,7 +76,6 @@ public class Product {
 	}
 
 	public void setIngredient(Ingredient ingredient) {
-		ingredient = ingredient;
-		ingredient.addUnit();
+		this.ingredient = ingredient;
 	}	
 }

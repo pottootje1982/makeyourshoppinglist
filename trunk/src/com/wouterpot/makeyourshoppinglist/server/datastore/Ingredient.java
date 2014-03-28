@@ -3,8 +3,6 @@ package com.wouterpot.makeyourshoppinglist.server.datastore;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.jdo.annotations.Embedded;
-import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
@@ -38,27 +36,17 @@ public class Ingredient {
 
 	@Persistent
 	private Category parentEntity;
-	
-	@NotPersistent
-	private double parsedAmount;
-	
-	@NotPersistent
-	private UnitType parsedUnitType;
 
-	public Ingredient() {
-		this(null);
-	}
-
-	public Ingredient(Category category) {
-		this.parentEntity = category;
+	public Ingredient(String ingredient) {
+		parseIngredient(ingredient);
 	}
 	
-	public void parseIngredient(String ingredient) {
+	private void parseIngredient(String ingredient) {
 		String[] groups = RegEx.findGroups(ingredient, "^(\\d*[.,]?\\d*)\\s*(\\S*)\\s*(.*)$");
 		
 		List<String> productNameParts = new ArrayList<String>();
-		parsedUnitType = null;
-		parsedAmount = 0;
+		UnitType parsedUnitType = null;
+		double parsedAmount = 0;
 		if (!Strings.isNullOrEmpty(groups[0])) {
 			parsedAmount = Double.parseDouble(groups[0]);
 			if (!Strings.isNullOrEmpty(groups[1])) {
@@ -77,11 +65,12 @@ public class Ingredient {
 		if (!Strings.isNullOrEmpty(groups[2]))
 			productNameParts.add(groups[2]);
 		productName = Joiner.on(" ").join(productNameParts);
+		addUnit(parsedUnitType, parsedAmount);
 	}
 
-	void addUnit() {
+	private void addUnit(UnitType parsedUnitType, double parsedAmount) {
 		Unit unit = getAvailableUnit(parsedUnitType);
-		Unit newUnit = new Unit(null, unit.getQuantityType(), parsedUnitType, parsedAmount);
+		Unit newUnit = new Unit(unit.getQuantityType(), parsedUnitType, parsedAmount);
 		getUnits().add(newUnit);	
 	}
 
