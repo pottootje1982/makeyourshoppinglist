@@ -40,29 +40,21 @@ public class Unit implements Serializable {
        })
 	private QuantityType quantityType;
 
-    @Persistent
-	private Product parent;
-
 	public Unit(UnitType unitType) {
 		this(unitType == UnitType.number ? QuantityType.Countable : QuantityType.Uncountable, unitType);
 	}
 	
 	public Unit(Unit other) {
-		this(null, other.quantityType, other.unitType, other.amount);
+		this(other.quantityType, other.unitType, other.amount);
 	}
 	
 	public Unit(QuantityType quantityType, UnitType unitType) {
-		this(null, quantityType, unitType, 0);
+		this(quantityType, unitType, 0);
 	}
 	
 	public Unit(QuantityType quantityType, UnitType unitType, double amount) {
-		this(null, quantityType, unitType, amount);
-	}
-
-	public Unit(Product parentEntity, QuantityType quantityType, UnitType unitType, double amount) {
 		if (quantityType == null) throw new IllegalArgumentException("Quantity type should be defined!");
 		if (unitType == null) throw new IllegalArgumentException("Unit type should be defined!");
-		this.parent = parentEntity;
 		this.quantityType = quantityType;
 		this.unitType = unitType;
 		this.amount = amount;

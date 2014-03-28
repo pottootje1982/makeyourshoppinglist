@@ -64,10 +64,9 @@ public class ShoppingList {
 		ProductInfo productInfo = categoryDictionary.getProductInfo(ingredientString);
 		Category category = getOrCreateCategory(productInfo != null ? productInfo.getCategory() : Product.DEFAULT_CATEGORY);
 		
-		Product product = new Product(null, productInfo);
-		Ingredient ingredient = new Ingredient(null);
+		Product product = new Product(productInfo);
+		Ingredient ingredient = new Ingredient(ingredientString);
 		category.addProduct(product);
-		ingredient.parseIngredient(ingredientString);
 		product.setIngredient(ingredient);
 	}
 	
