@@ -10,12 +10,17 @@ public enum UnitType {
 	tbsp,
 	ts,
 	el,
-	tl, splashes, drops;
+	tl, 
+	splashes, 
+	drops,
+	number;
 	
+	private String value;
 	private int factor;
 	
 	UnitType() {
 		this(0);
+		value = toString();
 	}
 	
 	UnitType(int factor) {
@@ -24,6 +29,10 @@ public enum UnitType {
 
 	public int getFactor() {
 		return factor;
+	}
+	
+	public String getValue() {
+		return value;
 	}
 	
 	public static UnitType parse(String value) {
@@ -44,6 +53,7 @@ public enum UnitType {
 		case "el": return el;
 		case "theelepel":
 		case "tl": return tl;
+		case "number": return number;
 		}
 		return null;
 	}
