@@ -18,30 +18,28 @@ public class Unit {
 	private UnitType unitType;
     @Persistent
 	private double amount;
-
-	public UnitType getUnitType() {
-		return unitType;
-	}
-
-	public int getFactor() {
-		return unitType != null ? unitType.getFactor() : 1;
-	}
-
-	public double getAmount() {
-		return amount;
-	}
+	private QuantityType quantityType;
 
 	public Unit(UnitType unitType) {
-		this(unitType, 0);
+		this(null, unitType);
 	}
 	
 	public Unit(Unit other) {
-		this(other.unitType, other.amount);
+		this(other.quantityType, other.unitType, other.amount);
 	}
 	
-	public Unit(UnitType unitType, double amount) {
+	public Unit(QuantityType quantityType, UnitType unitType) {
+		this(quantityType, unitType, 0);
+	}
+	
+	public Unit(QuantityType quantityType, UnitType unitType, double amount) {
+		this.quantityType = quantityType;
 		this.unitType = unitType;
 		this.amount = amount;
+	}
+
+	public Unit(QuantityType countable) {
+		this(countable, null);
 	}
 
 	public Unit add(Unit other) {
@@ -71,5 +69,26 @@ public class Unit {
 	public String toString() {
 		DecimalFormat df = new DecimalFormat("#.#");
 		return String.format("%s%s", df.format(amount), unitType != null ? unitType : "");
+	}
+	
+	public UnitType getUnitType() {
+		return unitType;
+	}
+
+	public int getFactor() {
+		return unitType != null ? unitType.getFactor() : 1;
+	}
+
+	public double getAmount() {
+		return amount;
+	}
+	
+	public QuantityType getQuantityType() {
+		return quantityType;
+	}
+
+	public boolean isAddable(Unit otherUnit) {
+		return (quantityType != null && quantityType == otherUnit.quantityType) 
+				|| unitType == otherUnit.unitType;
 	}
 }

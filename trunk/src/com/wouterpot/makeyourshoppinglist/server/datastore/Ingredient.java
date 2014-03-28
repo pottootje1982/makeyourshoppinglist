@@ -29,20 +29,20 @@ public class Ingredient {
     )
     private String      id;
     
-    private static Quantity[] availableQuantities = {
-		new Quantity(QuantityType.Volume, new Unit(UnitType.l), new Unit(UnitType.dl), new Unit(UnitType.cl), new Unit(UnitType.ml)),
-		new Quantity(QuantityType.Weight, new Unit(UnitType.kg), new Unit(UnitType.g)),
-		new Quantity(QuantityType.MeasurableQuantity, new Unit(UnitType.tbsp)),
-		new Quantity(QuantityType.MeasurableQuantity, new Unit(UnitType.ts)),
-		new Quantity(QuantityType.MeasurableQuantity, new Unit(UnitType.splashes)),
-		new Quantity(QuantityType.MeasurableQuantity, new Unit(UnitType.drops)),
-		new Quantity(QuantityType.MeasurableQuantity, new Unit(UnitType.tl)),
-		new Quantity(QuantityType.MeasurableQuantity, new Unit(UnitType.el)),
+    private static Unit[] availableUnits = {
+		new Unit(QuantityType.Volume, UnitType.l), new Unit(QuantityType.Volume, UnitType.dl), new Unit(QuantityType.Volume, UnitType.cl), new Unit(QuantityType.Volume, UnitType.ml),
+		new Unit(QuantityType.Weight, UnitType.kg), new Unit(QuantityType.Weight, UnitType.g),
+		new Unit(UnitType.tbsp),
+		new Unit(UnitType.ts),
+		new Unit(UnitType.splashes),
+		new Unit(UnitType.drops),
+		new Unit(UnitType.tl),
+		new Unit(UnitType.el),
 	};
-    private static Quantity defaultQuantity = new Quantity(QuantityType.Countable);
+    private static Unit defaultUnit = new Unit(QuantityType.Countable);
 	
 	@Persistent(embeddedElement = "true", defaultFetchGroup = "true")
-	private List<Quantity> quantities = new ArrayList<Quantity>();
+	private List<Unit> units = new ArrayList<Unit>();
 	@Persistent
 	private String productName;
 
@@ -67,65 +67,65 @@ public class Ingredient {
 	}
 
 	private void addToQuantity(UnitType unitType, double amount) {
-		Quantity quantity = getAvailableQuantityByUnit(unitType);
-		quantity.add(new Unit(unitType, amount));
-		quantities.add(quantity);	
+		Unit unit = getAvailableUnit(unitType);
+		units.add(new Unit(unit.getQuantityType(), unitType, amount));	
 	}
 
 	public String getProductName() {
 		return productName;
 	}
 	
-	public Quantity getAvailableQuantityByUnit(UnitType unitType) {
-		for (Quantity quantity : availableQuantities) {
-			if (quantity.contains(unitType))
-				return new Quantity(quantity);
+	public Unit getAvailableUnit(UnitType unitType) {
+		for (Unit unit : availableUnits) {
+			if (unit.getUnitType() == unitType)
+				return new Unit(unit);
 		}
-		return new Quantity(defaultQuantity);
+		return new Unit(defaultUnit);
 	}
 
-	private Quantity getCompatibleQuantity(Quantity otherQuantity) {
-		for (Quantity quantity : quantities) {
-			if (quantity.isAddable(otherQuantity))
-				return quantity;
+	private int getCompatibleUnit(Unit otherUnit) {
+		int unitIndex = 0;
+		for (Unit unit : units) {
+			if (unit.isAddable(otherUnit))
+				return unitIndex;
+			unitIndex++;
 		}
-		return null;
+		return -1;
 	}
 	
-	public Quantity getQuantity(QuantityType quantityType) {
-		for (Quantity quantity : quantities) {
-			if (quantity.getType() == quantityType)
-				return quantity;
+	public Unit getUnit(UnitType unitType) {
+		for (Unit unit : units) {
+			if (unit.getUnitType() == unitType)
+				return unit;
 		}
 		return null;
 	}
 
-	public Quantity getQuantity(UnitType unitType) {
-		for (Quantity quantity : quantities) {
-			if (quantity.getUnitType() == unitType)
-				return quantity;
+	public Unit getUnit(QuantityType quantityType) {
+		for (Unit unit : units) {
+			if (unit.getQuantityType() == quantityType)
+				return unit;
 		}
 		return null;
 	}
 
-
-	public List<Quantity> getQuantities() {
-		return quantities;
+	public List<Unit> getUnits() {
+		return units;
 	}
 
 	public void add(Ingredient otherIngredient) {
-		for (Quantity otherQuantity : otherIngredient.getQuantities()) {
-			Quantity quantity = getCompatibleQuantity(otherQuantity);
-			if (quantity != null)
-				quantity.add(otherQuantity);
+		for (Unit otherUnit : otherIngredient.getUnits()) {
+			int unitIndex = getCompatibleUnit(otherUnit);
+			if (unitIndex != -1)
+				units.set(unitIndex, units.get(unitIndex).add(otherUnit));
 			else
-				quantities.add(otherQuantity);
+				units.add(otherUnit);
 		}
 	}
 
 	@Override
 	public String toString() {
-		return StringUtils.join(quantities, " + ") + " " + productName.toString();
+		return StringUtils.join(units, " + ") + " " + productName.toString();
 	}
 
 	@Override
