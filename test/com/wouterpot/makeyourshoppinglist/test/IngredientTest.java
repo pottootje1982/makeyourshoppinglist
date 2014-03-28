@@ -82,6 +82,6 @@ public class IngredientTest {
 		Ingredient ingredient1 = new Ingredient("2 el olie");
 		Ingredient ingredient2 = new Ingredient("20 ml olie");
 		ingredient1.add(ingredient2);
-		assertEquals("2 el olie + 20 ml olie", ingredient1.toString());
+		assertEquals("2el + 20ml olie", ingredient1.toString());
 	}
 }

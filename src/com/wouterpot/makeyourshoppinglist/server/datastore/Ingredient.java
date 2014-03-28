@@ -109,11 +109,17 @@ public class Ingredient {
 	}
 
 
+	public List<Quantity> getQuantities() {
+		return quantities;
+	}
+
 	public void add(Ingredient otherIngredient) {
-		for (Quantity quantity : quantities) {
-			Quantity otherQuantity = otherIngredient.getCompatibleQuantity(quantity);
-			if (otherQuantity != null)
+		for (Quantity otherQuantity : otherIngredient.getQuantities()) {
+			Quantity quantity = getCompatibleQuantity(otherQuantity);
+			if (quantity != null)
 				quantity.add(otherQuantity);
+			else
+				quantities.add(otherQuantity);
 		}
 	}
 
