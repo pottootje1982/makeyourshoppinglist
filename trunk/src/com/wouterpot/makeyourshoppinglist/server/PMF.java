@@ -31,34 +31,45 @@ import java.util.List;
 
 import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManager;
-import javax.jdo.PersistenceManagerFactory;
 import javax.jdo.Query;
 
 import com.wouterpot.makeyourshoppinglist.server.datastore.ShoppingList;
 
-public final class PMF {
+public class PMF {
 	
     private static PersistenceManager pmInstance = null;
+	private static boolean testing;
 
     private PMF() {
         throw new UnsupportedOperationException();
     }
 
     public static void open() {
-    	if (pmInstance == null) {
+    	if (pmInstance == null && !testing) {
     		pmInstance = JDOHelper.getPersistenceManagerFactory("transactions-optional").getPersistenceManager();
     		pmInstance.currentTransaction().begin();
     	}
     }
     
+    public static void test(String t) {
+    	
+    }
+
+    // TODO: resolve this nicely with mocking
+    public static void setTesting(boolean testing) {
+		PMF.testing = testing;
+    }
+    
     public static <T> T makePersistent(T obj) {
-    	return pmInstance.makePersistent(obj);
+    	return testing ? obj : pmInstance.makePersistent(obj);
     }
     
     public static void close() {
-    	pmInstance.currentTransaction().commit();
-    	pmInstance.close();
-    	pmInstance = null;
+    	if (!testing) {
+	    	pmInstance.currentTransaction().commit();
+	    	pmInstance.close();
+	    	pmInstance = null;
+    	}
     }
 
 	public static <T> List<T> retrieveAll(Class<T> classType) {

@@ -2,15 +2,39 @@ package com.wouterpot.makeyourshoppinglist.test;
 
 import static org.junit.Assert.*;
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
-
+import org.mockito.Mockito;
+import org.powermock.api.easymock.PowerMock;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import com.wouterpot.makeyourshoppinglist.server.PMF;
 import com.wouterpot.makeyourshoppinglist.server.datastore.Ingredient;
 import com.wouterpot.makeyourshoppinglist.server.datastore.Unit;
 import com.wouterpot.makeyourshoppinglist.server.datastore.QuantityType;
 import com.wouterpot.makeyourshoppinglist.server.datastore.UnitType;
 
-public class IngredientTest {
+//@RunWith(PowerMockRunner.class) // TODO: sort out how this works
+@PrepareForTest(PMF.class)
+public class IngredientTest extends DataStoreTestBase {
 
+	@BeforeClass
+	public static void setup()	{
+		PMF.setTesting(true);
+	}
+	
+	@AfterClass
+	public static void teardown() {
+		PMF.setTesting(false);
+	}
+	
+	// TODO: sort out how this works
+	private void mockPMF() {
+		Ingredient temp = new Ingredient("");
+		PowerMock.mockStatic(PMF.class);
+		Mockito.when(PMF.makePersistent(temp)).thenReturn(temp);
+	}
+	
 	@Test
 	public void quantityNumber() {
 		Ingredient ingredient = new Ingredient("2 el roomboter");

@@ -3,8 +3,6 @@ package com.wouterpot.makeyourshoppinglist.server;
 import java.io.File;
 import java.util.List;
 
-import javax.jdo.PersistenceManager;
-
 import com.wouterpot.makeyourshoppinglist.config.LanguageDictionary;
 import com.wouterpot.makeyourshoppinglist.server.datastore.ShoppingList;
 

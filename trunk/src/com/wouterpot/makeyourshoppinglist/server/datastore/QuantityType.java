@@ -1,8 +1,5 @@
 package com.wouterpot.makeyourshoppinglist.server.datastore;
 
-import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.PersistenceCapable;
-
 public enum QuantityType {
 	Volume, Weight, Countable, Uncountable;
 	

@@ -29,23 +29,20 @@ public class Product {
 	private ProductInfo productInfo;
 	
     @Persistent
-    private Category category;
+    private Category parent;
     
-    @Persistent
+    @Persistent(mappedBy = "product")
     @Embedded
     private Ingredient ingredient;
 
-	public Product(String ingredientName, ProductInfo productInfo) {
-		this.ingredient = new Ingredient(ingredientName);
+	public Product(Category category, String ingredientName, ProductInfo productInfo) {
+		this.parent = category;
+		this.ingredient = new Ingredient(this, ingredientName);
 		this.productInfo = productInfo;
 	}
 
-	public Product(String ingredient) {
-		this(ingredient, null);
-	}
-
-	public void setCategory(Category category) {
-		this.category = category;
+	public Product(String ingredient, ProductInfo productInfo) {
+		this(null, ingredient, productInfo);
 	}
 
 	@Override

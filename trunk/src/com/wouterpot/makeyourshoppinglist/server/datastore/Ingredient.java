@@ -7,16 +7,14 @@ import javax.jdo.annotations.Element;
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.google.gwt.thirdparty.guava.common.base.Joiner;
 import com.google.gwt.thirdparty.guava.common.base.Strings;
 import com.wouterpot.makeyourshoppinglist.helpers.RegEx;
+import com.wouterpot.makeyourshoppinglist.server.PMF;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
 public class Ingredient {
@@ -41,13 +39,22 @@ public class Ingredient {
 		new Unit(UnitType.el),
 	};
 	
-	@NotPersistent//(mappedBy = "parent")
+	@Persistent(mappedBy = "parent")
     @Element(dependent = "true")
 	private List<Unit> units = new ArrayList<Unit>();
+	
 	@Persistent
 	private String productName;
 
+	@Persistent
+	private Product product;
+	
 	public Ingredient(String ingredient) {
+		this(null, ingredient);
+	}
+
+	public Ingredient(Product product, String ingredient) {
+		this.product = product;
 		String[] groups = RegEx.findGroups(ingredient, "^(\\d*[.,]?\\d*)\\s*(\\S*)\\s*(.*)$");
 		
 		List<String> productNameParts = new ArrayList<String>();
@@ -72,14 +79,13 @@ public class Ingredient {
 			productNameParts.add(groups[2]);
 		addUnit(unitType, amount);
 		productName = Joiner.on(" ").join(productNameParts);
-		
 	}
 
 	private void addUnit(UnitType unitType, double amount) {
+		Ingredient ingredient = PMF.makePersistent(this);
 		Unit unit = getAvailableUnit(unitType);
-		Unit newUnit = new Unit(unit.getQuantityType(), unitType, amount);
-		newUnit.setParent(this);
-		getUnits().add(newUnit);	
+		Unit newUnit = new Unit(this, unit.getQuantityType(), unitType, amount);
+		ingredient.getUnits().add(newUnit);	
 	}
 
 	public String getProductName() {
@@ -123,7 +129,7 @@ public class Ingredient {
 	private List<Unit> getUnits() {
 		return units;
 	}
-
+	
 	public void add(Ingredient otherIngredient) {
 		for (Unit otherUnit : otherIngredient.getUnits()) {
 			int unitIndex = getCompatibleUnit(otherUnit);

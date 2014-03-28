@@ -33,12 +33,12 @@ public class Category implements Comparable<Category> {
 	@Persistent
 	private String categoryName;
 	
-    @Persistent(mappedBy = "category")
+    @Persistent(mappedBy = "parent")
     @Element(dependent = "true")
 	private List<Product> products = new ArrayList<Product>();
 
     @Persistent
-	private ShoppingList shoppingList;
+	private ShoppingList parent;
 	
 	public Category(String categoryName) {
 		this.categoryName = categoryName;
@@ -60,14 +60,13 @@ public class Category implements Comparable<Category> {
 		return categoryName;
 	}
 
-	public void setShoppingList(ShoppingList shoppingList) {
-		this.shoppingList = shoppingList;
+	public void setParent(ShoppingList shoppingList) {
+		this.parent = shoppingList;
 	}
 
 	public void addProduct(Product product) {
 		Category category = PMF.makePersistent(this);
-		product.setCategory(category);
-		products.add(product);
+		category.products.add(product);
 	}
 
 	@Override

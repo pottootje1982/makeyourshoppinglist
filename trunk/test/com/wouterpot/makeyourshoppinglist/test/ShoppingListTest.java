@@ -6,13 +6,31 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.wouterpot.makeyourshoppinglist.server.PMF;
 import com.wouterpot.makeyourshoppinglist.server.ShoppingListFactory;
 import com.wouterpot.makeyourshoppinglist.server.datastore.Product;
 import com.wouterpot.makeyourshoppinglist.server.datastore.ShoppingList;
 
 public class ShoppingListTest extends DataStoreTestBase {
+	@BeforeClass
+	public static void beforeClass()	{
+		PMF.setTesting(true);
+	}
+	
+	@AfterClass
+	public static void afterClass() {
+		PMF.setTesting(false);
+	}
+	
+	@Before
+	public void setup()	{
+		ShoppingListFactory.get().createNewShoppingList();
+	}
 	
 	@Test
 	public void getShoppingList() throws IOException {
@@ -24,7 +42,7 @@ public class ShoppingListTest extends DataStoreTestBase {
 		assertEquals(5, shoppingItems.size());
 		assertEquals("3 bospeentjes", shoppingItems.get(0).toString());
 		assertEquals("1 meiknolletje", shoppingItems.get(1).toString());
-		assertEquals("100 gram peultjes", shoppingItems.get(2).toString());
+		assertEquals("100g peultjes", shoppingItems.get(2).toString());
 		assertEquals("1 kleine courgette", shoppingItems.get(3).toString());
 		assertEquals("2 sjalotten, gesnipperd", shoppingItems.get(4).toString());
 	}
@@ -60,7 +78,7 @@ public class ShoppingListTest extends DataStoreTestBase {
 		assertEquals(4, shoppingItems.size());
 		assertEquals("3 eetlepels roomboter", shoppingItems.get(0).toString());
 		// TODO: no good!!
-		assertEquals("125 ml cr�me fra�che", shoppingItems.get(3).toString());
+		assertEquals("125ml cr�me fra�che", shoppingItems.get(3).toString());
 
 	}
 
