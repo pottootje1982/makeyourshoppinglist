@@ -48,13 +48,16 @@ public class Ingredient {
 
 	@Persistent
 	private Product product;
-	
-	public Ingredient(String ingredient) {
-		this(null, ingredient);
+
+	public Ingredient() {
+		this(null);
 	}
 
-	public Ingredient(Product product, String ingredient) {
+	public Ingredient(Product product) {
 		this.product = product;
+	}
+	
+	public void parseIngredient(String ingredient) {
 		String[] groups = RegEx.findGroups(ingredient, "^(\\d*[.,]?\\d*)\\s*(\\S*)\\s*(.*)$");
 		
 		List<String> productNameParts = new ArrayList<String>();
@@ -131,6 +134,8 @@ public class Ingredient {
 	}
 	
 	public void add(Ingredient otherIngredient) {
+		if (productName == null)
+			productName = otherIngredient.productName;
 		for (Unit otherUnit : otherIngredient.getUnits()) {
 			int unitIndex = getCompatibleUnit(otherUnit);
 			if (unitIndex != -1)

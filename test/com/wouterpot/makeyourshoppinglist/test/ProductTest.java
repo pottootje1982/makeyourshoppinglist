@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import com.wouterpot.makeyourshoppinglist.config.ProductInfo;
 import com.wouterpot.makeyourshoppinglist.server.PMF;
+import com.wouterpot.makeyourshoppinglist.server.datastore.Ingredient;
 import com.wouterpot.makeyourshoppinglist.server.datastore.Product;
 
 public class ProductTest {
@@ -21,10 +22,18 @@ public class ProductTest {
 		PMF.setTesting(false);
 	}
 	
+	private Ingredient createIngredient(String ingredientName) {
+		Ingredient ingredient = new Ingredient();
+		ingredient.parseIngredient(ingredientName);
+		return ingredient;
+	}
+	
 	@Test
 	public void testAddProducts() {
-		Product product1 = new Product("2 el olie", new ProductInfo("olie"));
-		Product product2 = new Product("4 el olie", new ProductInfo("olie"));
+		Product product1 = new Product(new ProductInfo("olie"));
+		product1.add(createIngredient("2 el olie"));
+		Product product2 = new Product(new ProductInfo("olie"));
+		product2.add(createIngredient("4 el olie"));
 		product1.add(product2);
 		assertEquals("6el olie", product1.toString());
 	}
