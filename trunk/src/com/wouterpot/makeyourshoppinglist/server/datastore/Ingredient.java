@@ -47,14 +47,14 @@ public class Ingredient {
 	private String productName;
 
 	@Persistent
-	private Product product;
+	private Category parent;
 
 	public Ingredient() {
 		this(null);
 	}
 
-	public Ingredient(Product product) {
-		this.product = product;
+	public Ingredient(Category category) {
+		this.parent = category;
 	}
 	
 	public void parseIngredient(String ingredient) {

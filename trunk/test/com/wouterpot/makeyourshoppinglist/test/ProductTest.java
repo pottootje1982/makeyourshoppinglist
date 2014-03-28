@@ -31,9 +31,9 @@ public class ProductTest {
 	@Test
 	public void testAddProducts() {
 		Product product1 = new Product(new ProductInfo("olie"));
-		product1.add(createIngredient("2 el olie"));
+		product1.setIngredient(createIngredient("2 el olie"));
 		Product product2 = new Product(new ProductInfo("olie"));
-		product2.add(createIngredient("4 el olie"));
+		product2.setIngredient(createIngredient("4 el olie"));
 		product1.add(product2);
 		assertEquals("6el olie", product1.toString());
 	}
