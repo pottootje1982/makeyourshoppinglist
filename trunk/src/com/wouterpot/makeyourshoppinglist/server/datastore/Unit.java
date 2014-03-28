@@ -1,5 +1,6 @@
 package com.wouterpot.makeyourshoppinglist.server.datastore;
 
+import java.io.Serializable;
 import java.text.DecimalFormat;
 
 import javax.jdo.annotations.Extensions;
@@ -10,8 +11,8 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
-@PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
-public class Unit {
+@PersistenceCapable
+public class Unit implements Serializable {
 	
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -40,7 +41,7 @@ public class Unit {
 	private QuantityType quantityType;
 
     @Persistent
-	private Ingredient parent;
+	private Product parent;
 
 	public Unit(UnitType unitType) {
 		this(unitType == UnitType.number ? QuantityType.Countable : QuantityType.Uncountable, unitType);
@@ -58,9 +59,10 @@ public class Unit {
 		this(null, quantityType, unitType, amount);
 	}
 
-	public Unit(Ingredient ingredient, QuantityType quantityType, UnitType unitType, double amount) {
+	public Unit(Product parentEntity, QuantityType quantityType, UnitType unitType, double amount) {
 		if (quantityType == null) throw new IllegalArgumentException("Quantity type should be defined!");
 		if (unitType == null) throw new IllegalArgumentException("Unit type should be defined!");
+		this.parent = parentEntity;
 		this.quantityType = quantityType;
 		this.unitType = unitType;
 		this.amount = amount;

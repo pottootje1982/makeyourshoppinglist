@@ -18,8 +18,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.google.gwt.thirdparty.guava.common.base.Joiner;
 import com.wouterpot.makeyourshoppinglist.server.PMF;
 
-@SuppressWarnings("unused")
-@PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
+@PersistenceCapable
 public class Category implements Comparable<Category> {
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -34,7 +33,6 @@ public class Category implements Comparable<Category> {
 	private String categoryName;
 	
     @Persistent(mappedBy = "parent")
-    @Element(dependent = "true")
 	private List<Product> products = new ArrayList<Product>();
 
     @Persistent
@@ -65,8 +63,7 @@ public class Category implements Comparable<Category> {
 	}
 
 	public void addProduct(Product product) {
-		Category category = PMF.makePersistent(this);
-		category.products.add(product);
+		products.add(product);
 	}
 
 	@Override

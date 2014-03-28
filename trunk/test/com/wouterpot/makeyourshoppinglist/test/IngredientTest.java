@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.mockito.Mockito;
 import org.powermock.api.easymock.PowerMock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import com.wouterpot.makeyourshoppinglist.server.PMF;
@@ -32,7 +31,7 @@ public class IngredientTest extends DataStoreTestBase {
 	private void mockPMF() {
 		Ingredient temp = new Ingredient();
 		PowerMock.mockStatic(PMF.class);
-		Mockito.when(PMF.makePersistent(temp)).thenReturn(temp);
+		//Mockito.when(PMF.makePersistent(temp)).thenReturn(temp);
 	}
 	
 	private Ingredient createIngredient(String ingredientName) {
@@ -80,6 +79,9 @@ public class IngredientTest extends DataStoreTestBase {
 		assertEquals("2", unit.toString());
 		assertEquals("kaneelstokjes", ingredient.getProductName());
 	}
+	
+	// TODO: 1/2 glas witte wijn
+	// glas should be unit
 	
 	@Test
 	public void caseInsensitiveUnit() {
