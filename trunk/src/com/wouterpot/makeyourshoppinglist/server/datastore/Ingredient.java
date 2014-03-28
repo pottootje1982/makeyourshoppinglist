@@ -14,6 +14,8 @@ import javax.jdo.annotations.PrimaryKey;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.google.gwt.thirdparty.guava.common.base.Joiner;
+import com.google.gwt.thirdparty.guava.common.base.Strings;
 import com.wouterpot.makeyourshoppinglist.helpers.RegEx;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
@@ -51,9 +53,9 @@ public class Ingredient {
 		List<String> productNameParts = new ArrayList<String>();
 		UnitType unitType = null;
 		double amount = 0;
-		if (!StringUtils.isEmpty(groups[0])) {
+		if (!Strings.isNullOrEmpty(groups[0])) {
 			amount = Double.parseDouble(groups[0]);
-			if (!StringUtils.isEmpty(groups[1])) {
+			if (!Strings.isNullOrEmpty(groups[1])) {
 				unitType = UnitType.parse(groups[1]);
 				if (unitType == null) {
 					productNameParts.add(groups[1]);
@@ -62,14 +64,14 @@ public class Ingredient {
 			unitType = unitType != null ? unitType : UnitType.number;
 		}
 		else {
-			if (!StringUtils.isEmpty(groups[1]))
+			if (!Strings.isNullOrEmpty(groups[1]))
 				productNameParts.add(groups[1]);
 			unitType = UnitType.NaN;
 		}
-		if (!StringUtils.isEmpty(groups[2]))
+		if (!Strings.isNullOrEmpty(groups[2]))
 			productNameParts.add(groups[2]);
 		addUnit(unitType, amount);
-		productName = StringUtils.join(productNameParts, " ");
+		productName = Joiner.on(" ").join(productNameParts);
 		
 	}
 
@@ -134,8 +136,8 @@ public class Ingredient {
 
 	@Override
 	public String toString() {
-		String unitsString = StringUtils.join(getUnits(), " + ");
-		if (StringUtils.isEmpty(unitsString))
+		String unitsString = Joiner.on(" + ").join(getUnits());
+		if (Strings.isNullOrEmpty(unitsString))
 			return productName;
 		else
 			return unitsString + " " + productName.toString();

@@ -27,19 +27,52 @@ package com.wouterpot.makeyourshoppinglist.server;
 
 //~--- JDK imports ------------------------------------------------------------
 
+import java.util.List;
+
 import javax.jdo.JDOHelper;
+import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
+import javax.jdo.Query;
+
+import com.wouterpot.makeyourshoppinglist.server.datastore.ShoppingList;
 
 public final class PMF {
 	
-    private static final PersistenceManagerFactory mPmfInstance =
-        JDOHelper.getPersistenceManagerFactory("transactions-optional");
+    private static PersistenceManager pmInstance = null;
 
     private PMF() {
         throw new UnsupportedOperationException();
     }
 
-    public static PersistenceManagerFactory get() {
-        return mPmfInstance;
+    public static void open() {
+    	if (pmInstance == null) {
+    		pmInstance = JDOHelper.getPersistenceManagerFactory("transactions-optional").getPersistenceManager();
+    		pmInstance.currentTransaction().begin();
+    	}
     }
+    
+    public static <T> T makePersistent(T obj) {
+    	return pmInstance.makePersistent(obj);
+    }
+    
+    public static void close() {
+    	pmInstance.currentTransaction().commit();
+    	pmInstance.close();
+    	pmInstance = null;
+    }
+
+	public static <T> List<T> retrieveAll(Class<T> classType) {
+		Query newQuery = pmInstance.newQuery(classType);
+		List<T> shoppingLists = (List<T>)newQuery.execute();
+		pmInstance.retrieveAll(shoppingLists);
+		return shoppingLists;
+	}
+
+	public static <T> void retrieve(T obj) {
+		pmInstance.retrieve(obj);
+	}
+
+	public static <T> T getObjectById(Class<T> classType, String id) {
+		return pmInstance.getObjectById(classType, id);
+	}
 }

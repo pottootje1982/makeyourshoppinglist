@@ -43,34 +43,35 @@ public class ShoppingList {
 
 	public void addIngredients(String recipeId, List<String> ingredients, String language) {
 		if (!sites.contains(recipeId)) {
+			PMF.open();
+			ShoppingList shoppingList = PMF.makePersistent(this);
+			
 			CategoryDictionary categoryDictionary = languageDictionary.getCategoryDictionary(language);
-			List<Product> products = new ArrayList<Product>();
 			for (String ingredient : ingredients) {
 				Product product = categoryDictionary.getProduct(ingredient);
 				Category category = getOrCreateCategory(product.getCategoryName());
 				product.setCategory(category);
-				products.add(product);
+				category.addProduct(product);
 			}
-			sites.add(recipeId);
-			persistCategoriesToProducts(products);
+			shoppingList.sites.add(recipeId);
+			
+			PMF.close();
 		}
 	}
 
-	private void persistCategoriesToProducts(List<Product> products) {
-		PersistenceManager pm = PMF.get().getPersistenceManager();
-		pm.currentTransaction().begin();
+/*	private void persistCategoriesToProducts(List<Product> products) {
+		PMF.open();
 		ShoppingList shoppingList = pm.makePersistent(this);
 		for (Category category : categoriesToProducts) {
 			shoppingList.categoriesToProducts.add(category);
 		}
 		for (Product product : products) {
 			Category category = getCategory(product.getCategoryName());
-			category = pm.makePersistent(category);
+			category = PMF.makePersistent(category);
 			category.addProduct(product);			
 		}
-		pm.currentTransaction().commit();
-		pm.close();
-	}
+		PMF.close();
+	}*/
 	
 	private Category getCategory(String categoryName) {
 		for (Category category : categoriesToProducts) {
@@ -81,11 +82,12 @@ public class ShoppingList {
 	}
 
 	private Category getOrCreateCategory(String categoryName) {
+		ShoppingList shoppingList = PMF.makePersistent(this);
 		Category category = getCategory(categoryName);
 		if (category == null) {
 			category = new Category(categoryName);
 			category.setShoppingList(this);
-			categoriesToProducts.add(category);
+			shoppingList.categoriesToProducts.add(category);
 		}
 		return category;
 	}

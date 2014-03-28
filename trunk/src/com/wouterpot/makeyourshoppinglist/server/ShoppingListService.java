@@ -19,18 +19,16 @@ GreetingService {
 	}
 
 	private void initShoppingList() {
-		PersistenceManager pm = PMF.get().getPersistenceManager();
-		pm.currentTransaction().begin();
-		Query newQuery = pm.newQuery(ShoppingList.class);
-		List<ShoppingList> shoppingLists = (List<ShoppingList>)newQuery.execute();
-		pm.retrieveAll(shoppingLists);
+		PMF.open();
+
+		List<ShoppingList> shoppingLists = PMF.retrieveAll(ShoppingList.class);
 		ShoppingList shoppingList = null;
 		if (shoppingLists.size() > 0) {
 			shoppingList = shoppingLists.get(0);
-			pm.retrieve(shoppingList);
+			PMF.retrieve(shoppingList);
 		}
-		pm.currentTransaction().commit();
-		pm.close();
+		
+		PMF.close();
 		if (shoppingList != null)
 			ShoppingListFactory.get().setShoppingList(shoppingList);
 	};
