@@ -35,16 +35,16 @@ public class Product {
     @Embedded
     private Ingredient ingredient;
 
-	public Product(Category category, String ingredientName, ProductInfo productInfo) {
+	public Product(Category category, ProductInfo productInfo) {
 		this.parent = category;
-		this.ingredient = new Ingredient(this, ingredientName);
+		this.ingredient = new Ingredient(this);
 		this.productInfo = productInfo;
 	}
 
-	public Product(String ingredient, ProductInfo productInfo) {
-		this(null, ingredient, productInfo);
+	public Product(ProductInfo productInfo) {
+		this(null, productInfo);
 	}
-
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -77,5 +77,9 @@ public class Product {
 
 	public void add(Product product) {
 		ingredient.add(product.ingredient);
+	}
+
+	public void add(Ingredient ingredient) {
+		this.ingredient.add(ingredient);
 	}	
 }

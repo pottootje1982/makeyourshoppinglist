@@ -58,14 +58,17 @@ public class ShoppingList {
 		}
 	}
 
-	public void createProduct(CategoryDictionary categoryDictionary, String ingredient) {
-		ingredient = RegEx.escapeStrangeChars(ingredient);
-		ingredient = ingredient.trim();
-		if (Strings.isNullOrEmpty(ingredient)) return;
-		ProductInfo productInfo = categoryDictionary.getProductInfo(ingredient);
+	public void createProduct(CategoryDictionary categoryDictionary, String ingredientString) {
+		ingredientString = RegEx.escapeStrangeChars(ingredientString);
+		ingredientString = ingredientString.trim();
+		if (Strings.isNullOrEmpty(ingredientString)) return;
+		ProductInfo productInfo = categoryDictionary.getProductInfo(ingredientString);
 		Category category = getOrCreateCategory(productInfo != null ? productInfo.getCategory() : Product.DEFAULT_CATEGORY);
-		Product product = new Product(category, ingredient, productInfo);
+		Product product = new Product(category, productInfo);
+		Ingredient ingredient = new Ingredient();
+		ingredient.parseIngredient(ingredientString);
 		category.addProduct(product);
+		product.add(ingredient);
 	}
 	
 /*	private void persistCategoriesToProducts(List<Product> products) {
