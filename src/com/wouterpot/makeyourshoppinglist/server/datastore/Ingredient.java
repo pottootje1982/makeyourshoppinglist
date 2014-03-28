@@ -3,31 +3,19 @@ package com.wouterpot.makeyourshoppinglist.server.datastore;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.jdo.annotations.Element;
-import javax.jdo.annotations.Extension;
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.Embedded;
+import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
+import javax.jdo.annotations.Serialized;
 
 import com.google.gwt.thirdparty.guava.common.base.Joiner;
 import com.google.gwt.thirdparty.guava.common.base.Strings;
 import com.wouterpot.makeyourshoppinglist.helpers.RegEx;
-import com.wouterpot.makeyourshoppinglist.server.PMF;
 
-@PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
+@PersistenceCapable
 public class Ingredient {
-	
-    @PrimaryKey
-    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    @Extension(
-        vendorName = "datanucleus",
-        key        = "gae.encoded-pk",
-        value      = "true"
-    )
-    private String      id;
-    
     private static Unit[] availableUnits = {
 		new Unit(QuantityType.Volume, UnitType.l), new Unit(QuantityType.Volume, UnitType.dl), new Unit(QuantityType.Volume, UnitType.cl), new Unit(QuantityType.Volume, UnitType.ml),
 		new Unit(QuantityType.Weight, UnitType.kg), new Unit(QuantityType.Weight, UnitType.g),
@@ -39,56 +27,62 @@ public class Ingredient {
 		new Unit(UnitType.el),
 	};
 	
-	@Persistent(mappedBy = "parent")
-    @Element(dependent = "true")
+    // Serialized as blob because I couldn't manage to create
+    // cross reference between parent (since parent is embedded)
+    @Serialized
 	private List<Unit> units = new ArrayList<Unit>();
 	
+	@PrimaryKey
 	@Persistent
 	private String productName;
 
 	@Persistent
-	private Category parent;
+	private Category parentEntity;
+	
+	@NotPersistent
+	private double parsedAmount;
+	
+	@NotPersistent
+	private UnitType parsedUnitType;
 
 	public Ingredient() {
 		this(null);
 	}
 
 	public Ingredient(Category category) {
-		this.parent = category;
+		this.parentEntity = category;
 	}
 	
 	public void parseIngredient(String ingredient) {
 		String[] groups = RegEx.findGroups(ingredient, "^(\\d*[.,]?\\d*)\\s*(\\S*)\\s*(.*)$");
 		
 		List<String> productNameParts = new ArrayList<String>();
-		UnitType unitType = null;
-		double amount = 0;
+		parsedUnitType = null;
+		parsedAmount = 0;
 		if (!Strings.isNullOrEmpty(groups[0])) {
-			amount = Double.parseDouble(groups[0]);
+			parsedAmount = Double.parseDouble(groups[0]);
 			if (!Strings.isNullOrEmpty(groups[1])) {
-				unitType = UnitType.parse(groups[1]);
-				if (unitType == null) {
+				parsedUnitType = UnitType.parse(groups[1]);
+				if (parsedUnitType == null) {
 					productNameParts.add(groups[1]);
 				}
 			}
-			unitType = unitType != null ? unitType : UnitType.number;
+			parsedUnitType = parsedUnitType != null ? parsedUnitType : UnitType.number;
 		}
 		else {
 			if (!Strings.isNullOrEmpty(groups[1]))
 				productNameParts.add(groups[1]);
-			unitType = UnitType.NaN;
+			parsedUnitType = UnitType.NaN;
 		}
 		if (!Strings.isNullOrEmpty(groups[2]))
 			productNameParts.add(groups[2]);
-		addUnit(unitType, amount);
 		productName = Joiner.on(" ").join(productNameParts);
 	}
 
-	private void addUnit(UnitType unitType, double amount) {
-		Ingredient ingredient = PMF.makePersistent(this);
-		Unit unit = getAvailableUnit(unitType);
-		Unit newUnit = new Unit(this, unit.getQuantityType(), unitType, amount);
-		ingredient.getUnits().add(newUnit);	
+	void addUnit() {
+		Unit unit = getAvailableUnit(parsedUnitType);
+		Unit newUnit = new Unit(null, unit.getQuantityType(), parsedUnitType, parsedAmount);
+		getUnits().add(newUnit);	
 	}
 
 	public String getProductName() {

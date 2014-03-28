@@ -11,7 +11,7 @@ import javax.jdo.annotations.PrimaryKey;
 import com.wouterpot.makeyourshoppinglist.config.ProductInfo;
 import com.wouterpot.makeyourshoppinglist.server.PMF;
 
-@PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
+@PersistenceCapable//(identityType = IdentityType.APPLICATION, detachable = "true")
 public class Product {
 
 	public static final String DEFAULT_CATEGORY = "supermarket";
@@ -33,11 +33,12 @@ public class Product {
     private Category parent;
     
     @Persistent
+    @Embedded
     private Ingredient ingredient;
 
 	public Product(Category category, ProductInfo productInfo) {
 		this.parent = category;
-		this.ingredient = new Ingredient(category);
+		this.ingredient = null;
 		this.productInfo = productInfo;
 	}
 
@@ -72,7 +73,7 @@ public class Product {
 
 	@Override
 	public String toString() {
-		return ingredient.toString();
+		return ingredient != null ? ingredient.toString() : "";
 	}
 
 	public void add(Product product) {
@@ -80,7 +81,7 @@ public class Product {
 	}
 
 	public void setIngredient(Ingredient ingredient) {
-		Product product = PMF.makePersistent(this);
-		product.ingredient = ingredient;
+		ingredient = ingredient;
+		ingredient.addUnit();
 	}	
 }

@@ -21,7 +21,7 @@ import com.wouterpot.makeyourshoppinglist.config.ProductInfo;
 import com.wouterpot.makeyourshoppinglist.helpers.RegEx;
 import com.wouterpot.makeyourshoppinglist.server.PMF;
 
-@PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
+@PersistenceCapable
 
 public class ShoppingList {
     @PrimaryKey
@@ -30,7 +30,6 @@ public class ShoppingList {
     private String      id;
 	
     @Persistent(mappedBy = "parent")
-    @Element(dependent = "true")
     List<Category> categoriesToProducts;
     
     @Persistent
@@ -64,26 +63,13 @@ public class ShoppingList {
 		if (Strings.isNullOrEmpty(ingredientString)) return;
 		ProductInfo productInfo = categoryDictionary.getProductInfo(ingredientString);
 		Category category = getOrCreateCategory(productInfo != null ? productInfo.getCategory() : Product.DEFAULT_CATEGORY);
-		Product product = new Product(category, productInfo);
-		Ingredient ingredient = new Ingredient();
+		
+		Product product = new Product(null, productInfo);
+		Ingredient ingredient = new Ingredient(null);
 		category.addProduct(product);
-		product.setIngredient(ingredient);
 		ingredient.parseIngredient(ingredientString);
+		product.setIngredient(ingredient);
 	}
-	
-/*	private void persistCategoriesToProducts(List<Product> products) {
-		PMF.open();
-		ShoppingList shoppingList = pm.makePersistent(this);
-		for (Category category : categoriesToProducts) {
-			shoppingList.categoriesToProducts.add(category);
-		}
-		for (Product product : products) {
-			Category category = getCategory(product.getCategoryName());
-			category = PMF.makePersistent(category);
-			category.addProduct(product);			
-		}
-		PMF.close();
-	}*/
 	
 	private Category getCategory(String categoryName) {
 		for (Category category : categoriesToProducts) {
@@ -94,12 +80,11 @@ public class ShoppingList {
 	}
 
 	private Category getOrCreateCategory(String categoryName) {
-		ShoppingList shoppingList = PMF.makePersistent(this);
 		Category category = getCategory(categoryName);
 		if (category == null) {
 			category = new Category(categoryName);
 			category.setParent(this);
-			shoppingList.categoriesToProducts.add(category);
+			categoriesToProducts.add(category);
 		}
 		return category;
 	}
@@ -119,6 +104,8 @@ public class ShoppingList {
 	}
 
 	public Map<String, ArrayList<String>> getShoppingList() {
+		PMF.open();
+		
 		Map<String, ArrayList<String>> result = new TreeMap<>();
 		List<Category> categories = getCategories();
 		for (Category category : categories) {
@@ -129,6 +116,7 @@ public class ShoppingList {
 				productStrings.add(product.toString());
 			}			
 		}
+		PMF.close();
 		return result;
 	}
 
