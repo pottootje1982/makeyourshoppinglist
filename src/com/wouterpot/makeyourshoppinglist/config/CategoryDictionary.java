@@ -84,9 +84,7 @@ public class CategoryDictionary {
 		}
 	}
 
-	public Product getProduct(String ingredient) {
-		ingredient = RegEx.escapeStrangeChars(ingredient);
-		ingredient = ingredient.trim();
+	public ProductInfo getProductInfo(String ingredient) {
 		for (String category : categoriesToProductInfos.keySet()) {
 			ArrayList<ProductInfo> productInfos = categoriesToProductInfos.get(category);
 			for (ProductInfo productInfo : productInfos) {
@@ -94,10 +92,10 @@ public class CategoryDictionary {
 					if (productInfo.isExcluded())
 						break;
 					else
-						return new Product(ingredient, productInfo);
+						return productInfo;
 			}
 		}
-		return !Strings.isNullOrEmpty(ingredient) ? new Product(ingredient) : null;
+		return null;
 	}
 
 

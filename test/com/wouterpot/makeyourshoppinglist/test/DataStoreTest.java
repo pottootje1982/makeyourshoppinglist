@@ -5,9 +5,6 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.util.List;
 
-import javax.jdo.PersistenceManager;
-import javax.jdo.Query;
-
 import org.junit.Test;
 
 import com.wouterpot.makeyourshoppinglist.server.PMF;

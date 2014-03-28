@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import javax.jdo.PersistenceManager;
 import javax.jdo.annotations.Element;
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -15,8 +14,11 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import com.google.appengine.labs.repackaged.com.google.common.base.Strings;
 import com.wouterpot.makeyourshoppinglist.config.CategoryDictionary;
 import com.wouterpot.makeyourshoppinglist.config.LanguageDictionary;
+import com.wouterpot.makeyourshoppinglist.config.ProductInfo;
+import com.wouterpot.makeyourshoppinglist.helpers.RegEx;
 import com.wouterpot.makeyourshoppinglist.server.PMF;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
@@ -27,7 +29,7 @@ public class ShoppingList {
     @Extension(vendorName = "datanucleus", key = "gae.encoded-pk", value = "true")
     private String      id;
 	
-    @Persistent(mappedBy = "shoppingList")
+    @Persistent(mappedBy = "parent")
     @Element(dependent = "true")
     List<Category> categoriesToProducts;
     
@@ -48,10 +50,7 @@ public class ShoppingList {
 			
 			CategoryDictionary categoryDictionary = languageDictionary.getCategoryDictionary(language);
 			for (String ingredient : ingredients) {
-				Product product = categoryDictionary.getProduct(ingredient);
-				Category category = getOrCreateCategory(product.getCategoryName());
-				product.setCategory(category);
-				category.addProduct(product);
+				createProduct(categoryDictionary, ingredient);
 			}
 			shoppingList.sites.add(recipeId);
 			
@@ -59,6 +58,16 @@ public class ShoppingList {
 		}
 	}
 
+	public void createProduct(CategoryDictionary categoryDictionary, String ingredient) {
+		ingredient = RegEx.escapeStrangeChars(ingredient);
+		ingredient = ingredient.trim();
+		if (Strings.isNullOrEmpty(ingredient)) return;
+		ProductInfo productInfo = categoryDictionary.getProductInfo(ingredient);
+		Category category = getOrCreateCategory(productInfo != null ? productInfo.getCategory() : Product.DEFAULT_CATEGORY);
+		Product product = new Product(category, ingredient, productInfo);
+		category.addProduct(product);
+	}
+	
 /*	private void persistCategoriesToProducts(List<Product> products) {
 		PMF.open();
 		ShoppingList shoppingList = pm.makePersistent(this);
@@ -86,7 +95,7 @@ public class ShoppingList {
 		Category category = getCategory(categoryName);
 		if (category == null) {
 			category = new Category(categoryName);
-			category.setShoppingList(this);
+			category.setParent(this);
 			shoppingList.categoriesToProducts.add(category);
 		}
 		return category;

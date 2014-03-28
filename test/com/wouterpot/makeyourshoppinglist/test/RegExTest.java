@@ -41,4 +41,9 @@ public class RegExTest {
 		assertEquals("", groups[0]);
 		assertEquals("bospeentjes", groups[1]);
 	}
+	
+	@Test
+	public void testEscapeStrangeChar() {
+		assertEquals("bread", RegEx.escapeStrangeChars("bréad"));
+	}
 }

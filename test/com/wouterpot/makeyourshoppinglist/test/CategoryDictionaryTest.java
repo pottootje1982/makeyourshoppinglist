@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.wouterpot.makeyourshoppinglist.config.CategoryDictionary;
+import com.wouterpot.makeyourshoppinglist.config.ProductInfo;
 import com.wouterpot.makeyourshoppinglist.helpers.RegEx;
 import com.wouterpot.makeyourshoppinglist.helpers.Resource;
 import com.wouterpot.makeyourshoppinglist.server.datastore.Product;
@@ -31,8 +32,8 @@ public class CategoryDictionaryTest {
 	}
 	
 	private String getCategory(String ingredient) {
-		Product product = categoryDictionary.getProduct(ingredient);
-		return product != null ? product.getCategoryName() : null;
+		ProductInfo productInfo = categoryDictionary.getProductInfo(ingredient);
+		return productInfo != null ? productInfo.getCategory() : null;
 	}
 	
 	// Test whether [exclude] isn't returned as greengrocer (because this string is present in that file),
@@ -41,9 +42,9 @@ public class CategoryDictionaryTest {
 	public void testGetExcludeString()
 	{
 		String category = getCategory("[exclude]");
-		assertEquals(Product.DEFAULT_CATEGORY, category);
+		assertEquals(null, category);
 		category = getCategory("[EXCLUDE]");
-		assertEquals(Product.DEFAULT_CATEGORY, category);
+		assertEquals(null, category);
 	}
 
 	// Test whether #herbs isn't returned as greengrocer (because this string is present in that file),
@@ -51,7 +52,7 @@ public class CategoryDictionaryTest {
 	@Test
 	public void testGetCategoryComment() {
 		String category = getCategory("#herbs");
-		assertEquals(Product.DEFAULT_CATEGORY, category);
+		assertEquals(null, category);
 	}
 
 	@Test
@@ -76,18 +77,6 @@ public class CategoryDictionaryTest {
 	@Test
 	public void testExcludedProduct() throws URISyntaxException, IOException {
 		String category = getCategory("can tomatoes");
-		assertEquals(Product.DEFAULT_CATEGORY, category);
+		assertEquals(null, category);
 	}
-	
-	@Test
-	public void testEscapeStrangeChar() {
-		assertEquals("bread", RegEx.escapeStrangeChars("bréad"));
-	}
-	
-	@Test
-	public void testGetCategoryStrangeChar() {
-		String category = getCategory("bréad");
-		assertEquals("baker", category);
-	}
-		
 }

@@ -11,5 +11,9 @@
 	<classpathentry kind="var" path="SDK_ROOT/lib/impl/appengine-api-stubs.jar"/>
 	<classpathentry kind="var" path="SDK_ROOT/lib/impl/appengine-api-labs.jar"/>
 	<classpathentry kind="var" path="SDK_ROOT/lib/impl/appengine-api.jar"/>
+	<classpathentry kind="var" path="ECLIPSE_HOME/plugins/mockito-all-1.9.5.jar"/>
+	<classpathentry kind="var" path="POWERMOCK/powermock-easymock-1.5.4-full.jar"/>
+	<classpathentry kind="var" path="POWERMOCK/powermock-mockito-1.5.4-full.jar"/>
+	<classpathentry kind="var" path="POWERMOCK/junit-4.11.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

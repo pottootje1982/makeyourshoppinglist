@@ -10,8 +10,6 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
-import org.eclipse.jdt.internal.compiler.ast.Argument;
-
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
 public class Unit {
 	
@@ -49,14 +47,18 @@ public class Unit {
 	}
 	
 	public Unit(Unit other) {
-		this(other.quantityType, other.unitType, other.amount);
+		this(null, other.quantityType, other.unitType, other.amount);
 	}
 	
 	public Unit(QuantityType quantityType, UnitType unitType) {
-		this(quantityType, unitType, 0);
+		this(null, quantityType, unitType, 0);
 	}
 	
 	public Unit(QuantityType quantityType, UnitType unitType, double amount) {
+		this(null, quantityType, unitType, amount);
+	}
+
+	public Unit(Ingredient ingredient, QuantityType quantityType, UnitType unitType, double amount) {
 		if (quantityType == null) throw new IllegalArgumentException("Quantity type should be defined!");
 		if (unitType == null) throw new IllegalArgumentException("Unit type should be defined!");
 		this.quantityType = quantityType;
@@ -114,9 +116,5 @@ public class Unit {
 	public boolean isAddable(Unit otherUnit) {
 		return (quantityType != QuantityType.Countable && quantityType == otherUnit.quantityType) 
 				|| unitType == otherUnit.unitType;
-	}
-
-	public void setParent(Ingredient ingredient) {
-		this.parent = ingredient;
 	}
 }
