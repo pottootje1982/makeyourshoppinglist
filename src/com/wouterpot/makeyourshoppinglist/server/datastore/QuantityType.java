@@ -3,12 +3,17 @@ package com.wouterpot.makeyourshoppinglist.server.datastore;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 
-@PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
 public enum QuantityType {
-	Volume, Weight, Countable, MeasurableQuantity;
-
+	Volume, Weight, Countable;
+	
+	private String value;
+	
 	private QuantityType() {
-
+		this.value = this.toString();
+	}
+	
+	public String getValue() {
+		return value;
 	}
 
 	public static QuantityType parse(String value) {
@@ -18,6 +23,5 @@ public enum QuantityType {
 		case "countable": return Countable;
 		}
 		return null;
-
 	}
 }

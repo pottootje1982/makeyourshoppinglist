@@ -1,12 +1,14 @@
 package com.wouterpot.makeyourshoppinglist.server.datastore;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import javax.jdo.annotations.Extensions;
+import javax.jdo.annotations.Extension;
+import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
+
+import org.eclipse.jdt.internal.compiler.ast.Argument;
 
 import com.ibm.icu.text.DecimalFormat;
 
@@ -14,14 +16,33 @@ import com.ibm.icu.text.DecimalFormat;
 public class Unit {
 	
     @PrimaryKey
+    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+    @Extension(
+        vendorName = "datanucleus",
+        key        = "gae.encoded-pk",
+        value      = "true"
+    )
+    private String      id;
+
     @Persistent
+    @Extensions({
+        @Extension(vendorName="datanucleus", key="enum-getter-by-value", value="parse"),
+        @Extension(vendorName="datanucleus", key="enum-value-getter", value="getValue")
+       })
 	private UnitType unitType;
+    
     @Persistent
 	private double amount;
+    
+    @Persistent
+    @Extensions({
+        @Extension(vendorName="datanucleus", key="enum-getter-by-value", value="parse"),
+        @Extension(vendorName="datanucleus", key="enum-value-getter", value="getValue")
+       })
 	private QuantityType quantityType;
 
 	public Unit(UnitType unitType) {
-		this(null, unitType);
+		this(QuantityType.Countable, unitType);
 	}
 	
 	public Unit(Unit other) {
@@ -33,13 +54,15 @@ public class Unit {
 	}
 	
 	public Unit(QuantityType quantityType, UnitType unitType, double amount) {
+		if (quantityType == null) throw new IllegalArgumentException("Quantity type should be defined!");
+		if (unitType == null) throw new IllegalArgumentException("Unit type should be defined!");
 		this.quantityType = quantityType;
 		this.unitType = unitType;
 		this.amount = amount;
 	}
 
-	public Unit(QuantityType countable) {
-		this(countable, null);
+	public Unit(QuantityType quantityType) {
+		this(quantityType, UnitType.number);
 	}
 
 	public Unit add(Unit other) {
@@ -68,7 +91,7 @@ public class Unit {
 	@Override
 	public String toString() {
 		DecimalFormat df = new DecimalFormat("#.#");
-		return String.format("%s%s", df.format(amount), unitType != null ? unitType : "");
+		return String.format("%s%s", df.format(amount), unitType != UnitType.number ? unitType : "");
 	}
 	
 	public UnitType getUnitType() {
@@ -76,7 +99,7 @@ public class Unit {
 	}
 
 	public int getFactor() {
-		return unitType != null ? unitType.getFactor() : 1;
+		return unitType.getFactor();
 	}
 
 	public double getAmount() {
@@ -88,7 +111,7 @@ public class Unit {
 	}
 
 	public boolean isAddable(Unit otherUnit) {
-		return (quantityType != null && quantityType == otherUnit.quantityType) 
+		return (quantityType != QuantityType.Countable && quantityType == otherUnit.quantityType) 
 				|| unitType == otherUnit.unitType;
 	}
 }

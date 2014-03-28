@@ -1,13 +1,9 @@
 package com.wouterpot.makeyourshoppinglist.server.datastore;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.jdo.annotations.Embedded;
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
@@ -37,7 +33,7 @@ public class Product {
     
     @Persistent
     @Embedded
-    Ingredient ingredient;
+    private Ingredient ingredient;
 
 	public Product(String ingredientName, ProductInfo productInfo) {
 		this.ingredient = new Ingredient(ingredientName);

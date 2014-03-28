@@ -3,11 +3,9 @@ package com.wouterpot.makeyourshoppinglist.server.datastore;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.jdo.annotations.Embedded;
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
@@ -18,7 +16,6 @@ import com.wouterpot.makeyourshoppinglist.helpers.RegEx;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
 public class Ingredient {
-
 	
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -55,10 +52,11 @@ public class Ingredient {
 			UnitType unitType = null;
 			if (!StringUtils.isEmpty(groups[1])) {
 				unitType = UnitType.parse(groups[1]);
-				if (unitType == null)
+				if (unitType == null) {
 					productNameParts.add(groups[1]);
+				}
 			}
-			addToQuantity(unitType, amount);
+			addToQuantity(unitType != null ? unitType : UnitType.number, amount);
 		}
 		if (!StringUtils.isEmpty(groups[2]))
 			productNameParts.add(groups[2]);
