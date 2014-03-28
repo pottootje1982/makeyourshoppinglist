@@ -66,9 +66,9 @@ public class ShoppingList {
 		Category category = getOrCreateCategory(productInfo != null ? productInfo.getCategory() : Product.DEFAULT_CATEGORY);
 		Product product = new Product(category, productInfo);
 		Ingredient ingredient = new Ingredient();
-		ingredient.parseIngredient(ingredientString);
 		category.addProduct(product);
-		product.add(ingredient);
+		product.setIngredient(ingredient);
+		ingredient.parseIngredient(ingredientString);
 	}
 	
 /*	private void persistCategoriesToProducts(List<Product> products) {
