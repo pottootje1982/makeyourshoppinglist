@@ -41,8 +41,11 @@ public class Unit {
        })
 	private QuantityType quantityType;
 
+    @Persistent
+	private Ingredient parent;
+
 	public Unit(UnitType unitType) {
-		this(QuantityType.Countable, unitType);
+		this(unitType == UnitType.number ? QuantityType.Countable : QuantityType.Uncountable, unitType);
 	}
 	
 	public Unit(Unit other) {
@@ -59,10 +62,6 @@ public class Unit {
 		this.quantityType = quantityType;
 		this.unitType = unitType;
 		this.amount = amount;
-	}
-
-	public Unit(QuantityType quantityType) {
-		this(quantityType, UnitType.number);
 	}
 
 	public Unit add(Unit other) {
@@ -91,7 +90,9 @@ public class Unit {
 	@Override
 	public String toString() {
 		DecimalFormat df = new DecimalFormat("#.#");
-		return String.format("%s%s", df.format(amount), unitType != UnitType.number ? unitType : "");
+		Object unitTypeString = unitType != UnitType.NaN && unitType != UnitType.number ? unitType : "";
+		String amountString = unitType != UnitType.NaN ? df.format(amount) : "";
+		return String.format("%s%s", amountString, unitTypeString);
 	}
 	
 	public UnitType getUnitType() {
@@ -113,5 +114,9 @@ public class Unit {
 	public boolean isAddable(Unit otherUnit) {
 		return (quantityType != QuantityType.Countable && quantityType == otherUnit.quantityType) 
 				|| unitType == otherUnit.unitType;
+	}
+
+	public void setParent(Ingredient ingredient) {
+		this.parent = ingredient;
 	}
 }

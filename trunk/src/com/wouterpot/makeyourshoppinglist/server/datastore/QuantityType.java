@@ -4,7 +4,7 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 
 public enum QuantityType {
-	Volume, Weight, Countable;
+	Volume, Weight, Countable, Uncountable;
 	
 	private String value;
 	
@@ -21,6 +21,7 @@ public enum QuantityType {
 		case "volume": return Volume;
 		case "weight": return Weight;
 		case "countable": return Countable;
+		case "uncountable": return Uncountable;
 		}
 		return null;
 	}

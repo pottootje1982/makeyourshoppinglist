@@ -13,7 +13,8 @@ public enum UnitType {
 	tl, 
 	splashes, 
 	drops,
-	number;
+	number,
+	NaN;
 	
 	private String value;
 	private int factor;
@@ -54,6 +55,7 @@ public enum UnitType {
 		case "theelepel":
 		case "tl": return tl;
 		case "number": return number;
+		case "nan": return NaN;
 		}
 		return null;
 	}
