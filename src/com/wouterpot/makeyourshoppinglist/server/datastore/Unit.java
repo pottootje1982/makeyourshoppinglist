@@ -1,5 +1,7 @@
 package com.wouterpot.makeyourshoppinglist.server.datastore;
 
+import java.text.DecimalFormat;
+
 import javax.jdo.annotations.Extensions;
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -9,8 +11,6 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 import org.eclipse.jdt.internal.compiler.ast.Argument;
-
-import com.ibm.icu.text.DecimalFormat;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
 public class Unit {

@@ -15,6 +15,7 @@ import javax.jdo.annotations.PrimaryKey;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.google.gwt.thirdparty.guava.common.base.Joiner;
 import com.wouterpot.makeyourshoppinglist.server.PMF;
 
 @SuppressWarnings("unused")
@@ -46,15 +47,11 @@ public class Category implements Comparable<Category> {
 	public List<Product> getProducts() {
 		if (products == null) {
 			// Products can be null due to lazy evaluation
-			PersistenceManager pm = PMF.get().getPersistenceManager();
-			pm.currentTransaction().begin();
-			Category category = pm.getObjectById(Category.class, id);
+			Category category = PMF.getObjectById(Category.class, id);
 			if (category != null) {
-				pm.retrieve(category);
+				PMF.retrieve(category);
 				products = category.products;
 			}
-			pm.currentTransaction().commit();
-			pm.close();
 		}
 		return products;
 	}
@@ -68,7 +65,8 @@ public class Category implements Comparable<Category> {
 	}
 
 	public void addProduct(Product product) {
-		product.setCategory(this);
+		Category category = PMF.makePersistent(this);
+		product.setCategory(category);
 		products.add(product);
 	}
 
@@ -115,7 +113,7 @@ public class Category implements Comparable<Category> {
 	@Override
 	public String toString() {
 		return "Category [categoryName=" + categoryName
-				+ ", products=" + StringUtils.join(products, '\n') + "]";
+				+ ", products=" + Joiner.on("\n").join(products) + "]";
 	}
 
 	public void clearProducts() {

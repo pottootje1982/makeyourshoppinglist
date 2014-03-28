@@ -31,14 +31,11 @@ public class DataStoreTest extends DataStoreTestBase {
 		File file = new File("test/testdata/pages/smulweb.nl.html");
 		shoppingListFactory.addToShoppingList(file);
 		
-		PersistenceManager pm = PMF.get().getPersistenceManager();
-		Query newQuery = pm.newQuery(ShoppingList.class);
-		List<ShoppingList> shoppingLists = (List<ShoppingList>)newQuery.execute();
-		pm.retrieveAll(shoppingLists);
+		PMF.open();
+		List<ShoppingList> shoppingLists = PMF.retrieveAll(ShoppingList.class);
 		ShoppingList shoppingList = shoppingLists.get(shoppingLists.size()-1);
 		List<Product> products = shoppingList.getProducts("greengrocer");
 		assertEquals(5, products.size());
-		
-		pm.close();
+		PMF.close();
 	}
 }
