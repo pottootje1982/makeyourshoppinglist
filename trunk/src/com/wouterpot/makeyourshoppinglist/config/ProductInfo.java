@@ -1,11 +1,12 @@
 package com.wouterpot.makeyourshoppinglist.config;
 
+import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.PrimaryKey;
 
 import com.wouterpot.makeyourshoppinglist.helpers.RegEx;
 
-@PersistenceCapable
+@PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
 public class ProductInfo {
     @PrimaryKey
 	private String productKey;

@@ -7,6 +7,7 @@ import java.util.UUID;
 import javax.jdo.annotations.Embedded;
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
@@ -17,7 +18,7 @@ import com.google.gwt.thirdparty.guava.common.base.Joiner;
 import com.wouterpot.makeyourshoppinglist.config.ProductInfo;
 import com.wouterpot.makeyourshoppinglist.server.PMF;
 
-@PersistenceCapable//(identityType = IdentityType.APPLICATION, detachable = "true")
+@PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
 public class Product {
 
 	public static final String DEFAULT_CATEGORY = "supermarket";

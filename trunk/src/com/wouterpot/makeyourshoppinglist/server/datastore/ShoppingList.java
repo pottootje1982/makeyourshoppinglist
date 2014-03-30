@@ -8,6 +8,7 @@ import java.util.TreeMap;
 
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
@@ -23,8 +24,7 @@ import com.wouterpot.makeyourshoppinglist.helpers.RegEx;
 import com.wouterpot.makeyourshoppinglist.server.PMF;
 import com.wouterpot.makeyourshoppinglist.shared.ProductDto;
 
-@PersistenceCapable
-
+@PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
 public class ShoppingList {
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -47,15 +47,15 @@ public class ShoppingList {
 	public void addIngredients(String recipeId, List<String> ingredients, String language) {
 		if (!sites.contains(recipeId)) {
 			PMF.open();
-			ShoppingList shoppingList = PMF.makePersistent(this);
 			
+			ShoppingList shoppingList = PMF.makePersistent(this);
 			CategoryDictionary categoryDictionary = languageDictionary.getCategoryDictionary(language);
 			for (String ingredient : ingredients) {
 				createProduct(categoryDictionary, ingredient);
 			}
 			shoppingList.sites.add(recipeId);
 			
-			PMF.close();
+			PMF.commit();
 		}
 	}
 
@@ -97,7 +97,7 @@ public class ShoppingList {
 
 	public List<Product> getProducts(String categoryName) {
 		Category category = getCategory(categoryName);
-		return category.getProducts();
+		return category != null ? category.getProducts() : null;
 	}
 	
 	public void setLanguageDictionary(LanguageDictionary languageDictionary) {
@@ -124,7 +124,7 @@ public class ShoppingList {
 			}
 		}
 		
-		PMF.close();
+		PMF.commit();
 		return result;
 	}
 

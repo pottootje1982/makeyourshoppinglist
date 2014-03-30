@@ -3,6 +3,7 @@ package com.wouterpot.makeyourshoppinglist.server.datastore;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
@@ -12,7 +13,7 @@ import com.google.gwt.thirdparty.guava.common.base.Joiner;
 import com.google.gwt.thirdparty.guava.common.base.Strings;
 import com.wouterpot.makeyourshoppinglist.helpers.RegEx;
 
-@PersistenceCapable
+@PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
 public class Ingredient {
     private static Unit[] availableUnits = {
 		new Unit(QuantityType.Volume, UnitType.l), new Unit(QuantityType.Volume, UnitType.dl), new Unit(QuantityType.Volume, UnitType.cl), new Unit(QuantityType.Volume, UnitType.ml),
@@ -33,9 +34,6 @@ public class Ingredient {
 	@PrimaryKey
 	@Persistent
 	private String productName;
-
-	@Persistent
-	private Category parentEntity;
 
 	public Ingredient(String ingredient) {
 		parseIngredient(ingredient);
