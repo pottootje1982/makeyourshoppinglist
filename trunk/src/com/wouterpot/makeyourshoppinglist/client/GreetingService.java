@@ -6,13 +6,13 @@ import java.util.Map;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
-import com.wouterpot.makeyourshoppinglist.shared.ClientProduct;
+import com.wouterpot.makeyourshoppinglist.shared.ProductDto;
 
 /**
  * The client-side stub for the RPC service.
  */
 @RemoteServiceRelativePath("greet")
 public interface GreetingService extends RemoteService {
-	Map<String, ArrayList<ClientProduct>> greetServer(String[] sites) throws IllegalArgumentException;
-	void productVisibilityChange(List<ClientProduct> clientProducts);
+	Map<String, ArrayList<ProductDto>> greetServer(String[] sites) throws IllegalArgumentException;
+	void productVisibilityChange(List<ProductDto> clientProducts);
 }

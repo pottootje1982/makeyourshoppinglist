@@ -8,9 +8,9 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.wouterpot.makeyourshoppinglist.shared.ClientProduct;
+import com.wouterpot.makeyourshoppinglist.shared.ProductDto;
 
-final class ShoppingListCallback implements	AsyncCallback<Map<String, ArrayList<ClientProduct>>> {
+final class ShoppingListCallback implements	AsyncCallback<Map<String, ArrayList<ProductDto>>> {
 	
 	private Map<String, ArrayList<ProductCheckBox>> shoppingList = new HashMap<String, ArrayList<ProductCheckBox>>();
 
@@ -18,19 +18,19 @@ final class ShoppingListCallback implements	AsyncCallback<Map<String, ArrayList<
 		RootPanel.get().add(new Label("Error while trying to contact server...\n" + caught.getMessage()));
 	}
 
-	public void onSuccess(Map<String, ArrayList<ClientProduct>> shoppingList) {
+	public void onSuccess(Map<String, ArrayList<ProductDto>> shoppingList) {
 		VerticalPanel shoppingListWidget = (VerticalPanel) ShoppingListEntryPoint.findWidget("shoppingList");
 
-		for (Map.Entry<String, ArrayList<ClientProduct>> entry : shoppingList.entrySet()) {
+		for (Map.Entry<String, ArrayList<ProductDto>> entry : shoppingList.entrySet()) {
 			ArrayList<ProductCheckBox> productCheckBoxes = new ArrayList<>();
 			shoppingListWidget.add(new Label(entry.getKey()));
 			VerticalPanel verticalPanel = new VerticalPanel();
 			shoppingListWidget.add(verticalPanel);
-			ArrayList<ClientProduct> clientProducts = entry.getValue();
-			for (ClientProduct product : clientProducts) {
+			ArrayList<ProductDto> clientProducts = entry.getValue();
+			for (ProductDto product : clientProducts) {
 				ProductCheckBox checkBox = new ProductCheckBox(product.toString(), product);
 				checkBox.addClickHandler(new CheckboxClickHandler(product));
-				checkBox.setTitle(product.toString());
+				checkBox.setTitle(product.getAggregatedProductName());
 				checkBox.setVisible(product.getVisible() != Boolean.FALSE);
 				verticalPanel.add(checkBox);
 				productCheckBoxes.add(checkBox);

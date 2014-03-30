@@ -7,7 +7,7 @@ import java.util.Map.Entry;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.wouterpot.makeyourshoppinglist.shared.ClientProduct;
+import com.wouterpot.makeyourshoppinglist.shared.ProductDto;
 
 final class HideButtonHandler implements ClickHandler {
 
@@ -34,7 +34,7 @@ final class HideButtonHandler implements ClickHandler {
 
 	@Override
 	public void onClick(ClickEvent event) {
-		List<ClientProduct> clientProducts = new ArrayList<>();
+		List<ProductDto> clientProducts = new ArrayList<>();
 		for (Entry<String, ArrayList<ProductCheckBox>> category : shoppingList.getShoppingList().entrySet()) {
 			for (ProductCheckBox productCheckBox : category.getValue()) {
 				if (productCheckBox.getValue()) {
