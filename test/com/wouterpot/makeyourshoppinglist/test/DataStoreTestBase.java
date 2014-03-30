@@ -7,6 +7,7 @@ import org.junit.BeforeClass;
 
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
+import com.wouterpot.makeyourshoppinglist.server.ShoppingListFactory;
 
 public class DataStoreTestBase {
 	private final static LocalServiceTestHelper helper =
@@ -15,6 +16,7 @@ public class DataStoreTestBase {
 
     @Before
     public void setUp() {
+    	ShoppingListFactory.get().createNewShoppingList();
     }
     
     @After

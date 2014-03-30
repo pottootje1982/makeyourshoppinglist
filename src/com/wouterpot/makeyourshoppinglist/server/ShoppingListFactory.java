@@ -36,8 +36,10 @@ public class ShoppingListFactory {
 	}
 	
 	public ShoppingList createNewShoppingList() {
+		PMF.close();
 		shoppingList = null;
-		return getShoppingList();
+		ShoppingList newShoppingList = getShoppingList();
+		return newShoppingList;
 	}
 
 	private void addToShoppingList(String recipeId, IngredientsList ingredientsList) {

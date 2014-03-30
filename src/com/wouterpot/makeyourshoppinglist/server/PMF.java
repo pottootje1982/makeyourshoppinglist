@@ -31,7 +31,9 @@ import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
-public class PMF {
+import com.wouterpot.makeyourshoppinglist.server.datastore.ShoppingList;
+
+public class PMF<T> {
 
 	private static PersistenceManager pmInstance = null;
 
@@ -44,23 +46,24 @@ public class PMF {
 			pmInstance = JDOHelper.getPersistenceManagerFactory("transactions-optional").getPersistenceManager();
 			pmInstance.currentTransaction().begin();
 		}
+		else {
+			pmInstance.currentTransaction().begin();
+		}
 	}
 
 	public static <T> T makePersistent(T obj) {
 		return pmInstance.makePersistent(obj);
 	}
 
-	public static void close() {
+	public static void commit() {
 		pmInstance.currentTransaction().commit();
-		pmInstance.close();
-		pmInstance = null;
 	}
 
 	public static <T> List<T> retrieveAll(Class<T> classType) {
 		Query newQuery = pmInstance.newQuery(classType);
-		List<T> shoppingLists = (List<T>) newQuery.execute();
-		pmInstance.retrieveAll(shoppingLists);
-		return shoppingLists;
+		List<T> objects = (List<T>) newQuery.execute();
+		pmInstance.retrieveAll(objects);
+		return objects;
 	}
 
 	public static <T> void retrieve(T obj) {
@@ -69,5 +72,12 @@ public class PMF {
 
 	public static <T> T getObjectById(Class<T> classType, String id) {
 		return pmInstance.getObjectById(classType, id);
+	}
+
+	public static void close() {
+		if (pmInstance != null) {
+			pmInstance.close();
+			pmInstance = null;
+		}
 	}
 }

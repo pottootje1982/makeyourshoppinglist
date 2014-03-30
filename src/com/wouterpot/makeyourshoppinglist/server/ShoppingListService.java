@@ -27,7 +27,7 @@ GreetingService {
 			PMF.retrieve(shoppingList);
 		}
 		
-		PMF.close();
+		PMF.commit();
 		if (shoppingList != null)
 			ShoppingListFactory.get().setShoppingList(shoppingList);
 	};
@@ -50,11 +50,14 @@ GreetingService {
 	public void productVisibilityChange(List<ProductDto> clientProducts) {
 		ShoppingListFactory shoppingListFactory = ShoppingListFactory.get();
 		ShoppingList shoppingList = shoppingListFactory.getShoppingList();
+		PMF.open();
+		shoppingList = PMF.makePersistent(shoppingList);
 		for (ProductDto clientProduct : clientProducts) {
 			List<Product> products = shoppingList.getProduct(clientProduct.getCategoryName(), clientProduct.getIds());
 			for (Product product : products) {
 				product.setVisible(clientProduct.getVisible());
 			}	
 		}
+		PMF.commit();
 	}
 }
