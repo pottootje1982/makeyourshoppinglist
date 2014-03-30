@@ -3,13 +3,11 @@ package com.wouterpot.makeyourshoppinglist.server.datastore;
 import javax.jdo.annotations.Embedded;
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 import com.wouterpot.makeyourshoppinglist.config.ProductInfo;
-import com.wouterpot.makeyourshoppinglist.server.PMF;
 
 @PersistenceCapable//(identityType = IdentityType.APPLICATION, detachable = "true")
 public class Product {
@@ -35,6 +33,9 @@ public class Product {
     @Persistent
     @Embedded
     private Ingredient ingredient;
+
+    @Persistent
+	private Boolean visible = true;
 
 	public Product(ProductInfo productInfo) {
 		this.ingredient = null;
@@ -66,6 +67,10 @@ public class Product {
 		return productInfo;
 	}
 
+	public String getId() {
+		return id;
+	}
+
 	@Override
 	public String toString() {
 		return ingredient != null ? ingredient.toString() : "";
@@ -77,5 +82,13 @@ public class Product {
 
 	public void setIngredient(Ingredient ingredient) {
 		this.ingredient = ingredient;
-	}	
+	}
+
+	public void setVisible(Boolean visible) {
+		this.visible = visible;		
+	}
+
+	public Boolean getVisible() {
+		return visible;
+	}
 }

@@ -6,7 +6,9 @@ import java.util.Map;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.wouterpot.makeyourshoppinglist.client.GreetingService;
+import com.wouterpot.makeyourshoppinglist.server.datastore.Product;
 import com.wouterpot.makeyourshoppinglist.server.datastore.ShoppingList;
+import com.wouterpot.makeyourshoppinglist.shared.ClientProduct;
 
 public class ShoppingListService extends RemoteServiceServlet implements
 GreetingService {
@@ -33,7 +35,7 @@ GreetingService {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public Map<String, ArrayList<String>> greetServer(String[] sites) throws IllegalArgumentException {
+	public Map<String, ArrayList<ClientProduct>> greetServer(String[] sites) throws IllegalArgumentException {
 		ShoppingListFactory shoppingListFactory = ShoppingListFactory.get();
 		for (String site : sites) {
 			shoppingListFactory.addToShoppingList(site);	
@@ -42,5 +44,16 @@ GreetingService {
 		ShoppingList shoppingList = shoppingListFactory.getShoppingList();
 		
 		return shoppingList.getShoppingList();
+	}
+
+	@Override
+	public void productVisibilityChange(List<ClientProduct> clientProducts) {
+		ShoppingListFactory shoppingListFactory = ShoppingListFactory.get();
+		ShoppingList shoppingList = shoppingListFactory.getShoppingList();
+		for (ClientProduct clientProduct : clientProducts) {
+			Product product = shoppingList.getProduct(clientProduct.getCategoryName(), clientProduct.getId());
+			if (product != null)
+				product.setVisible(clientProduct.getVisible());
+		}
 	}
 }

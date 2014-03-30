@@ -6,10 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import javax.jdo.annotations.Element;
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
@@ -20,6 +18,7 @@ import com.wouterpot.makeyourshoppinglist.config.LanguageDictionary;
 import com.wouterpot.makeyourshoppinglist.config.ProductInfo;
 import com.wouterpot.makeyourshoppinglist.helpers.RegEx;
 import com.wouterpot.makeyourshoppinglist.server.PMF;
+import com.wouterpot.makeyourshoppinglist.shared.ClientProduct;
 
 @PersistenceCapable
 
@@ -102,17 +101,17 @@ public class ShoppingList {
 		this.languageDictionary = languageDictionary;
 	}
 
-	public Map<String, ArrayList<String>> getShoppingList() {
+	public Map<String, ArrayList<ClientProduct>> getShoppingList() {
 		PMF.open();
 		
-		Map<String, ArrayList<String>> result = new TreeMap<>();
+		Map<String, ArrayList<ClientProduct>> result = new TreeMap<>();
 		List<Category> categories = getCategories();
 		for (Category category : categories) {
-			ArrayList<String> productStrings = new ArrayList<String>();
+			ArrayList<ClientProduct> productStrings = new ArrayList<ClientProduct>();
 			result.put(category.getCategoryName(), productStrings);
 			List<Product> products = category.getProducts();			
 			for (Product product : products) {
-				productStrings.add(product.toString());
+				productStrings.add(new ClientProduct(product.getId(), category.getCategoryName(), product.toString(), product.getVisible()));
 			}			
 		}
 		PMF.close();
@@ -121,5 +120,16 @@ public class ShoppingList {
 
 	public boolean isEmpty() {
 		return categoriesToProducts.isEmpty();
+	}
+
+	public Product getProduct(String categoryName, String id) {
+		Category category = getCategory(categoryName);
+		List<Product> products = category.getProducts();
+		for (Product product : products) {
+			if (product.getId().equals(id)) {
+				return product;
+			}
+		}
+		return null;
 	}
 }
