@@ -12,7 +12,6 @@ import java.util.Map;
 import com.google.appengine.labs.repackaged.com.google.common.base.Strings;
 import com.wouterpot.makeyourshoppinglist.helpers.RegEx;
 import com.wouterpot.makeyourshoppinglist.helpers.Resource;
-import com.wouterpot.makeyourshoppinglist.server.datastore.Product;
 
 public class CategoryDictionary {
 	private static final String COMMON = "[common]";

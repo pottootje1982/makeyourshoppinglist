@@ -10,9 +10,7 @@ import org.junit.Test;
 
 import com.wouterpot.makeyourshoppinglist.config.CategoryDictionary;
 import com.wouterpot.makeyourshoppinglist.config.ProductInfo;
-import com.wouterpot.makeyourshoppinglist.helpers.RegEx;
 import com.wouterpot.makeyourshoppinglist.helpers.Resource;
-import com.wouterpot.makeyourshoppinglist.server.datastore.Product;
 
 public class CategoryDictionaryTest {
 

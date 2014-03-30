@@ -3,17 +3,11 @@ package com.wouterpot.makeyourshoppinglist.server.datastore;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.jdo.PersistenceManager;
-import javax.jdo.Query;
-import javax.jdo.annotations.Element;
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
-
-import org.apache.commons.lang3.StringUtils;
 
 import com.google.gwt.thirdparty.guava.common.base.Joiner;
 import com.wouterpot.makeyourshoppinglist.server.PMF;
