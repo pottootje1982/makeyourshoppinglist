@@ -1,13 +1,21 @@
 package com.wouterpot.makeyourshoppinglist.server.datastore;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 import javax.jdo.annotations.Embedded;
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import com.google.appengine.labs.repackaged.com.google.common.base.Strings;
+import com.google.gwt.thirdparty.guava.common.base.Joiner;
 import com.wouterpot.makeyourshoppinglist.config.ProductInfo;
+import com.wouterpot.makeyourshoppinglist.server.PMF;
 
 @PersistenceCapable//(identityType = IdentityType.APPLICATION, detachable = "true")
 public class Product {
@@ -36,12 +44,29 @@ public class Product {
 
     @Persistent
 	private Boolean visible = true;
+    
+    @NotPersistent
+    private List<String> aggregatedIds = new ArrayList<String>();
+    
+    @NotPersistent
+    private List<String> aggregatedProductNames = new ArrayList<String>();
 
+    public Product() {
+    }
+    
 	public Product(ProductInfo productInfo) {
 		this.ingredient = null;
 		this.productInfo = productInfo;
 	}
 	
+	public Product(Product product) {
+		this.id = product.id;
+		this.ingredient = new Ingredient(product.getIngredient());
+		this.productInfo = product.productInfo;
+		aggregatedIds.add(product.id);
+		aggregatedProductNames.add(product.getIngredient().toString());
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -51,12 +76,18 @@ public class Product {
 		if (getClass() != obj.getClass())
 			return false;
 		Product other = (Product) obj;
-		if (ingredient == null) {
-			if (other.ingredient != null)
+		if (getIngredient() == null) {
+			if (other.getIngredient() != null)
 				return false;
-		} else if (!ingredient.equals(other.ingredient))
+		} else if (!getIngredient().equals(other.getIngredient()))
 			return false;
 		return true;
+	}
+
+	private Ingredient getIngredient() {
+		if (ingredient == null)
+			PMF.retrieve(this);
+		return ingredient;
 	}
 
 	public String getCategoryName() {
@@ -66,18 +97,36 @@ public class Product {
 	public ProductInfo getProductInfo() {
 		return productInfo;
 	}
+	
+	public String getProductKey() {
+		if (productInfo != null) {
+			String productKey = productInfo.getProductKey();
+			if (!Strings.isNullOrEmpty(productKey)) return productKey;			
+		}
+		return ingredient.getProductName();
+	}
 
-	public String getId() {
-		return id;
+	public List<String> getIds() {
+		return aggregatedIds;
+	}
+	
+	public String getAggregatedProductName() {
+		return Joiner.on("\n").join(aggregatedProductNames);
 	}
 
 	@Override
 	public String toString() {
-		return ingredient != null ? ingredient.toString() : "";
+		return getIngredient() != null ? getIngredient().toString() : "";
 	}
 
-	public void add(Product product) {
-		ingredient.add(product.ingredient);
+	public Product add(Product product) {
+		Product sum = new Product(this);
+		if (product != null) {
+			sum.getIngredient().add(product.getIngredient());
+			sum.aggregatedIds.add(product.id);
+			sum.aggregatedProductNames.add(product.getIngredient().toString());
+		}
+		return sum;
 	}
 
 	public void setIngredient(Ingredient ingredient) {
@@ -90,5 +139,9 @@ public class Product {
 
 	public Boolean getVisible() {
 		return visible;
+	}
+
+	public String getId() {
+		return id;
 	}
 }

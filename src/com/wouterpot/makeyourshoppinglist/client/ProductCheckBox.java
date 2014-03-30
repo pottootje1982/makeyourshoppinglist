@@ -1,18 +1,18 @@
 package com.wouterpot.makeyourshoppinglist.client;
 
 import com.google.gwt.user.client.ui.CheckBox;
-import com.wouterpot.makeyourshoppinglist.shared.ClientProduct;
+import com.wouterpot.makeyourshoppinglist.shared.ProductDto;
 
 public class ProductCheckBox extends CheckBox {
 
-	private ClientProduct product;
+	private ProductDto product;
 
-	public ProductCheckBox(String label, ClientProduct product) {
+	public ProductCheckBox(String label, ProductDto product) {
 		super(label);
 		this.product = product;
 	}
 
-	public ClientProduct getProduct() {
+	public ProductDto getProduct() {
 		return product;
 	}
 

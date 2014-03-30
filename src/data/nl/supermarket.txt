@@ -12,6 +12,7 @@ parmesaanse kaas
 olijfolie
 chilli poeder
 zout
+olie
 
 #lentils
 linzen

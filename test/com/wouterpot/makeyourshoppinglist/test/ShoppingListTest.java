@@ -4,7 +4,10 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -15,17 +18,9 @@ import com.wouterpot.makeyourshoppinglist.server.PMF;
 import com.wouterpot.makeyourshoppinglist.server.ShoppingListFactory;
 import com.wouterpot.makeyourshoppinglist.server.datastore.Product;
 import com.wouterpot.makeyourshoppinglist.server.datastore.ShoppingList;
+import com.wouterpot.makeyourshoppinglist.shared.ProductDto;
 
 public class ShoppingListTest extends DataStoreTestBase {
-	@BeforeClass
-	public static void beforeClass()	{
-		PMF.setTesting(true);
-	}
-	
-	@AfterClass
-	public static void afterClass() {
-		PMF.setTesting(false);
-	}
 	
 	@Before
 	public void setup()	{
@@ -103,5 +98,46 @@ public class ShoppingListTest extends DataStoreTestBase {
 		assertEquals(4, shoppingItems.size());
 		assertEquals("olijfolie", shoppingItems.get(0).toString());
 		assertEquals("zout en peper", shoppingItems.get(3).toString());
+	}
+	
+	@Test
+	public void getAggregatedShoppingList() throws IOException {
+		ShoppingListFactory shoppingListFactory = ShoppingListFactory.get();
+		File file = new File("test/testdata/pages/sites.google.com.html");
+		shoppingListFactory.addToShoppingList(file);
+		ShoppingList shoppingList = shoppingListFactory.getShoppingList();
+		Map<String, ArrayList<ProductDto>> shoppingItems = shoppingList.getShoppingList();
+		
+		ArrayList<ProductDto> products = shoppingItems.get("greengrocer");
+		assertEquals(5, products.size());
+		assertEquals("3 bospeentjes", products.get(0).toString());
+		assertEquals("1 kleine courgette", products.get(4).toString());
+		
+		products = shoppingItems.get("fishmonger");
+		assertEquals(1, products.size());
+		assertEquals("4 dauradefilets (of een andere vis)", products.get(0).toString());
+		
+		products = shoppingItems.get("supermarket");
+		assertEquals(4, products.size());
+		assertEquals("125ml slagroom", products.get(0).toString());
+		assertEquals("3 eetlepels roomboter", products.get(3).toString());
+	}
+
+	
+	@Test
+	public void aggregate() {
+		ShoppingList shoppingList = ShoppingListFactory.get().getShoppingList();
+		List<String> ingredients = Arrays.asList("2 el olie", "4 el olie");
+		shoppingList.addIngredients("recipe1", ingredients, "nl");
+		List<Product> products = shoppingList.getProducts("supermarket");
+		assertEquals(2, products.size());
+		Product product1 = products.get(0);
+		Product product2 = products.get(1);
+		
+		Map<String, ArrayList<ProductDto>> shoppingListDto = shoppingList.getShoppingList();
+		ArrayList<ProductDto> productDtos = shoppingListDto.get("supermarket");
+		assertEquals(1, productDtos.size());
+		ProductDto productDto = productDtos.get(0);
+		assertArrayEquals(new String[]{product1.getId(), product2.getId()}, productDto.getIds().toArray());		
 	}
 }

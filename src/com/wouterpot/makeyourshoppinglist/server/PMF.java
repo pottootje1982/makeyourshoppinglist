@@ -21,8 +21,6 @@
  *
  ******************************************************************************/
 
-
-
 package com.wouterpot.makeyourshoppinglist.server;
 
 //~--- JDK imports ------------------------------------------------------------
@@ -34,45 +32,33 @@ import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
 public class PMF {
-	
-    private static PersistenceManager pmInstance = null;
-	private static boolean testing;
 
-    private PMF() {
-        throw new UnsupportedOperationException();
-    }
+	private static PersistenceManager pmInstance = null;
 
-    public static void open() {
-    	if (pmInstance == null && !testing) {
-    		pmInstance = JDOHelper.getPersistenceManagerFactory("transactions-optional").getPersistenceManager();
-    		pmInstance.currentTransaction().begin();
-    	}
-    }
-    
-    public static void test(String t) {
-    	
-    }
+	private PMF() {
+		throw new UnsupportedOperationException();
+	}
 
-    // TODO: resolve this nicely with mocking
-    public static void setTesting(boolean testing) {
-		PMF.testing = testing;
-    }
-    
-    public static <T> T makePersistent(T obj) {
-    	return testing ? obj : pmInstance.makePersistent(obj);
-    }
-    
-    public static void close() {
-    	if (!testing) {
-	    	pmInstance.currentTransaction().commit();
-	    	pmInstance.close();
-	    	pmInstance = null;
-    	}
-    }
+	public static void open() {
+		if (pmInstance == null) {
+			pmInstance = JDOHelper.getPersistenceManagerFactory("transactions-optional").getPersistenceManager();
+			pmInstance.currentTransaction().begin();
+		}
+	}
+
+	public static <T> T makePersistent(T obj) {
+		return pmInstance.makePersistent(obj);
+	}
+
+	public static void close() {
+		pmInstance.currentTransaction().commit();
+		pmInstance.close();
+		pmInstance = null;
+	}
 
 	public static <T> List<T> retrieveAll(Class<T> classType) {
 		Query newQuery = pmInstance.newQuery(classType);
-		List<T> shoppingLists = (List<T>)newQuery.execute();
+		List<T> shoppingLists = (List<T>) newQuery.execute();
 		pmInstance.retrieveAll(shoppingLists);
 		return shoppingLists;
 	}

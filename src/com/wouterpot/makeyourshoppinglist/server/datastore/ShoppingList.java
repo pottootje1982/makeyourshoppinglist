@@ -12,13 +12,16 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import ch.lambdaj.group.Group;
+import static ch.lambdaj.Lambda.*;
+
 import com.google.appengine.labs.repackaged.com.google.common.base.Strings;
 import com.wouterpot.makeyourshoppinglist.config.CategoryDictionary;
 import com.wouterpot.makeyourshoppinglist.config.LanguageDictionary;
 import com.wouterpot.makeyourshoppinglist.config.ProductInfo;
 import com.wouterpot.makeyourshoppinglist.helpers.RegEx;
 import com.wouterpot.makeyourshoppinglist.server.PMF;
-import com.wouterpot.makeyourshoppinglist.shared.ClientProduct;
+import com.wouterpot.makeyourshoppinglist.shared.ProductDto;
 
 @PersistenceCapable
 
@@ -101,19 +104,26 @@ public class ShoppingList {
 		this.languageDictionary = languageDictionary;
 	}
 
-	public Map<String, ArrayList<ClientProduct>> getShoppingList() {
+	public Map<String, ArrayList<ProductDto>> getShoppingList() {
 		PMF.open();
 		
-		Map<String, ArrayList<ClientProduct>> result = new TreeMap<>();
+		Map<String, ArrayList<ProductDto>> result = new TreeMap<>();
 		List<Category> categories = getCategories();
 		for (Category category : categories) {
-			ArrayList<ClientProduct> productStrings = new ArrayList<ClientProduct>();
+			ArrayList<ProductDto> productStrings = new ArrayList<ProductDto>();
 			result.put(category.getCategoryName(), productStrings);
-			List<Product> products = category.getProducts();			
-			for (Product product : products) {
-				productStrings.add(new ClientProduct(product.getId(), category.getCategoryName(), product.toString(), product.getVisible()));
-			}			
+			List<Product> products = category.getProducts();
+			Group<Product> groups = group(products, by(on(Product.class).getProductKey()));
+			List<Product> uniqueProducts = new ArrayList<>();
+			for (String productKey : groups.keySet()) {
+				List<Product> sameProducts = groups.find(productKey);
+				uniqueProducts.add(aggregate(sameProducts, new ProductAggregator()));
+			}
+			for (Product product : uniqueProducts) {
+				productStrings.add(new ProductDto(product.getIds(), product.getAggregatedProductName(), category.getCategoryName(), product.toString(), product.getVisible()));
+			}
 		}
+		
 		PMF.close();
 		return result;
 	}
@@ -122,14 +132,15 @@ public class ShoppingList {
 		return categoriesToProducts.isEmpty();
 	}
 
-	public Product getProduct(String categoryName, String id) {
+	public List<Product> getProduct(String categoryName, List<String> ids) {
 		Category category = getCategory(categoryName);
 		List<Product> products = category.getProducts();
+		List<Product> results = new ArrayList<>();
 		for (Product product : products) {
-			if (product.getId().equals(id)) {
-				return product;
+			if (ids.contains(product.getId())) {
+				results.add(product);
 			}
 		}
-		return null;
+		return results;
 	}
 }

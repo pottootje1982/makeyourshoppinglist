@@ -17,16 +17,6 @@ import com.wouterpot.makeyourshoppinglist.server.datastore.UnitType;
 @PrepareForTest(PMF.class)
 public class IngredientTest extends DataStoreTestBase {
 
-	@BeforeClass
-	public static void setup()	{
-		PMF.setTesting(true);
-	}
-	
-	@AfterClass
-	public static void teardown() {
-		PMF.setTesting(false);
-	}
-	
 	// TODO: sort out how this works
 	private void mockPMF() {
 		Ingredient temp = new Ingredient("");

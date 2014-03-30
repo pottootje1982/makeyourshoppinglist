@@ -12,15 +12,6 @@ import com.wouterpot.makeyourshoppinglist.server.datastore.Ingredient;
 import com.wouterpot.makeyourshoppinglist.server.datastore.Product;
 
 public class ProductTest {
-	@BeforeClass
-	public static void setup()	{
-		PMF.setTesting(true);
-	}
-	
-	@AfterClass
-	public static void teardown() {
-		PMF.setTesting(false);
-	}
 	
 	@Test
 	public void testAddProducts() {
@@ -29,7 +20,7 @@ public class ProductTest {
 		Product product2 = new Product(new ProductInfo("olie"));
 		product2.setIngredient(new Ingredient("4 el olie"));
 		product1.add(product2);
-		assertEquals("6el olie", product1.toString());
+		assertEquals("6el olie", product1.add(product2).toString());
 	}
 
 }

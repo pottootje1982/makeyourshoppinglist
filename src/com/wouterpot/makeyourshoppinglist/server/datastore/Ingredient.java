@@ -41,6 +41,15 @@ public class Ingredient {
 		parseIngredient(ingredient);
 	}
 	
+	public Ingredient(Ingredient ingredient) {
+		if (ingredient == null)
+			throw new IllegalArgumentException("Ingredient cannot be null");
+		for (Unit unit : ingredient.units) {
+			units.add(unit);
+		}
+		productName = ingredient.productName;
+	}
+
 	private void parseIngredient(String ingredient) {
 		String[] groups = RegEx.findGroups(ingredient, "^(\\d*[.,]?\\d*)\\s*(\\S*)\\s*(.*)$");
 		
