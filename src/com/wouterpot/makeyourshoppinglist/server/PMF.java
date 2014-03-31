@@ -31,8 +31,6 @@ import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
-import com.wouterpot.makeyourshoppinglist.server.datastore.ShoppingList;
-
 public class PMF<T> {
 
 	private static PersistenceManager pmInstance = null;

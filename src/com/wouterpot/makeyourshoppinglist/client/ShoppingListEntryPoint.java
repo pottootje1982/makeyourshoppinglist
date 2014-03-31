@@ -4,9 +4,6 @@ import java.util.ArrayList;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ComplexPanel;
@@ -18,47 +15,34 @@ import com.google.gwt.user.client.ui.Widget;
 	
 public class ShoppingListEntryPoint implements EntryPoint {
 
-	private final class HyperlinkHandler implements ClickHandler {
-		private String site;
-
-		public HyperlinkHandler(String site) {
-			this.site = site;
-		}
-
-		@Override
-		public void onClick(ClickEvent event) {
-			Window.open(site, "_blank", "");
-		}
-	}
-
 	/**
 	 * Create a remote service proxy to talk to the server-side Greeting
 	 * service.
 	 */
 	private final GreetingServiceAsync greetingService = GWT.create(GreetingService.class);
+	private VerticalPanel recipePanel;
 
 	@Override
 	public void onModuleLoad() {
+		recipePanel = new VerticalPanel();
+		
 		Label label = new Label("Recipes:");
-
-		RootPanel.get().add(label);
+		recipePanel.add(label);
 
 		int parameterIndex = 1;
 		String site = null;
 		ArrayList<String> sites = new ArrayList<String>();
-		while ((site = com.google.gwt.user.client.Window.Location
-				.getParameter("site" + parameterIndex++)) != null) {
+		while ((site = com.google.gwt.user.client.Window.Location.getParameter("site" + parameterIndex++)) != null) {
 			sites.add(site);
-			Anchor hyperlink = new Anchor(site);
-			hyperlink.addClickHandler(new HyperlinkHandler(site));
-			RootPanel.get().add(hyperlink);
+			addSiteToPanel(site);
 		}
 		String[] sitesArray = new String[sites.size()];
+		RootPanel.get().add(recipePanel);
 
 		VerticalPanel shoppingListPanel = new VerticalPanel();
 		shoppingListPanel.getElement().setId("shoppingList");
 		RootPanel.get().add(shoppingListPanel);
-		ShoppingListCallback shoppingListCallback = new ShoppingListCallback();
+		ShoppingListCallback shoppingListCallback = new ShoppingListCallback(this);
 		greetingService.greetServer(sites.toArray(sitesArray), shoppingListCallback);
 
 		HorizontalPanel buttonPanel = new HorizontalPanel();
@@ -69,6 +53,12 @@ public class ShoppingListEntryPoint implements EntryPoint {
 		buttonPanel.add(hideButton);
 		buttonPanel.add(unhideButton);
 		RootPanel.get().add(buttonPanel);
+	}
+
+	void addSiteToPanel(String site) {
+		Anchor hyperlink = new Anchor(site);
+		hyperlink.addClickHandler(new HyperlinkHandler(site));
+		recipePanel.add(hyperlink);
 	}
 
 	@SuppressWarnings("unchecked") <T> ArrayList<T> getWidgetsOfType(ComplexPanel panel, Class<T> type) {

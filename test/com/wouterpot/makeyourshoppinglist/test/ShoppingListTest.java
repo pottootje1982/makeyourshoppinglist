@@ -19,6 +19,7 @@ import com.wouterpot.makeyourshoppinglist.server.ShoppingListFactory;
 import com.wouterpot.makeyourshoppinglist.server.datastore.Product;
 import com.wouterpot.makeyourshoppinglist.server.datastore.ShoppingList;
 import com.wouterpot.makeyourshoppinglist.shared.ProductDto;
+import com.wouterpot.makeyourshoppinglist.shared.ShoppingListDto;
 
 public class ShoppingListTest extends DataStoreTestBase {
 	
@@ -106,7 +107,8 @@ public class ShoppingListTest extends DataStoreTestBase {
 		File file = new File("test/testdata/pages/sites.google.com.html");
 		shoppingListFactory.addToShoppingList(file);
 		ShoppingList shoppingList = shoppingListFactory.getShoppingList();
-		Map<String, ArrayList<ProductDto>> shoppingItems = shoppingList.getShoppingList();
+		ShoppingListDto shoppingListDto = shoppingList.getShoppingList();
+		Map<String, ArrayList<ProductDto>> shoppingItems = shoppingListDto.getShoppingListMap();
 		
 		ArrayList<ProductDto> products = shoppingItems.get("greengrocer");
 		assertEquals(5, products.size());
@@ -134,8 +136,9 @@ public class ShoppingListTest extends DataStoreTestBase {
 		Product product1 = products.get(0);
 		Product product2 = products.get(1);
 		
-		Map<String, ArrayList<ProductDto>> shoppingListDto = shoppingList.getShoppingList();
-		ArrayList<ProductDto> productDtos = shoppingListDto.get("supermarket");
+		ShoppingListDto shoppingListDto = shoppingList.getShoppingList();
+		Map<String, ArrayList<ProductDto>> shoppingListMap = shoppingListDto.getShoppingListMap();
+		ArrayList<ProductDto> productDtos = shoppingListMap.get("supermarket");
 		assertEquals(1, productDtos.size());
 		ProductDto productDto = productDtos.get(0);
 		assertArrayEquals(new String[]{product1.getId(), product2.getId()}, productDto.getIds().toArray());		

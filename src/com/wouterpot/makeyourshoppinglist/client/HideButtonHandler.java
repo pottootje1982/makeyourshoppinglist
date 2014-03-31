@@ -39,7 +39,7 @@ final class HideButtonHandler implements ClickHandler {
 			for (ProductCheckBox productCheckBox : category.getValue()) {
 				if (productCheckBox.getValue()) {
 					productCheckBox.setVisible(unhide);
-					//productCheckBox.getProduct().setVisible(unhide);
+					productCheckBox.getProduct().setVisible(unhide);
 					clientProducts.add(productCheckBox.getProduct());
 				}
 			}
