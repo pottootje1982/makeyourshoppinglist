@@ -16,20 +16,19 @@ public class DataStoreTestBase {
 
     @Before
     public void setUp() {
-    	ShoppingListFactory.get().createNewShoppingList();
+        helper.setUp();
     }
     
     @After
     public void tearDown() {
+        helper.tearDown();
     }
 
 	@BeforeClass 
     public static void setUpClass() {      
-        helper.setUp();
     }
 	
     @AfterClass 
     public static void tearDownClass() { 
-        helper.tearDown();
     }
 }

@@ -31,6 +31,7 @@ public class DataStoreTest extends DataStoreTestBase {
 		shoppingListFactory.addToShoppingList(file);
 		
 		PMF.open();
+		PMF.begin();
 		List<ShoppingList> shoppingLists = PMF.retrieveAll(ShoppingList.class);
 		assertEquals(1, shoppingLists.size());
 		ShoppingList shoppingList = shoppingLists.get(shoppingLists.size()-1);
@@ -38,5 +39,6 @@ public class DataStoreTest extends DataStoreTestBase {
 		List<Product> products = shoppingList.getProducts("greengrocer");
 		assertEquals(5, products.size());
 		PMF.commit();
+		PMF.close();
 	}
 }
