@@ -31,9 +31,9 @@ final class ShoppingListCallback implements	AsyncCallback<Map<String, ArrayList<
 				ProductCheckBox checkBox = new ProductCheckBox(product.toString(), product);
 				checkBox.addClickHandler(new CheckboxClickHandler(product));
 				checkBox.setTitle(product.getAggregatedProductName());
-				checkBox.setVisible(product.getVisible() != Boolean.FALSE);
 				verticalPanel.add(checkBox);
 				productCheckBoxes.add(checkBox);
+				checkBox.setVisible(product.getVisible() != Boolean.FALSE);
 			}
 			this.shoppingList.put(entry.getKey(), productCheckBoxes);
 		}

@@ -42,17 +42,19 @@ public class PMF<T> {
 	}
 
 	public static void open() {
-		if (pmInstance == null) {
-			pmInstance = JDOHelper.getPersistenceManagerFactory("transactions-optional").getPersistenceManager();
-			pmInstance.currentTransaction().begin();
-		}
-		else {
-			pmInstance.currentTransaction().begin();
-		}
+		pmInstance = JDOHelper.getPersistenceManagerFactory("transactions-optional").getPersistenceManager();
+	}
+	
+	public static void begin() {
+		pmInstance.currentTransaction().begin();
 	}
 
 	public static <T> T makePersistent(T obj) {
 		return pmInstance.makePersistent(obj);
+	}
+	
+	public static <T> T getObjectById(Class<T> classType, Object id) {
+		return pmInstance.getObjectById(classType, id);
 	}
 
 	public static void commit() {
@@ -79,5 +81,13 @@ public class PMF<T> {
 			pmInstance.close();
 			pmInstance = null;
 		}
+	}
+
+	public static <T> T detachCopy(T obj) {
+		return pmInstance.detachCopy(obj);		
+	}
+	
+	public static <T> T[] detachCopyAll(T... objs) {
+		return pmInstance.detachCopyAll(objs);		
 	}
 }

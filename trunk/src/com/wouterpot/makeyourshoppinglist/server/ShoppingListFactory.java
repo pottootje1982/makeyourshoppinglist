@@ -36,7 +36,6 @@ public class ShoppingListFactory {
 	}
 	
 	public ShoppingList createNewShoppingList() {
-		PMF.close();
 		shoppingList = null;
 		ShoppingList newShoppingList = getShoppingList();
 		return newShoppingList;

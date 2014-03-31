@@ -34,7 +34,7 @@ public class ShoppingList {
     @Persistent(mappedBy = "parent")
     List<Category> categoriesToProducts;
     
-    @Persistent
+    @Persistent(defaultFetchGroup = "true")
     ArrayList<String> sites = new ArrayList<String>();
         
 	private LanguageDictionary languageDictionary;
@@ -46,16 +46,20 @@ public class ShoppingList {
 
 	public void addIngredients(String recipeId, List<String> ingredients, String language) {
 		if (!sites.contains(recipeId)) {
-			PMF.open();
 			
-			ShoppingList shoppingList = PMF.makePersistent(this);
 			CategoryDictionary categoryDictionary = languageDictionary.getCategoryDictionary(language);
 			for (String ingredient : ingredients) {
 				createProduct(categoryDictionary, ingredient);
 			}
-			shoppingList.sites.add(recipeId);
+			sites.add(recipeId);
+		
+			PMF.open();
+			PMF.begin();
 			
+			ShoppingList shoppingList = PMF.makePersistent(this);
+						
 			PMF.commit();
+			PMF.close();
 		}
 	}
 
@@ -124,7 +128,6 @@ public class ShoppingList {
 			}
 		}
 		
-		PMF.commit();
 		return result;
 	}
 
@@ -142,5 +145,9 @@ public class ShoppingList {
 			}
 		}
 		return results;
+	}
+
+	public String getId() {
+		return id;
 	}
 }

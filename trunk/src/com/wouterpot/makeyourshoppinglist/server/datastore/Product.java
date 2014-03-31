@@ -32,14 +32,14 @@ public class Product {
     )
     private String      id;
 
-	@Persistent
+	@Persistent(defaultFetchGroup = "true")
 	@Embedded
 	private ProductInfo productInfo;
 	
     @Persistent
     private Category parent;
     
-    @Persistent
+    @Persistent(defaultFetchGroup = "true")
     @Embedded
     private Ingredient ingredient;
 
@@ -64,6 +64,7 @@ public class Product {
 		this.id = product.id;
 		this.ingredient = new Ingredient(product.getIngredient());
 		this.productInfo = product.productInfo;
+		this.visible = product.visible;
 		aggregatedIds.add(product.id);
 		aggregatedProductNames.add(product.getIngredient().toString());
 	}

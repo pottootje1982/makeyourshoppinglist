@@ -27,7 +27,7 @@ public class Category implements Comparable<Category> {
 	@Persistent
 	private String categoryName;
 	
-    @Persistent(mappedBy = "parent")
+    @Persistent(mappedBy = "parent", defaultFetchGroup = "true")
 	private List<Product> products = new ArrayList<Product>();
 
     @Persistent

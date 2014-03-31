@@ -19,6 +19,7 @@ GreetingService {
 
 	private void initShoppingList() {
 		PMF.open();
+		PMF.begin();
 
 		List<ShoppingList> shoppingLists = PMF.retrieveAll(ShoppingList.class);
 		ShoppingList shoppingList = null;
@@ -28,6 +29,7 @@ GreetingService {
 		}
 		
 		PMF.commit();
+		PMF.close();
 		if (shoppingList != null)
 			ShoppingListFactory.get().setShoppingList(shoppingList);
 	};
@@ -51,13 +53,17 @@ GreetingService {
 		ShoppingListFactory shoppingListFactory = ShoppingListFactory.get();
 		ShoppingList shoppingList = shoppingListFactory.getShoppingList();
 		PMF.open();
-		shoppingList = PMF.makePersistent(shoppingList);
+		PMF.begin();
+		
+		shoppingList = PMF.getObjectById(ShoppingList.class, shoppingList.getId());
 		for (ProductDto clientProduct : clientProducts) {
 			List<Product> products = shoppingList.getProduct(clientProduct.getCategoryName(), clientProduct.getIds());
 			for (Product product : products) {
 				product.setVisible(clientProduct.getVisible());
 			}	
 		}
+		
 		PMF.commit();
+		PMF.close();
 	}
 }
