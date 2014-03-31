@@ -23,6 +23,7 @@ import com.wouterpot.makeyourshoppinglist.config.ProductInfo;
 import com.wouterpot.makeyourshoppinglist.helpers.RegEx;
 import com.wouterpot.makeyourshoppinglist.server.PMF;
 import com.wouterpot.makeyourshoppinglist.shared.ProductDto;
+import com.wouterpot.makeyourshoppinglist.shared.ShoppingListDto;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
 public class ShoppingList {
@@ -108,14 +109,14 @@ public class ShoppingList {
 		this.languageDictionary = languageDictionary;
 	}
 
-	public Map<String, ArrayList<ProductDto>> getShoppingList() {
+	public ShoppingListDto getShoppingList() {
 		PMF.open();
 		
-		Map<String, ArrayList<ProductDto>> result = new TreeMap<>();
+		Map<String, ArrayList<ProductDto>> shoppingListMap = new TreeMap<>();
 		List<Category> categories = getCategories();
 		for (Category category : categories) {
 			ArrayList<ProductDto> productStrings = new ArrayList<ProductDto>();
-			result.put(category.getCategoryName(), productStrings);
+			shoppingListMap.put(category.getCategoryName(), productStrings);
 			List<Product> products = category.getProducts();
 			Group<Product> groups = group(products, by(on(Product.class).getProductKey()));
 			List<Product> uniqueProducts = new ArrayList<>();
@@ -128,7 +129,7 @@ public class ShoppingList {
 			}
 		}
 		
-		return result;
+		return new ShoppingListDto(shoppingListMap, sites);
 	}
 
 	public boolean isEmpty() {

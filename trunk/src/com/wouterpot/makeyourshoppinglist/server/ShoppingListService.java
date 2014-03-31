@@ -1,14 +1,13 @@
 package com.wouterpot.makeyourshoppinglist.server;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.wouterpot.makeyourshoppinglist.client.GreetingService;
 import com.wouterpot.makeyourshoppinglist.server.datastore.Product;
 import com.wouterpot.makeyourshoppinglist.server.datastore.ShoppingList;
 import com.wouterpot.makeyourshoppinglist.shared.ProductDto;
+import com.wouterpot.makeyourshoppinglist.shared.ShoppingListDto;
 
 public class ShoppingListService extends RemoteServiceServlet implements
 GreetingService {
@@ -37,7 +36,7 @@ GreetingService {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public Map<String, ArrayList<ProductDto>> greetServer(String[] sites) throws IllegalArgumentException {
+	public ShoppingListDto greetServer(String[] sites) throws IllegalArgumentException {
 		ShoppingListFactory shoppingListFactory = ShoppingListFactory.get();
 		for (String site : sites) {
 			shoppingListFactory.addToShoppingList(site);	

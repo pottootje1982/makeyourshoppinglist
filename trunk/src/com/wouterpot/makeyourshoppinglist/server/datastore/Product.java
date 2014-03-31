@@ -2,8 +2,6 @@ package com.wouterpot.makeyourshoppinglist.server.datastore;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
-
 import javax.jdo.annotations.Embedded;
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -113,7 +111,7 @@ public class Product {
 	}
 	
 	public String getAggregatedProductName() {
-		return Joiner.on("\n").join(aggregatedProductNames);
+		return aggregatedProductNames.size() > 1 ? Joiner.on("\n").join(aggregatedProductNames) : null;
 	}
 
 	@Override
