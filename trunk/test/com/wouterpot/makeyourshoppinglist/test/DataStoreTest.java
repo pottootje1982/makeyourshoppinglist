@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.util.List;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import com.wouterpot.makeyourshoppinglist.server.PMF;
@@ -13,6 +15,13 @@ import com.wouterpot.makeyourshoppinglist.server.datastore.Product;
 import com.wouterpot.makeyourshoppinglist.server.datastore.ShoppingList;
 
 public class DataStoreTest extends DataStoreTestBase {
+	
+	@Before
+	public void setup() {
+		super.setUp();
+		ShoppingListFactory.get().createNewShoppingList();
+	}
+	
 	
     @Test
     public void storeShoppingList() {
@@ -31,14 +40,12 @@ public class DataStoreTest extends DataStoreTestBase {
 		shoppingListFactory.addToShoppingList(file);
 		
 		PMF.open();
-		PMF.begin();
 		List<ShoppingList> shoppingLists = PMF.retrieveAll(ShoppingList.class);
 		assertEquals(1, shoppingLists.size());
 		ShoppingList shoppingList = shoppingLists.get(shoppingLists.size()-1);
 		PMF.retrieve(shoppingList);
 		List<Product> products = shoppingList.getProducts("greengrocer");
 		assertEquals(5, products.size());
-		PMF.commit();
 		PMF.close();
 	}
 }

@@ -35,7 +35,7 @@ public class ShoppingList {
     private String      id;
 	
     @Persistent(mappedBy = "parent", defaultFetchGroup = "true")
-    List<Category> categoriesToProducts;
+    List<Category> categoriesToProducts = new ArrayList<Category>();
     
     @Persistent(defaultFetchGroup = "true")
     ArrayList<String> sites = new ArrayList<String>();
@@ -44,7 +44,6 @@ public class ShoppingList {
 
 	public ShoppingList(LanguageDictionary languageDictionary) {
 		this.languageDictionary = languageDictionary;
-		categoriesToProducts = new ArrayList<Category>();
 	}
 
 	public void addIngredients(String recipeId, List<String> ingredients, String language) {
@@ -80,7 +79,7 @@ public class ShoppingList {
 	}
 	
 	private Category getCategory(String categoryName) {
-		for (Category category : categoriesToProducts) {
+		for (Category category : getCategories()) {
 			if (category.equals(categoryName))
 				return category;
 		}
@@ -92,7 +91,7 @@ public class ShoppingList {
 		if (category == null) {
 			category = new Category(categoryName);
 			category.setParent(this);
-			categoriesToProducts.add(category);
+			getCategories().add(category);
 		}
 		return category;
 	}
@@ -156,7 +155,7 @@ public class ShoppingList {
 	}
 
 	public boolean isEmpty() {
-		return categoriesToProducts.isEmpty();
+		return getCategories().isEmpty();
 	}
 
 	public List<Product> getProduct(String categoryName, List<String> ids) {
