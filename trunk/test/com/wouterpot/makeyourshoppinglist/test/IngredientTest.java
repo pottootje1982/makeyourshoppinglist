@@ -65,6 +65,11 @@ public class IngredientTest extends DataStoreTestBase {
 	// TODO: 1/2 glas witte wijn
 	// glas should be unit
 	
+	// TODO: 2-3 rashers streaky bacon
+	
+	// TODO: 50ml olive oil, for frying & extra-virgin olive oil,	for drizzling
+	// shouldn't be added
+	
 	@Test
 	public void caseInsensitiveUnit() {
 		Ingredient ingredient = new Ingredient("2 Tl kaneel");

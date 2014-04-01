@@ -5,7 +5,6 @@ import java.util.List;
 import javax.jdo.JDOException;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import com.sun.xml.internal.bind.annotation.OverrideAnnotationOf;
 import com.wouterpot.makeyourshoppinglist.client.GreetingService;
 import com.wouterpot.makeyourshoppinglist.server.datastore.Product;
 import com.wouterpot.makeyourshoppinglist.server.datastore.ShoppingList;
@@ -74,6 +73,8 @@ GreetingService {
 				product.setVisible(clientProduct.getVisible());
 			}	
 		}
+		
+		PMF.makePersistent(shoppingList);
 		
 		PMF.commit();
 		PMF.close();

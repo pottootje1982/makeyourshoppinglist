@@ -9,12 +9,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.wouterpot.makeyourshoppinglist.server.PMF;
 import com.wouterpot.makeyourshoppinglist.server.ShoppingListFactory;
 import com.wouterpot.makeyourshoppinglist.server.datastore.Product;
 import com.wouterpot.makeyourshoppinglist.server.datastore.ShoppingList;

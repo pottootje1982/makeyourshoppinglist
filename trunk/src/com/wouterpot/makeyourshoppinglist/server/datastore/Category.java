@@ -11,7 +11,6 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 import com.google.gwt.thirdparty.guava.common.base.Joiner;
-import com.wouterpot.makeyourshoppinglist.server.PMF;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
 public class Category implements Comparable<Category> {
@@ -38,14 +37,6 @@ public class Category implements Comparable<Category> {
 	}
 	
 	public List<Product> getProducts() {
-		if (products == null) {
-			// Products can be null due to lazy evaluation
-			Category category = PMF.getObjectById(Category.class, id);
-			if (category != null) {
-				PMF.retrieve(category);
-				products = category.products;
-			}
-		}
 		return products;
 	}
 
