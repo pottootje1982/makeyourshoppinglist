@@ -30,6 +30,7 @@ import java.util.List;
 import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
+import javax.jdo.Transaction;
 
 public class PMF<T> {
 
@@ -87,5 +88,11 @@ public class PMF<T> {
 	
 	public static <T> T[] detachCopyAll(T... objs) {
 		return pmInstance.detachCopyAll(objs);		
+	}
+
+	public static void rollback() {
+		Transaction currentTransaction = pmInstance.currentTransaction();
+		if (currentTransaction.isActive())
+			currentTransaction.rollback();
 	}
 }
