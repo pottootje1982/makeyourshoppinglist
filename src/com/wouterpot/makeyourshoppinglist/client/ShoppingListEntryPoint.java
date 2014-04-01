@@ -14,7 +14,9 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-	
+
+// TODO: option to expand added items (to not add)
+
 public class ShoppingListEntryPoint implements EntryPoint {
 
 	private final class ClearShoppingListHandler implements ClickHandler {

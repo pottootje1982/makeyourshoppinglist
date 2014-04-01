@@ -19,5 +19,9 @@ public class ProductTest {
 		product1.add(product2);
 		assertEquals("6el olie", product1.add(product2).toString());
 	}
+	
+	
+	// TODO: add sap van 1/2 citroen
+	// & fijngeraspte schil en sap van 1 grote citroen
 
 }

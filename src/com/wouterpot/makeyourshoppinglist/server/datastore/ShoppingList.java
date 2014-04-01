@@ -22,6 +22,7 @@ import com.wouterpot.makeyourshoppinglist.config.LanguageDictionary;
 import com.wouterpot.makeyourshoppinglist.config.ProductInfo;
 import com.wouterpot.makeyourshoppinglist.helpers.RegEx;
 import com.wouterpot.makeyourshoppinglist.server.PMF;
+import com.wouterpot.makeyourshoppinglist.server.ShoppingListFactory;
 import com.wouterpot.makeyourshoppinglist.shared.ProductDto;
 import com.wouterpot.makeyourshoppinglist.shared.ShoppingListDto;
 
@@ -32,7 +33,7 @@ public class ShoppingList {
     @Extension(vendorName = "datanucleus", key = "gae.encoded-pk", value = "true")
     private String      id;
 	
-    @Persistent(mappedBy = "parent")
+    @Persistent(mappedBy = "parent", defaultFetchGroup = "true")
     List<Category> categoriesToProducts;
     
     @Persistent(defaultFetchGroup = "true")
@@ -57,7 +58,7 @@ public class ShoppingList {
 			PMF.open();
 			PMF.begin();
 			
-			ShoppingList shoppingList = PMF.makePersistent(this);
+			PMF.makePersistent(this);
 						
 			PMF.commit();
 			PMF.close();
@@ -109,11 +110,14 @@ public class ShoppingList {
 		this.languageDictionary = languageDictionary;
 	}
 
-	public ShoppingListDto getShoppingList() {
+	public static ShoppingListDto getShoppingList() {
 		PMF.open();
+		PMF.begin();
 		
+		ShoppingList shoppingList = PMF.getObjectById(ShoppingList.class, ShoppingListFactory.get().getShoppingList().getId());
+
 		Map<String, ArrayList<ProductDto>> shoppingListMap = new TreeMap<>();
-		List<Category> categories = getCategories();
+		List<Category> categories = shoppingList.getCategories();
 		for (Category category : categories) {
 			ArrayList<ProductDto> productStrings = new ArrayList<ProductDto>();
 			shoppingListMap.put(category.getCategoryName(), productStrings);
@@ -129,7 +133,10 @@ public class ShoppingList {
 			}
 		}
 		
-		return new ShoppingListDto(shoppingListMap, sites);
+		PMF.commit();
+		PMF.close();
+		
+		return new ShoppingListDto(shoppingListMap, shoppingList.sites);
 	}
 
 	public boolean isEmpty() {

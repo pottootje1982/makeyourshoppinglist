@@ -41,8 +41,8 @@ public class Product {
     @Embedded
     private Ingredient ingredient;
 
-    @Persistent
-	private Boolean visible = true;
+    @Persistent(defaultFetchGroup = "true")
+	private Boolean visible;
     
     @NotPersistent
     private List<String> aggregatedIds = new ArrayList<String>();
