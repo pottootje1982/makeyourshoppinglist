@@ -14,4 +14,5 @@ import com.wouterpot.makeyourshoppinglist.shared.ShoppingListDto;
 public interface GreetingService extends RemoteService {
 	ShoppingListDto greetServer(String[] sites) throws IllegalArgumentException;
 	void productVisibilityChange(List<ProductDto> clientProducts);
+	void createNewShoppingList();
 }

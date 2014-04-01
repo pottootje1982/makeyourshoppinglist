@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ComplexPanel;
@@ -15,12 +17,26 @@ import com.google.gwt.user.client.ui.Widget;
 	
 public class ShoppingListEntryPoint implements EntryPoint {
 
+	private final class ClearShoppingListHandler implements ClickHandler {
+		private ShoppingListEntryPoint shoppingListEntryPoint;
+
+		public ClearShoppingListHandler(ShoppingListEntryPoint shoppingListEntryPoint) {
+					this.shoppingListEntryPoint = shoppingListEntryPoint;
+		}
+
+		@Override
+		public void onClick(ClickEvent event) {
+			shoppingListEntryPoint.clearShoppingList();
+		}
+	}
+
 	/**
 	 * Create a remote service proxy to talk to the server-side Greeting
 	 * service.
 	 */
 	private final GreetingServiceAsync greetingService = GWT.create(GreetingService.class);
 	private VerticalPanel recipePanel;
+	private VerticalPanel shoppingListPanel;
 
 	@Override
 	public void onModuleLoad() {
@@ -34,12 +50,11 @@ public class ShoppingListEntryPoint implements EntryPoint {
 		ArrayList<String> sites = new ArrayList<String>();
 		while ((site = com.google.gwt.user.client.Window.Location.getParameter("site" + parameterIndex++)) != null) {
 			sites.add(site);
-			addSiteToPanel(site);
 		}
 		String[] sitesArray = new String[sites.size()];
 		RootPanel.get().add(recipePanel);
 
-		VerticalPanel shoppingListPanel = new VerticalPanel();
+		shoppingListPanel = new VerticalPanel();
 		shoppingListPanel.getElement().setId("shoppingList");
 		RootPanel.get().add(shoppingListPanel);
 		ShoppingListCallback shoppingListCallback = new ShoppingListCallback(this);
@@ -50,9 +65,18 @@ public class ShoppingListEntryPoint implements EntryPoint {
 		hideButton.addClickHandler(new HideButtonHandler(greetingService, shoppingListCallback, false));
 		Button unhideButton = new Button("Unhide items");
 		unhideButton.addClickHandler(new HideButtonHandler(greetingService, shoppingListCallback, true));
+		Button clearButton = new Button("Clear shopping list");
+		clearButton.addClickHandler(new ClearShoppingListHandler(this));
 		buttonPanel.add(hideButton);
 		buttonPanel.add(unhideButton);
+		buttonPanel.add(clearButton);
 		RootPanel.get().add(buttonPanel);
+	}
+	
+	void clearShoppingList() {
+		recipePanel.clear();
+		shoppingListPanel.clear();
+		greetingService.createNewShoppingList(new VoidCallback());
 	}
 
 	void addSiteToPanel(String site) {

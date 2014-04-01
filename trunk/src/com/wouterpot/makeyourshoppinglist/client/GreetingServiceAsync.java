@@ -14,4 +14,6 @@ public interface GreetingServiceAsync {
 			throws IllegalArgumentException;
 
 	void productVisibilityChange(List<ProductDto> clientProducts, AsyncCallback<Void> callback);
+
+	void createNewShoppingList(AsyncCallback<Void> callback);
 }

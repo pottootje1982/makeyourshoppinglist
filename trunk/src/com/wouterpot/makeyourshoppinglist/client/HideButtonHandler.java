@@ -6,21 +6,9 @@ import java.util.Map.Entry;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.wouterpot.makeyourshoppinglist.shared.ProductDto;
 
 final class HideButtonHandler implements ClickHandler {
-
-	private final class VoidCallback implements AsyncCallback<Void> {
-		@Override
-		public void onSuccess(Void result) {
-		}
-
-		@Override
-		public void onFailure(Throwable caught) {
-			caught.printStackTrace();
-		}
-	}
 
 	private ShoppingListCallback shoppingList;
 	private boolean unhide;
