@@ -123,7 +123,8 @@ public class ShoppingList {
 				
 				ShoppingList shoppingList = PMF.getObjectById(ShoppingList.class, shoppingListFactory.getShoppingList().getId());
 		
-				sites = shoppingList.sites;
+				for (String site : shoppingList.sites)
+					sites.add(site);
 				List<Category> categories = shoppingList.getCategories();
 				for (Category category : categories) {
 					ArrayList<ProductDto> productStrings = new ArrayList<ProductDto>();
