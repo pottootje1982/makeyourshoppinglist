@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.jdo.JDOException;
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -111,8 +112,8 @@ public class ShoppingList {
 	}
 
 	public static ShoppingListDto getShoppingList() {
-		Map<String, ArrayList<ProductDto>> shoppingListMap = new TreeMap<>();
-		List<String> sites = new ArrayList<>();
+		Map<String, ArrayList<ProductDto>> shoppingListMap = new TreeMap<String, ArrayList<ProductDto>>();
+		ArrayList<String> sites = new ArrayList<String>();
 		ShoppingListFactory shoppingListFactory = ShoppingListFactory.get();
 		
 		if (shoppingListFactory.hasValidShoppingList()) {
@@ -140,7 +141,9 @@ public class ShoppingList {
 				}
 				
 				PMF.commit();
-				PMF.close();
+			}
+			catch (JDOException ex) {
+				ex.printStackTrace();
 			}
 			finally {
 				PMF.rollback();

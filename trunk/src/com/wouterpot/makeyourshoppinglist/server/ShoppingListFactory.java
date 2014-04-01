@@ -29,16 +29,16 @@ public class ShoppingListFactory {
 	}
 
 	public ShoppingList getShoppingList() {
-		if (shoppingList == null) {
-			shoppingList = new ShoppingList(languageDictionary);
-		}
 		return shoppingList;
 	}
 	
-	public ShoppingList createNewShoppingList() {
-		shoppingList = null;
-		ShoppingList newShoppingList = getShoppingList();
-		return newShoppingList;
+	public void createNewShoppingList() {
+		PMF.open();
+		PMF.begin();
+		shoppingList = new ShoppingList(languageDictionary);
+		PMF.makePersistent(shoppingList);
+		PMF.commit();
+		PMF.close();
 	}
 
 	private void addToShoppingList(String recipeId, IngredientsList ingredientsList) {

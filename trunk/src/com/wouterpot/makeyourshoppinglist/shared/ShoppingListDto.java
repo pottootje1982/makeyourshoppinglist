@@ -8,13 +8,13 @@ import java.util.Map;
 public class ShoppingListDto implements Serializable {
 
 	private Map<String, ArrayList<ProductDto>> shoppingListMap;
-	private List<String> sites;
+	private ArrayList<String> sites;
 	
 	public ShoppingListDto() {
 
 	}
 
-	public ShoppingListDto(Map<String, ArrayList<ProductDto>> shoppingListMap, List<String> sites) {
+	public ShoppingListDto(Map<String, ArrayList<ProductDto>> shoppingListMap, ArrayList<String> sites) {
 				this.shoppingListMap = shoppingListMap;
 				this.sites = sites;
 	}
@@ -23,7 +23,7 @@ public class ShoppingListDto implements Serializable {
 		return shoppingListMap;
 	}
 
-	public List<String> getSites() {
+	public ArrayList<String> getSites() {
 		return sites;
 	}
 }
