@@ -67,4 +67,8 @@ public class ShoppingListFactory {
 		}
 	}
 
+	public boolean hasValidShoppingList() {
+		return shoppingList != null && shoppingList.getId() != null;
+	}
+
 }
