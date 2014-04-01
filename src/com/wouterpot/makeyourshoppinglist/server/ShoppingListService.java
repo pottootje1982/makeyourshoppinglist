@@ -2,7 +2,10 @@ package com.wouterpot.makeyourshoppinglist.server;
 
 import java.util.List;
 
+import javax.jdo.JDOException;
+
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.sun.xml.internal.bind.annotation.OverrideAnnotationOf;
 import com.wouterpot.makeyourshoppinglist.client.GreetingService;
 import com.wouterpot.makeyourshoppinglist.server.datastore.Product;
 import com.wouterpot.makeyourshoppinglist.server.datastore.ShoppingList;
@@ -12,25 +15,35 @@ import com.wouterpot.makeyourshoppinglist.shared.ShoppingListDto;
 public class ShoppingListService extends RemoteServiceServlet implements
 GreetingService {
 
-	public ShoppingListService() {
-		initShoppingList();
-	}
+	public ShoppingListService() {}
 
 	private void initShoppingList() {
-		PMF.open();
-		PMF.begin();
-
-		List<ShoppingList> shoppingLists = PMF.retrieveAll(ShoppingList.class);
 		ShoppingList shoppingList = null;
-		if (shoppingLists.size() > 0) {
-			shoppingList = shoppingLists.get(0);
-			PMF.retrieve(shoppingList);
+		PMF.open();
+		try {
+			PMF.begin();
+	
+			List<ShoppingList> shoppingLists = PMF.retrieveAll(ShoppingList.class);
+			if (shoppingLists.size() > 0) {
+				shoppingList = shoppingLists.get(0);
+				PMF.retrieve(shoppingList);
+			}
 		}
-		
-		PMF.commit();
-		PMF.close();
+		catch (JDOException ex) {
+			ex.printStackTrace();
+		}
+		finally {
+			PMF.commit();
+			PMF.close();
+		}
 		if (shoppingList != null)
 			ShoppingListFactory.get().setShoppingList(shoppingList);
+	}
+	
+	@Override
+	public void init() throws javax.servlet.ServletException {
+		super.init();
+		initShoppingList();
 	};
 
 	private static final long serialVersionUID = 1L;
@@ -64,5 +77,10 @@ GreetingService {
 		
 		PMF.commit();
 		PMF.close();
+	}
+
+	@Override
+	public void createNewShoppingList() {
+		ShoppingListFactory.get().createNewShoppingList();
 	}
 }
