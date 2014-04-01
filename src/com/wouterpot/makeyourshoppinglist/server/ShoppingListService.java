@@ -37,6 +37,8 @@ GreetingService {
 		}
 		if (shoppingList != null)
 			ShoppingListFactory.get().setShoppingList(shoppingList);
+		else
+			ShoppingListFactory.get().createNewShoppingList();
 	}
 	
 	@Override
