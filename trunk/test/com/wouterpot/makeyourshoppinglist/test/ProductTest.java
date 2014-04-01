@@ -20,6 +20,15 @@ public class ProductTest {
 		assertEquals("6el olie", product1.add(product2).toString());
 	}
 	
+	@Test
+	public void testAddUnquantifiableToVolume() {
+		Product product1 = new Product(new ProductInfo("oil"));
+		product1.setIngredient(new Ingredient("olive oil"));
+		Product product2 = new Product(new ProductInfo("oil"));
+		product2.setIngredient(new Ingredient("50ml olive oil, for frying"));
+		assertEquals("50ml olive oil", product1.add(product2).toString());
+	}
+	
 	
 	// TODO: add sap van 1/2 citroen
 	// & fijngeraspte schil en sap van 1 grote citroen

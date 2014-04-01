@@ -11,17 +11,8 @@ import com.wouterpot.makeyourshoppinglist.server.datastore.Unit;
 import com.wouterpot.makeyourshoppinglist.server.datastore.QuantityType;
 import com.wouterpot.makeyourshoppinglist.server.datastore.UnitType;
 
-//@RunWith(PowerMockRunner.class) // TODO: sort out how this works
-@PrepareForTest(PMF.class)
 public class IngredientTest extends DataStoreTestBase {
 
-	// TODO: sort out how this works
-	private void mockPMF() {
-		Ingredient temp = new Ingredient("");
-		PowerMock.mockStatic(PMF.class);
-		//Mockito.when(PMF.makePersistent(temp)).thenReturn(temp);
-	}
-	
 	@Test
 	public void quantityNumber() {
 		Ingredient ingredient = new Ingredient("2 el roomboter");
@@ -62,8 +53,22 @@ public class IngredientTest extends DataStoreTestBase {
 		assertEquals("kaneelstokjes", ingredient.getProductName());
 	}
 	
-	// TODO: 1/2 glas witte wijn
-	// glas should be unit
+	@Test
+	public void Division() {
+		Ingredient ingredient = new Ingredient("1/2 glas wijn");
+		Unit unit = ingredient.getUnit(UnitType.glas);
+		assertEquals("0.5 glas", unit.toString());
+		assertEquals("wijn", ingredient.getProductName());
+		
+	}
+	
+	@Test
+	public void Uncountable() {
+		Ingredient ingredient = new Ingredient("extra-virgin olive oil");
+		Unit unit = ingredient.getUnit(QuantityType.Uncountable);
+		assertEquals("", unit.toString());
+		assertEquals("extra-virgin olive oil", ingredient.getProductName());
+	}
 	
 	// TODO: 2-3 rashers streaky bacon
 	

@@ -15,16 +15,21 @@ import com.wouterpot.makeyourshoppinglist.helpers.RegEx;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
 public class Ingredient {
-    private static Unit[] availableUnits = {
-		new Unit(QuantityType.Volume, UnitType.l), new Unit(QuantityType.Volume, UnitType.dl), new Unit(QuantityType.Volume, UnitType.cl), new Unit(QuantityType.Volume, UnitType.ml),
-		new Unit(QuantityType.Weight, UnitType.kg), new Unit(QuantityType.Weight, UnitType.g),
-		new Unit(UnitType.tbsp),
-		new Unit(UnitType.ts),
-		new Unit(UnitType.splashes),
-		new Unit(UnitType.drops),
-		new Unit(UnitType.tl),
-		new Unit(UnitType.el),
-	};
+    private static List<Unit> availableUnits = new ArrayList<Unit>() { {
+		for (UnitType unitType : UnitType.values()) {
+			switch (unitType) {
+			case l: add(new Unit(QuantityType.Volume, UnitType.l)); break;
+			case dl: add(new Unit(QuantityType.Volume, UnitType.dl)); break;
+			case cl: add(new Unit(QuantityType.Volume, UnitType.cl)); break;
+			case ml: add(new Unit(QuantityType.Volume, UnitType.ml)); break;
+			case kg: add(new Unit(QuantityType.Weight, UnitType.kg)); break;
+			case g: add(new Unit(QuantityType.Weight, UnitType.g)); break;
+			case NaN:
+			case pieces: break;
+			default: add(new Unit(unitType)); break;
+			}
+		}
+	}};
 	
     // Serialized as blob because I couldn't manage to create
     // cross reference between parent (since parent is embedded)
@@ -49,20 +54,27 @@ public class Ingredient {
 	}
 
 	private void parseIngredient(String ingredient) {
-		String[] groups = RegEx.findGroups(ingredient, "^(\\d*[.,]?\\d*)\\s*(\\S*)\\s*(.*)$");
+		String[] groups = RegEx.findGroups(ingredient, "^(\\d*[ .,/]*\\d*)\\s*(\\S*)\\s*(.*)$");
 		
 		List<String> productNameParts = new ArrayList<String>();
 		UnitType parsedUnitType = null;
 		double parsedAmount = 0;
-		if (!Strings.isNullOrEmpty(groups[0])) {
-			parsedAmount = Double.parseDouble(groups[0]);
+		String numericalPart = groups[0];
+		if (!Strings.isNullOrEmpty(numericalPart)) {
+			try {
+				parsedAmount = parseNumericalPart(numericalPart);
+			}
+			catch (NumberFormatException ex) {
+				productNameParts.add(numericalPart);
+			}
 			if (!Strings.isNullOrEmpty(groups[1])) {
 				parsedUnitType = UnitType.parse(groups[1]);
 				if (parsedUnitType == null) {
 					productNameParts.add(groups[1]);
 				}
 			}
-			parsedUnitType = parsedUnitType != null ? parsedUnitType : UnitType.number;
+
+			parsedUnitType = parsedUnitType != null ? parsedUnitType : UnitType.pieces;
 		}
 		else {
 			if (!Strings.isNullOrEmpty(groups[1]))
@@ -75,6 +87,16 @@ public class Ingredient {
 		addUnit(parsedUnitType, parsedAmount);
 	}
 
+	private double parseNumericalPart(String numericalPart) {
+		if (numericalPart.contains("/")) {
+			String[] groups = RegEx.findGroups(numericalPart, "(\\d*)[ /]+(\\d*)");
+			if (groups.length != 2)
+				throw new NumberFormatException("Invalid division in numerical part " + numericalPart);
+			return Double.parseDouble(groups[0]) / Integer.parseInt(groups[1]);
+		}
+		return Double.parseDouble(numericalPart);
+	}
+
 	private void addUnit(UnitType parsedUnitType, double parsedAmount) {
 		Unit unit = getAvailableUnit(parsedUnitType);
 		Unit newUnit = new Unit(unit.getQuantityType(), parsedUnitType, parsedAmount);
@@ -85,7 +107,7 @@ public class Ingredient {
 		return productName;
 	}
 	
-	public Unit getAvailableUnit(UnitType unitType) {
+	public static Unit getAvailableUnit(UnitType unitType) {
 		for (Unit unit : availableUnits) {
 			if (unit.getUnitType() == unitType)
 				return new Unit(unit);

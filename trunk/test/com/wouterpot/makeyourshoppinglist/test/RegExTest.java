@@ -43,6 +43,14 @@ public class RegExTest {
 	}
 	
 	@Test
+	public void testDivision() {
+		String[] findGroups = RegEx.findGroups("1 / 2", "(\\d*)[ .,/]*(\\d*)");
+		assertEquals(2, findGroups.length);
+		assertEquals("1", findGroups[0]);
+		assertEquals("2", findGroups[1]);
+	}
+	
+	@Test
 	public void testEscapeStrangeChar() {
 		assertEquals("bread", RegEx.escapeStrangeChars("bréad"));
 	}
