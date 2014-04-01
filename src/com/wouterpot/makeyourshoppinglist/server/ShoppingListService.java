@@ -33,7 +33,7 @@ GreetingService {
 			ex.printStackTrace();
 		}
 		finally {
-			PMF.commit();
+			PMF.rollback();
 			PMF.close();
 		}
 		if (shoppingList != null)
