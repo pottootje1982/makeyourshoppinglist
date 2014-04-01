@@ -13,7 +13,10 @@ public enum UnitType {
 	tl, 
 	splashes, 
 	drops,
-	number,
+	glas,
+	glass,
+	
+	pieces,
 	NaN;
 	
 	private String value;
@@ -54,7 +57,9 @@ public enum UnitType {
 		case "el": return el;
 		case "theelepel":
 		case "tl": return tl;
-		case "number": return number;
+		case "glass": return glass;
+		case "glas": return glas;
+		case "number": return pieces;
 		case "nan": return NaN;
 		}
 		return null;

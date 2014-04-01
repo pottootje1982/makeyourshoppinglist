@@ -41,7 +41,7 @@ public class Unit implements Serializable {
 	private QuantityType quantityType;
 
 	public Unit(UnitType unitType) {
-		this(unitType == UnitType.number ? QuantityType.Countable : QuantityType.Uncountable, unitType);
+		this(unitType == UnitType.pieces ? QuantityType.Countable : QuantityType.Uncountable, unitType);
 	}
 	
 	public Unit(Unit other) {
@@ -86,7 +86,8 @@ public class Unit implements Serializable {
 	@Override
 	public String toString() {
 		DecimalFormat df = new DecimalFormat("#.#");
-		Object unitTypeString = unitType != UnitType.NaN && unitType != UnitType.number ? unitType : "";
+		String unitTypeString = unitType != UnitType.NaN && unitType != UnitType.pieces ? unitType.toString() : "";
+		if (unitType == UnitType.glas || unitType == UnitType.glass) unitTypeString = " " + unitTypeString;
 		String amountString = unitType != UnitType.NaN ? df.format(amount) : "";
 		return String.format("%s%s", amountString, unitTypeString);
 	}

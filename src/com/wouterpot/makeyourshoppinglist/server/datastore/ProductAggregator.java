@@ -5,7 +5,6 @@ import ch.lambdaj.function.aggregate.PairAggregator;
 public class ProductAggregator extends PairAggregator<Product> {
 
 	public ProductAggregator() {
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
