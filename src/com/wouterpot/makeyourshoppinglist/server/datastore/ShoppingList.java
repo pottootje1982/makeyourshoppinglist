@@ -111,32 +111,44 @@ public class ShoppingList {
 	}
 
 	public static ShoppingListDto getShoppingList() {
-		PMF.open();
-		PMF.begin();
-		
-		ShoppingList shoppingList = PMF.getObjectById(ShoppingList.class, ShoppingListFactory.get().getShoppingList().getId());
-
 		Map<String, ArrayList<ProductDto>> shoppingListMap = new TreeMap<>();
-		List<Category> categories = shoppingList.getCategories();
-		for (Category category : categories) {
-			ArrayList<ProductDto> productStrings = new ArrayList<ProductDto>();
-			shoppingListMap.put(category.getCategoryName(), productStrings);
-			List<Product> products = category.getProducts();
-			Group<Product> groups = group(products, by(on(Product.class).getProductKey()));
-			List<Product> uniqueProducts = new ArrayList<>();
-			for (String productKey : groups.keySet()) {
-				List<Product> sameProducts = groups.find(productKey);
-				uniqueProducts.add(aggregate(sameProducts, new ProductAggregator()));
+		List<String> sites = new ArrayList<>();
+		ShoppingListFactory shoppingListFactory = ShoppingListFactory.get();
+		
+		if (shoppingListFactory.hasValidShoppingList()) {
+			try {
+				PMF.open();
+				PMF.begin();
+				
+				ShoppingList shoppingList = PMF.getObjectById(ShoppingList.class, shoppingListFactory.getShoppingList().getId());
+		
+				sites = shoppingList.sites;
+				List<Category> categories = shoppingList.getCategories();
+				for (Category category : categories) {
+					ArrayList<ProductDto> productStrings = new ArrayList<ProductDto>();
+					shoppingListMap.put(category.getCategoryName(), productStrings);
+					List<Product> products = category.getProducts();
+					Group<Product> groups = group(products, by(on(Product.class).getProductKey()));
+					List<Product> uniqueProducts = new ArrayList<>();
+					for (String productKey : groups.keySet()) {
+						List<Product> sameProducts = groups.find(productKey);
+						uniqueProducts.add(aggregate(sameProducts, new ProductAggregator()));
+					}
+					for (Product product : uniqueProducts) {
+						productStrings.add(new ProductDto(product.getIds(), product.getAggregatedProductName(), category.getCategoryName(), product.toString(), product.getVisible()));
+					}
+				}
+				
+				PMF.commit();
+				PMF.close();
 			}
-			for (Product product : uniqueProducts) {
-				productStrings.add(new ProductDto(product.getIds(), product.getAggregatedProductName(), category.getCategoryName(), product.toString(), product.getVisible()));
+			finally {
+				PMF.rollback();
+				PMF.close();
 			}
 		}
 		
-		PMF.commit();
-		PMF.close();
-		
-		return new ShoppingListDto(shoppingListMap, shoppingList.sites);
+		return new ShoppingListDto(shoppingListMap, sites);
 	}
 
 	public boolean isEmpty() {

@@ -2,6 +2,7 @@ package com.wouterpot.makeyourshoppinglist.client;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.google.gwt.dom.client.Style.FontWeight;
@@ -52,7 +53,7 @@ final class ShoppingListCallback implements	AsyncCallback<ShoppingListDto> {
 			this.shoppingList.put(entry.getKey(), productCheckBoxes);
 		}
 		
-		ArrayList<String> sites = shoppingListDto.getSites();
+		List<String> sites = shoppingListDto.getSites();
 		for (String site : sites) {
 			shoppingListEntryPoint.addSiteToPanel(site);
 		}
