@@ -17,6 +17,7 @@ final class CustomShoppingItemKeyHandler implements KeyPressHandler {
 		if (event.getCharCode() == KeyCodes.KEY_ENTER){
 			TextBox source = (TextBox) event.getSource();
 			shoppingListEntryPoint.addIngredient(source.getText());
+			source.setText("");
 		}
 	}
 }

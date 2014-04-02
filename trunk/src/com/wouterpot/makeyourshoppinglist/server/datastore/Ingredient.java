@@ -98,9 +98,11 @@ public class Ingredient {
 	}
 
 	private void addUnit(UnitType parsedUnitType, double parsedAmount) {
-		Unit unit = getAvailableUnit(parsedUnitType);
-		Unit newUnit = new Unit(unit.getQuantityType(), parsedUnitType, parsedAmount);
-		getUnits().add(newUnit);	
+		if (parsedUnitType != UnitType.NaN) {
+			Unit unit = getAvailableUnit(parsedUnitType);
+			Unit newUnit = new Unit(unit.getQuantityType(), parsedUnitType, parsedAmount);
+			getUnits().add(newUnit);	
+		}
 	}
 
 	public String getProductName() {

@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.util.List;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,8 +20,7 @@ public class DataStoreTest extends DataStoreTestBase {
 		super.setUp();
 		ShoppingListFactory.get().createNewShoppingList();
 	}
-	
-	
+		
     @Test
     public void storeShoppingList() {
 		ShoppingListFactory shoppingListFactory = ShoppingListFactory.get();
@@ -30,7 +28,6 @@ public class DataStoreTest extends DataStoreTestBase {
 		shoppingListFactory.addToShoppingList(file);
 		file = new File("test/testdata/pages/smulweb.nl.html");
 		shoppingListFactory.addToShoppingList(file);
-		ShoppingList shoppingList = shoppingListFactory.getShoppingList();
     }
     
 	@Test

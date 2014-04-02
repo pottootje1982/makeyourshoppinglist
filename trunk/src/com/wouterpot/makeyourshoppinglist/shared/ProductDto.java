@@ -11,15 +11,17 @@ public class ProductDto implements Serializable {
 	private Boolean visible;
 	private String categoryName;
 	private String aggregatedProductName;
+	private Boolean isCustom;
 
 	public ProductDto() {}
 	
-	public ProductDto(List<String> ids, String aggregatedProductName, String categoryName, String product, Boolean visible) {
+	public ProductDto(List<String> ids, String aggregatedProductName, String categoryName, String product, Boolean visible, Boolean isCustom) {
 		this.ids = ids;
 		this.aggregatedProductName = aggregatedProductName;
 		this.categoryName = categoryName;
 		this.product = product;
 		this.visible = visible;
+		this.isCustom = isCustom;
 	}
 
 	@Override
@@ -49,5 +51,9 @@ public class ProductDto implements Serializable {
 
 	public String getAggregatedProductName() {
 		return aggregatedProductName;
+	}
+
+	public Boolean isCustom() {
+		return isCustom;
 	}
 }
