@@ -3,9 +3,6 @@ package com.wouterpot.makeyourshoppinglist.test;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-import org.powermock.api.easymock.PowerMock;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import com.wouterpot.makeyourshoppinglist.server.PMF;
 import com.wouterpot.makeyourshoppinglist.server.datastore.Ingredient;
 import com.wouterpot.makeyourshoppinglist.server.datastore.Unit;
 import com.wouterpot.makeyourshoppinglist.server.datastore.QuantityType;
@@ -65,8 +62,8 @@ public class IngredientTest extends DataStoreTestBase {
 	@Test
 	public void Uncountable() {
 		Ingredient ingredient = new Ingredient("extra-virgin olive oil");
-		Unit unit = ingredient.getUnit(QuantityType.Uncountable);
-		assertEquals("", unit.toString());
+		Unit unit = ingredient.getUnit(UnitType.NaN);
+		assertNull(unit);
 		assertEquals("extra-virgin olive oil", ingredient.getProductName());
 	}
 	
@@ -94,8 +91,8 @@ public class IngredientTest extends DataStoreTestBase {
 	@Test
 	public void noQuantity() {
 		Ingredient ingredient = new Ingredient("handful flat-leaf parsley, roughly chopped");
-		Unit unit = ingredient.getUnit(QuantityType.Uncountable);
-		assertEquals("", unit.toString());
+		Unit unit = ingredient.getUnit(UnitType.NaN);
+		assertNull(unit);
 		assertEquals("handful flat-leaf parsley, roughly chopped", ingredient.getProductName());
 		assertEquals("handful flat-leaf parsley, roughly chopped", ingredient.toString());
 	}

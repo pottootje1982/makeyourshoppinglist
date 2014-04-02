@@ -68,15 +68,19 @@ public class ShoppingList {
 		PMF.commit();
 		PMF.close();
 	}
-
+	
 	public void createProduct(CategoryDictionary categoryDictionary, String ingredientString) {
+		createProduct(categoryDictionary, ingredientString, false);
+	}
+
+	public void createProduct(CategoryDictionary categoryDictionary, String ingredientString, boolean isCustom) {
 		ingredientString = RegEx.escapeStrangeChars(ingredientString);
 		ingredientString = ingredientString.trim();
 		if (Strings.isNullOrEmpty(ingredientString)) return;
 		ProductInfo productInfo = categoryDictionary.getProductInfo(ingredientString);
 		Category category = getOrCreateCategory(productInfo != null ? productInfo.getCategory() : Product.DEFAULT_CATEGORY);
 		
-		Product product = new Product(productInfo);
+		Product product = new Product(productInfo, isCustom);
 		Ingredient ingredient = new Ingredient(ingredientString);
 		category.addProduct(product);
 		product.setIngredient(ingredient);
@@ -135,12 +139,20 @@ public class ShoppingList {
 					List<Product> products = category.getProducts();
 					Group<Product> groups = group(products, by(on(Product.class).getProductKey()));
 					List<Product> uniqueProducts = new ArrayList<>();
-					for (String productKey : groups.keySet()) {
-						List<Product> sameProducts = groups.find(productKey);
-						uniqueProducts.add(aggregate(sameProducts, new ProductAggregator()));
+					for (Group<Product> subgroup : groups.subgroups()) {
+						List<Product> sameProducts = subgroup.findAll();
+						if (sameProducts.size() == 1)
+							uniqueProducts.add(sameProducts.get(0));
+						else
+							uniqueProducts.add(aggregate(sameProducts, new ProductAggregator()));
 					}
 					for (Product product : uniqueProducts) {
-						productStrings.add(new ProductDto(product.getIds(), product.getAggregatedProductName(), category.getCategoryName(), product.toString(), product.getVisible()));
+						productStrings.add(new ProductDto(product.getIds(), 
+								product.getAggregatedProductName(), 
+								category.getCategoryName(), 
+								product.toString(), 
+								product.getVisible(),
+								product.isCustom()));
 					}
 				}
 				
@@ -180,7 +192,7 @@ public class ShoppingList {
 
 	public void addCustomIngredient(String ingredient, String language) {
 		CategoryDictionary categoryDictionary = languageDictionary.getCategoryDictionary(language);
-		createProduct(categoryDictionary, ingredient);
+		createProduct(categoryDictionary, ingredient, true);
 		makePersistent();
 	}
 }

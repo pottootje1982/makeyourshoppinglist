@@ -9,7 +9,7 @@ import com.wouterpot.makeyourshoppinglist.shared.ShoppingListDto;
 /**
  * The async counterpart of <code>GreetingService</code>.
  */
-public interface GreetingServiceAsync {
+public interface ShoppingListInterfaceAsync {
 	void greetServer(String[] sites, AsyncCallback<ShoppingListDto> callback)
 			throws IllegalArgumentException;
 

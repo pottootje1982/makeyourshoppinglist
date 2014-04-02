@@ -12,9 +12,9 @@ final class HideButtonHandler implements ClickHandler {
 
 	private ShoppingListEntryPoint shoppingListEntryPoint;
 	private boolean unhide;
-	private GreetingServiceAsync greetingService;
+	private ShoppingListInterfaceAsync greetingService;
 
-	public HideButtonHandler(GreetingServiceAsync greetingService, ShoppingListEntryPoint shoppingListEntryPoint, boolean unhide) {
+	public HideButtonHandler(ShoppingListInterfaceAsync greetingService, ShoppingListEntryPoint shoppingListEntryPoint, boolean unhide) {
 		this.greetingService = greetingService;
 		this.shoppingListEntryPoint = shoppingListEntryPoint;
 		this.unhide = unhide;

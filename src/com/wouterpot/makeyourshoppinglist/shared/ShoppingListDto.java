@@ -2,7 +2,6 @@ package com.wouterpot.makeyourshoppinglist.shared;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 public class ShoppingListDto implements Serializable {

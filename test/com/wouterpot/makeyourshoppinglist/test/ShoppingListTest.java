@@ -103,14 +103,16 @@ public class ShoppingListTest extends DataStoreTestBase {
 		ShoppingListFactory shoppingListFactory = ShoppingListFactory.get();
 		File file = new File("test/testdata/pages/sites.google.com.html");
 		shoppingListFactory.addToShoppingList(file);
-		ShoppingList shoppingList = shoppingListFactory.getShoppingList();
-		ShoppingListDto shoppingListDto = shoppingList.getShoppingList();
+		ShoppingListDto shoppingListDto = ShoppingList.getShoppingList();
 		Map<String, ArrayList<ProductDto>> shoppingItems = shoppingListDto.getShoppingListMap();
 		
 		ArrayList<ProductDto> products = shoppingItems.get("greengrocer");
 		assertEquals(5, products.size());
 		assertEquals("3 bospeentjes", products.get(0).toString());
-		assertEquals("1 kleine courgette", products.get(4).toString());
+		assertEquals("1 meiknolletje", products.get(1).toString());
+		assertEquals("100g peultjes", products.get(2).toString());
+		assertEquals("1 kleine courgette", products.get(3).toString());
+		assertEquals("2 sjalotten, gesnipperd", products.get(4).toString());
 		
 		products = shoppingItems.get("fishmonger");
 		assertEquals(1, products.size());
@@ -118,8 +120,8 @@ public class ShoppingListTest extends DataStoreTestBase {
 		
 		products = shoppingItems.get("supermarket");
 		assertEquals(4, products.size());
-		assertEquals("125ml slagroom", products.get(0).toString());
-		assertEquals("3 eetlepels roomboter", products.get(3).toString());
+		assertEquals("3 eetlepels roomboter", products.get(0).toString());
+		assertEquals("125ml cr�me fra�che", products.get(3).toString());
 	}
 
 	
@@ -133,7 +135,7 @@ public class ShoppingListTest extends DataStoreTestBase {
 		Product product1 = products.get(0);
 		Product product2 = products.get(1);
 		
-		ShoppingListDto shoppingListDto = shoppingList.getShoppingList();
+		ShoppingListDto shoppingListDto = ShoppingList.getShoppingList();
 		Map<String, ArrayList<ProductDto>> shoppingListMap = shoppingListDto.getShoppingListMap();
 		ArrayList<ProductDto> productDtos = shoppingListMap.get("supermarket");
 		assertEquals(1, productDtos.size());

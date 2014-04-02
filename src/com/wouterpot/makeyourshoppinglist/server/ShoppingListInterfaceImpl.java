@@ -5,16 +5,16 @@ import java.util.List;
 import javax.jdo.JDOException;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import com.wouterpot.makeyourshoppinglist.client.GreetingService;
+import com.wouterpot.makeyourshoppinglist.client.ShoppingListInterface;
 import com.wouterpot.makeyourshoppinglist.server.datastore.Product;
 import com.wouterpot.makeyourshoppinglist.server.datastore.ShoppingList;
 import com.wouterpot.makeyourshoppinglist.shared.ProductDto;
 import com.wouterpot.makeyourshoppinglist.shared.ShoppingListDto;
 
-public class ShoppingListService extends RemoteServiceServlet implements
-GreetingService {
+public class ShoppingListInterfaceImpl extends RemoteServiceServlet implements
+ShoppingListInterface {
 
-	public ShoppingListService() {}
+	public ShoppingListInterfaceImpl() {}
 
 	private void initShoppingList() {
 		ShoppingList shoppingList = null;
@@ -24,9 +24,11 @@ GreetingService {
 	
 			List<ShoppingList> shoppingLists = PMF.retrieveAll(ShoppingList.class);
 			if (shoppingLists.size() > 0) {
-				shoppingList = shoppingLists.get(0);
+				shoppingList = shoppingLists.get(shoppingLists.size() - 1);
 				PMF.retrieve(shoppingList);
 			}
+			
+			PMF.commit();
 		}
 		catch (JDOException ex) {
 			ex.printStackTrace();
@@ -56,9 +58,7 @@ GreetingService {
 			shoppingListFactory.addToShoppingList(site);	
 		}
 		
-		ShoppingList shoppingList = shoppingListFactory.getShoppingList();
-		
-		return shoppingList.getShoppingList();
+		return ShoppingList.getShoppingList();
 	}
 
 	@Override
@@ -91,6 +91,6 @@ GreetingService {
 	public ShoppingListDto addCustomIngredient(String ingredient, String language) {
 		ShoppingList shoppingList = ShoppingListFactory.get().getShoppingList();		
 		shoppingList.addCustomIngredient(ingredient, language);
-		return shoppingList.getShoppingList();
+		return ShoppingList.getShoppingList();
 	}
 }

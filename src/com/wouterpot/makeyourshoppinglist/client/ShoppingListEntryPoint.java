@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.FontStyle;
 import com.google.gwt.dom.client.Style.FontWeight;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -44,7 +45,7 @@ public class ShoppingListEntryPoint implements EntryPoint {
 	 * Create a remote service proxy to talk to the server-side Greeting
 	 * service.
 	 */
-	private final GreetingServiceAsync greetingService = GWT.create(GreetingService.class);
+	private final ShoppingListInterfaceAsync greetingService = GWT.create(ShoppingListInterface.class);
 	private VerticalPanel recipePanel;
 	private VerticalPanel shoppingListPanel;
 	private Map<String, ArrayList<ProductCheckBox>> shoppingList = new HashMap<String, ArrayList<ProductCheckBox>>();
@@ -91,6 +92,7 @@ public class ShoppingListEntryPoint implements EntryPoint {
 	void clearShoppingList() {
 		recipePanel.clear();
 		shoppingListPanel.clear();
+		shoppingList.clear();
 		greetingService.createNewShoppingList(new VoidCallback());
 	}
 
@@ -119,7 +121,7 @@ public class ShoppingListEntryPoint implements EntryPoint {
 			
 			@Override
 			public void onSuccess(ShoppingListDto result) {
-				showShoppingList(result);
+				fillShoppingList(result);
 			}
 			
 			@Override
@@ -130,7 +132,7 @@ public class ShoppingListEntryPoint implements EntryPoint {
 		});		
 	}
 
-	public void showShoppingList(ShoppingListDto shoppingListDto) {
+	public void fillShoppingList(ShoppingListDto shoppingListDto) {
 		Map<String, ArrayList<ProductDto>> shoppingList = shoppingListDto.getShoppingListMap();
 		shoppingListPanel.clear();
 		recipePanel.clear();
@@ -150,6 +152,7 @@ public class ShoppingListEntryPoint implements EntryPoint {
 					checkBox.setTitle(aggregatedProductName);
 					checkBox.getElement().getStyle().setFontWeight(FontWeight.BOLD);
 				}
+				checkBox.getElement().getStyle().setFontStyle(product.isCustom() == Boolean.TRUE ? FontStyle.ITALIC : FontStyle.NORMAL);
 				boolean visible = product.getVisible() != Boolean.FALSE;
 				checkBox.setVisible(visible);
 				checkBox.setValue(!visible);

@@ -50,10 +50,18 @@ public class Product {
     @NotPersistent
     private List<String> aggregatedProductNames = new ArrayList<String>();
 
+    @Persistent
+	private Boolean isCustom;
+
     public Product() {
     }
     
 	public Product(ProductInfo productInfo) {
+		this(productInfo, false);
+	}
+	
+	public Product(ProductInfo productInfo, boolean isCustom) {
+		this.isCustom = isCustom;
 		this.ingredient = null;
 		this.productInfo = productInfo;
 	}
@@ -63,6 +71,7 @@ public class Product {
 		this.ingredient = new Ingredient(product.getIngredient());
 		this.productInfo = product.productInfo;
 		this.visible = product.visible;
+		this.isCustom = product.isCustom;
 		aggregatedIds.add(product.id);
 		aggregatedProductNames.add(product.getIngredient().toString());
 	}
@@ -82,6 +91,10 @@ public class Product {
 		} else if (!getIngredient().equals(other.getIngredient()))
 			return false;
 		return true;
+	}
+
+	public Boolean isCustom() {
+		return isCustom;
 	}
 
 	private Ingredient getIngredient() {
