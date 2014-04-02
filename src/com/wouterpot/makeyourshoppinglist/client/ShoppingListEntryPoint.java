@@ -25,6 +25,7 @@ import com.wouterpot.makeyourshoppinglist.shared.ProductDto;
 import com.wouterpot.makeyourshoppinglist.shared.ShoppingListDto;
 
 // TODO: option to expand added items (to not add)
+// TODO: setting page where you can set language
 
 public class ShoppingListEntryPoint implements EntryPoint {
 
@@ -133,12 +134,12 @@ public class ShoppingListEntryPoint implements EntryPoint {
 	}
 
 	public void fillShoppingList(ShoppingListDto shoppingListDto) {
-		Map<String, ArrayList<ProductDto>> shoppingList = shoppingListDto.getShoppingListMap();
+		Map<String, ArrayList<ProductDto>> productsToCategories = shoppingListDto.getShoppingListMap();
 		shoppingListPanel.clear();
 		recipePanel.clear();
-		this.shoppingList.clear();
+		shoppingList.clear();
 
-		for (Map.Entry<String, ArrayList<ProductDto>> entry : shoppingList.entrySet()) {
+		for (Map.Entry<String, ArrayList<ProductDto>> entry : productsToCategories.entrySet()) {
 			ArrayList<ProductCheckBox> productCheckBoxes = new ArrayList<>();
 			shoppingListPanel.add(new Label(entry.getKey()));
 			VerticalPanel verticalPanel = new VerticalPanel();
