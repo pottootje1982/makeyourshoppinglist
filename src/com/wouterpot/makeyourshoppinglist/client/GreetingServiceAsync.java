@@ -16,4 +16,6 @@ public interface GreetingServiceAsync {
 	void productVisibilityChange(List<ProductDto> clientProducts, AsyncCallback<Void> callback);
 
 	void createNewShoppingList(AsyncCallback<Void> callback);
+
+	void addCustomIngredient(String ingredient, String language, AsyncCallback<ShoppingListDto> callback);
 }

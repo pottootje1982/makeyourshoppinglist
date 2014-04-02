@@ -86,4 +86,11 @@ GreetingService {
 	public void createNewShoppingList() {
 		ShoppingListFactory.get().createNewShoppingList();
 	}
+
+	@Override
+	public ShoppingListDto addCustomIngredient(String ingredient, String language) {
+		ShoppingList shoppingList = ShoppingListFactory.get().getShoppingList();		
+		shoppingList.addCustomIngredient(ingredient, language);
+		return shoppingList.getShoppingList();
+	}
 }
