@@ -2,6 +2,7 @@ package com.wouterpot.makeyourshoppinglist.client;
 
 import java.util.List;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.wouterpot.makeyourshoppinglist.shared.ProductDto;
@@ -15,4 +16,5 @@ public interface GreetingService extends RemoteService {
 	ShoppingListDto greetServer(String[] sites) throws IllegalArgumentException;
 	void productVisibilityChange(List<ProductDto> clientProducts);
 	void createNewShoppingList();
+	ShoppingListDto addCustomIngredient(String ingredient, String language);
 }

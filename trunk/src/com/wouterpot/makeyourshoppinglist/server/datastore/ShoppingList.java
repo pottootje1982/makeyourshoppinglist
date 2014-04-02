@@ -55,14 +55,18 @@ public class ShoppingList {
 			}
 			sites.add(recipeId);
 		
-			PMF.open();
-			PMF.begin();
-			
-			PMF.makePersistent(this);
-						
-			PMF.commit();
-			PMF.close();
+			makePersistent();
 		}
+	}
+
+	private void makePersistent() {
+		PMF.open();
+		PMF.begin();
+		
+		PMF.makePersistent(this);
+					
+		PMF.commit();
+		PMF.close();
 	}
 
 	public void createProduct(CategoryDictionary categoryDictionary, String ingredientString) {
@@ -172,5 +176,11 @@ public class ShoppingList {
 
 	public String getId() {
 		return id;
+	}
+
+	public void addCustomIngredient(String ingredient, String language) {
+		CategoryDictionary categoryDictionary = languageDictionary.getCategoryDictionary(language);
+		createProduct(categoryDictionary, ingredient);
+		makePersistent();
 	}
 }

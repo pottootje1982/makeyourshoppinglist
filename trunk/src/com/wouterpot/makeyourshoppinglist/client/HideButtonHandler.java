@@ -10,20 +10,20 @@ import com.wouterpot.makeyourshoppinglist.shared.ProductDto;
 
 final class HideButtonHandler implements ClickHandler {
 
-	private ShoppingListCallback shoppingList;
+	private ShoppingListEntryPoint shoppingListEntryPoint;
 	private boolean unhide;
 	private GreetingServiceAsync greetingService;
 
-	public HideButtonHandler(GreetingServiceAsync greetingService, ShoppingListCallback shoppingListCallback, boolean unhide) {
+	public HideButtonHandler(GreetingServiceAsync greetingService, ShoppingListEntryPoint shoppingListEntryPoint, boolean unhide) {
 		this.greetingService = greetingService;
-		this.shoppingList = shoppingListCallback;
+		this.shoppingListEntryPoint = shoppingListEntryPoint;
 		this.unhide = unhide;
 	}
 
 	@Override
 	public void onClick(ClickEvent event) {
 		List<ProductDto> clientProducts = new ArrayList<>();
-		for (Entry<String, ArrayList<ProductCheckBox>> category : shoppingList.getShoppingList().entrySet()) {
+		for (Entry<String, ArrayList<ProductCheckBox>> category : shoppingListEntryPoint.getShoppingList().entrySet()) {
 			for (ProductCheckBox productCheckBox : category.getValue()) {
 				if (productCheckBox.getValue()) {
 					productCheckBox.setVisible(unhide);
