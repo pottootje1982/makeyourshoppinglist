@@ -56,7 +56,7 @@ public class ShoppingListEntryPoint implements EntryPoint {
 		recipePanel = new VerticalPanel();
 		
 		Label label = new Label("Recipes:");
-		recipePanel.add(label);
+		RootPanel.get().add(label);
 
 		int parameterIndex = 1;
 		String site = null;
