@@ -25,12 +25,17 @@ public class ShoppingListTest extends DataStoreTestBase {
 		ShoppingListFactory.get().createNewShoppingList();
 	}
 		
-	@Test
-	public void getShoppingList() throws IOException {
+	private ShoppingList getShoppingList(String site) {
 		ShoppingListFactory shoppingListFactory = ShoppingListFactory.get();
-		File file = new File("test/testdata/pages/sites.google.com.html");
+		File file = new File(site);
 		shoppingListFactory.addToShoppingList(file);
 		ShoppingList shoppingList = shoppingListFactory.getShoppingList();
+		return shoppingList;
+	}
+
+	@Test
+	public void getShoppingList() throws IOException {
+		ShoppingList shoppingList = getShoppingList("test/testdata/pages/sites.google.com.html");
 		List<Product> shoppingItems = shoppingList.getProducts("greengrocer");
 		assertEquals(5, shoppingItems.size());
 		assertEquals("3 bospeentjes", shoppingItems.get(0).toString());
@@ -49,10 +54,7 @@ public class ShoppingListTest extends DataStoreTestBase {
 	
 	@Test
 	public void getEnglishShoppingList() throws IOException {
-		ShoppingListFactory shoppingListFactory = ShoppingListFactory.get();
-		File file = new File("test/testdata/pages/bbcgoodfood.com.html");
-		shoppingListFactory.addToShoppingList(file);
-		ShoppingList shoppingList = shoppingListFactory.getShoppingList();
+		ShoppingList shoppingList = getShoppingList("test/testdata/pages/bbcgoodfood.com.html");
 		List<Product> shoppingItems = shoppingList.getProducts("greengrocer");
 		assertEquals(4, shoppingItems.size());
 		assertEquals("3 small shallots, diced", shoppingItems.get(0).toString());
@@ -63,10 +65,7 @@ public class ShoppingListTest extends DataStoreTestBase {
 	
 	@Test
 	public void getSpecialCharRecipeList() throws IOException {
-		ShoppingListFactory shoppingListFactory = ShoppingListFactory.get();
-		File file = new File("test/testdata/pages/sites.google.com.nl.html");
-		shoppingListFactory.addToShoppingList(file);
-		ShoppingList shoppingList = shoppingListFactory.getShoppingList();
+		ShoppingList shoppingList = getShoppingList("test/testdata/pages/sites.google.com.nl.html");
 		List<Product> shoppingItems = shoppingList.getProducts("supermarket");
 		assertEquals(4, shoppingItems.size());
 		assertEquals("3 eetlepels roomboter", shoppingItems.get(0).toString());
@@ -76,10 +75,7 @@ public class ShoppingListTest extends DataStoreTestBase {
 
 	@Test
 	public void getSmulwebShoppingList() throws IOException {
-		ShoppingListFactory shoppingListFactory = ShoppingListFactory.get();
-		File file = new File("test/testdata/pages/smulweb.nl.html");
-		shoppingListFactory.addToShoppingList(file);
-		ShoppingList shoppingList = shoppingListFactory.getShoppingList();
+		ShoppingList shoppingList = getShoppingList("test/testdata/pages/smulweb.nl.html");
 		List<Product> shoppingItems = shoppingList.getProducts("greengrocer");
 		
 		assertEquals(5, shoppingItems.size());
@@ -98,9 +94,7 @@ public class ShoppingListTest extends DataStoreTestBase {
 	
 	@Test
 	public void getAggregatedShoppingList() throws IOException {
-		ShoppingListFactory shoppingListFactory = ShoppingListFactory.get();
-		File file = new File("test/testdata/pages/sites.google.com.html");
-		shoppingListFactory.addToShoppingList(file);
+		getShoppingList("test/testdata/pages/sites.google.com.html");
 		ShoppingListDto shoppingListDto = ShoppingList.getShoppingList();
 		Map<String, ArrayList<ProductDto>> shoppingItems = shoppingListDto.getShoppingListMap();
 		
@@ -143,18 +137,12 @@ public class ShoppingListTest extends DataStoreTestBase {
 	
 	@Test // There used to be a Collections.sort in ShoppingList.getCategories(), causing this test to fail
 	public void addShoppingLists() {
-		File file = null;
-		
-		ShoppingListFactory shoppingListFactory = ShoppingListFactory.get();
-		file = new File("test/testdata/pages/ah.nl.boerenkool.html");
-		shoppingListFactory.addToShoppingList(file);
-		ShoppingList shoppingList = shoppingListFactory.getShoppingList();
+		ShoppingList shoppingList = getShoppingList("test/testdata/pages/ah.nl.boerenkool.html");
 		List<Product> shoppingItems = shoppingList.getProducts("greengrocer");
 		assertEquals(2, shoppingItems.size());
 		
-		file = new File("test/testdata/pages/bbcgoodfood.com.tilapia.html");
-		shoppingListFactory.addToShoppingList(file);
-		shoppingList = shoppingListFactory.getShoppingList();
+		shoppingList = getShoppingList("test/testdata/pages/bbcgoodfood.com.tilapia.html");
 		shoppingItems = shoppingList.getProducts("greengrocer");
+		assertEquals(8, shoppingItems.size());
 	}
 }

@@ -17,7 +17,10 @@ public class IngredientTest extends DataStoreTestBase {
 	
 	// TODO: add length as quantity type (2.5 cm gember, week 12)
 	
-	// TODO: 
+	// TODO: 1 1/2 iets kruimige aardappelen
+	
+	// TODO: ½ small raw chicken breast per portion
+
 	
 	@Test
 	public void quantityNumber() {
