@@ -25,6 +25,8 @@ public class ShoppingListTest extends DataStoreTestBase {
 		ShoppingListFactory.get().createNewShoppingList();
 	}
 	
+	// TODO: get arrayindexoutboundsexception when creating new shopping list --> adding new sites
+	
 	@Test
 	public void getShoppingList() throws IOException {
 		ShoppingListFactory shoppingListFactory = ShoppingListFactory.get();
