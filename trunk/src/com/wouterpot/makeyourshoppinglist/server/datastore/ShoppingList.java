@@ -81,6 +81,7 @@ public class ShoppingList {
 		Category category = getOrCreateCategory(productInfo != null ? productInfo.getCategory() : Product.DEFAULT_CATEGORY);
 		
 		Product product = new Product(productInfo, isCustom);
+		product.setCategory(category);
 		Ingredient ingredient = new Ingredient(ingredientString);
 		category.addProduct(product);
 		product.setIngredient(ingredient);
@@ -105,7 +106,7 @@ public class ShoppingList {
 	}
 
 	public List<Category> getCategories() {
-		Collections.sort(categoriesToProducts);
+		//Collections.sort(categoriesToProducts);
 		return categoriesToProducts;
 	}
 

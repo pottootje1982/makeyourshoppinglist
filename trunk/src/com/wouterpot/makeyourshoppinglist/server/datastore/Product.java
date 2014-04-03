@@ -157,4 +157,8 @@ public class Product {
 	public String getId() {
 		return id;
 	}
+
+	public void setCategory(Category category) {
+		this.parent = category;
+	}
 }
