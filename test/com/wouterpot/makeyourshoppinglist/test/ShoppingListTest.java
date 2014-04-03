@@ -24,9 +24,7 @@ public class ShoppingListTest extends DataStoreTestBase {
 	public void setup()	{
 		ShoppingListFactory.get().createNewShoppingList();
 	}
-	
-	// TODO: get arrayindexoutboundsexception when creating new shopping list --> adding new sites
-	
+		
 	@Test
 	public void getShoppingList() throws IOException {
 		ShoppingListFactory shoppingListFactory = ShoppingListFactory.get();
@@ -74,9 +72,7 @@ public class ShoppingListTest extends DataStoreTestBase {
 		assertEquals("3 eetlepels roomboter", shoppingItems.get(0).toString());
 		// TODO: no good!!
 		assertEquals("125ml cr�me fra�che", shoppingItems.get(3).toString());
-
 	}
-
 
 	@Test
 	public void getSmulwebShoppingList() throws IOException {
@@ -143,5 +139,22 @@ public class ShoppingListTest extends DataStoreTestBase {
 		assertEquals(1, productDtos.size());
 		ProductDto productDto = productDtos.get(0);
 		assertArrayEquals(new String[]{product1.getId(), product2.getId()}, productDto.getIds().toArray());		
+	}
+	
+	@Test // There used to be a Collections.sort in ShoppingList.getCategories(), causing this test to fail
+	public void addShoppingLists() {
+		File file = null;
+		
+		ShoppingListFactory shoppingListFactory = ShoppingListFactory.get();
+		file = new File("test/testdata/pages/ah.nl.boerenkool.html");
+		shoppingListFactory.addToShoppingList(file);
+		ShoppingList shoppingList = shoppingListFactory.getShoppingList();
+		List<Product> shoppingItems = shoppingList.getProducts("greengrocer");
+		assertEquals(2, shoppingItems.size());
+		
+		file = new File("test/testdata/pages/bbcgoodfood.com.tilapia.html");
+		shoppingListFactory.addToShoppingList(file);
+		shoppingList = shoppingListFactory.getShoppingList();
+		shoppingItems = shoppingList.getProducts("greengrocer");
 	}
 }
