@@ -2,7 +2,12 @@ package com.wouterpot.makeyourshoppinglist.test;
 
 import static org.junit.Assert.*;
 
+import java.text.ParseException;
+
+import org.apache.commons.math.fraction.Fraction;
+import org.apache.commons.math.fraction.FractionFormat;
 import org.junit.Test;
+
 import com.wouterpot.makeyourshoppinglist.server.datastore.Ingredient;
 import com.wouterpot.makeyourshoppinglist.server.datastore.Unit;
 import com.wouterpot.makeyourshoppinglist.server.datastore.QuantityType;
@@ -19,8 +24,7 @@ public class IngredientTest extends DataStoreTestBase {
 	
 	// TODO: 1 1/2 iets kruimige aardappelen
 	
-	// TODO: ½ small raw chicken breast per portion
-
+	// TODO: ¼, ¾, ½ small raw chicken breast per portion
 	
 	@Test
 	public void quantityNumber() {
@@ -30,6 +34,23 @@ public class IngredientTest extends DataStoreTestBase {
 		assertEquals("roomboter", ingredient.getProductName());
 	}
 	
+	@Test
+	public void testFraction() throws ParseException {
+		Ingredient ingredient = new Ingredient("1 1/2 kg iets kruimige aardappelen");
+		Unit unit = ingredient.getUnit(UnitType.kg);
+		assertEquals("1.5kg", unit.toString());
+		assertEquals("iets kruimige aardappelen", ingredient.getProductName());
+	}
+	
+	@Test
+	public void testAsciiFraction() throws ParseException {
+		Ingredient ingredient = new Ingredient("¼ kg iets kruimige aardappelen");
+		Unit unit = ingredient.getUnit(UnitType.kg);
+		assertEquals("0.25kg", unit.toString());
+		assertEquals("iets kruimige aardappelen", ingredient.getProductName());
+	}
+
+		
 	@Test
 	public void quantityDividedNumber() {
 		Ingredient ingredient = new Ingredient("3.5 l melk");

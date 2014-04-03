@@ -85,7 +85,7 @@ public class Unit implements Serializable {
 
 	@Override
 	public String toString() {
-		DecimalFormat df = new DecimalFormat("#.#");
+		DecimalFormat df = new DecimalFormat("#.##");
 		String unitTypeString = unitType != UnitType.NaN && unitType != UnitType.pieces ? unitType.toString() : "";
 		if (unitType == UnitType.glas || unitType == UnitType.glass) unitTypeString = " " + unitTypeString;
 		String amountString = unitType != UnitType.NaN ? df.format(amount) : "";

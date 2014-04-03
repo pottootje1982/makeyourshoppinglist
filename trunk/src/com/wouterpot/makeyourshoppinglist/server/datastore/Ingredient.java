@@ -1,5 +1,6 @@
 package com.wouterpot.makeyourshoppinglist.server.datastore;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +9,9 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 import javax.jdo.annotations.Serialized;
+
+import org.apache.commons.math.fraction.Fraction;
+import org.apache.commons.math.fraction.FractionFormat;
 
 import com.google.gwt.thirdparty.guava.common.base.Joiner;
 import com.google.gwt.thirdparty.guava.common.base.Strings;
@@ -54,7 +58,7 @@ public class Ingredient {
 	}
 
 	private void parseIngredient(String ingredient) {
-		String[] groups = RegEx.findGroups(ingredient, "^(\\d*[ .,/]*\\d*)\\s*(\\S*)\\s*(.*)$");
+		String[] groups = RegEx.findGroups(ingredient, "^(\\d*[ .,/]*\\d*[ /¼½¾]*\\d*)\\s*(\\S*)\\s*(.*)$");
 		
 		List<String> productNameParts = new ArrayList<String>();
 		UnitType parsedUnitType = null;
@@ -64,7 +68,7 @@ public class Ingredient {
 			try {
 				parsedAmount = parseNumericalPart(numericalPart);
 			}
-			catch (NumberFormatException ex) {
+			catch (Exception ex) {
 				productNameParts.add(numericalPart);
 			}
 			if (!Strings.isNullOrEmpty(groups[1])) {
@@ -87,12 +91,23 @@ public class Ingredient {
 		addUnit(parsedUnitType, parsedAmount);
 	}
 
-	private double parseNumericalPart(String numericalPart) {
+	private double parseNumericalPart(String numericalPart) throws ParseException {
+		numericalPart = numericalPart.replaceAll("¼", "1/4");
+		numericalPart = numericalPart.replaceAll("½", "1/2");
+		numericalPart = numericalPart.replaceAll("¾", "3/4");
 		if (numericalPart.contains("/")) {
-			String[] groups = RegEx.findGroups(numericalPart, "(\\d*)[ /]+(\\d*)");
-			if (groups.length != 2)
-				throw new NumberFormatException("Invalid division in numerical part " + numericalPart);
-			return Double.parseDouble(groups[0]) / Integer.parseInt(groups[1]);
+			FractionFormat fractionFormat = new FractionFormat();
+			try {
+				Fraction fraction = fractionFormat.parse(numericalPart);
+				return fraction.doubleValue();
+			}
+			catch (ParseException ex) {
+				// Divison might have been something like 1 1/2
+				String[] groups = RegEx.findGroups(numericalPart, "(\\d*) +(\\d*[ /]+\\d*)");
+				double unit = fractionFormat.parse(groups[0]).doubleValue();
+				double fraction = fractionFormat.parse(groups[1]).doubleValue();
+				return unit + fraction;
+			}
 		}
 		return Double.parseDouble(numericalPart);
 	}
