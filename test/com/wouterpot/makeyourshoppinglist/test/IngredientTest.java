@@ -10,6 +10,15 @@ import com.wouterpot.makeyourshoppinglist.server.datastore.UnitType;
 
 public class IngredientTest extends DataStoreTestBase {
 
+	// TODO: 2-3 rashers streaky bacon
+	
+	// TODO: 50ml olive oil, for frying & extra-virgin olive oil,	for drizzling
+	// shouldn't be added
+	
+	// TODO: add length as quantity type (2.5 cm gember, week 12)
+	
+	// TODO:
+	
 	@Test
 	public void quantityNumber() {
 		Ingredient ingredient = new Ingredient("2 el roomboter");
@@ -66,11 +75,6 @@ public class IngredientTest extends DataStoreTestBase {
 		assertNull(unit);
 		assertEquals("extra-virgin olive oil", ingredient.getProductName());
 	}
-	
-	// TODO: 2-3 rashers streaky bacon
-	
-	// TODO: 50ml olive oil, for frying & extra-virgin olive oil,	for drizzling
-	// shouldn't be added
 	
 	@Test
 	public void caseInsensitiveUnit() {
