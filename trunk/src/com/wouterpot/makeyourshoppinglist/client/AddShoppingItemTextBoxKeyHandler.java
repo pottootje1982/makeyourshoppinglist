@@ -5,10 +5,10 @@ import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.user.client.ui.TextBox;
 
-final class CustomShoppingItemKeyHandler implements KeyPressHandler {
+final class AddShoppingItemTextBoxKeyHandler implements KeyPressHandler {
 	private ShoppingListEntryPoint shoppingListEntryPoint;
 
-	public CustomShoppingItemKeyHandler(ShoppingListEntryPoint shoppingListEntryPoint) {
+	public AddShoppingItemTextBoxKeyHandler(ShoppingListEntryPoint shoppingListEntryPoint) {
 		this.shoppingListEntryPoint = shoppingListEntryPoint;
 	}
 
