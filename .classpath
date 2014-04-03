@@ -16,5 +16,6 @@
 	<classpathentry kind="var" path="ECLIPSE_HOME/plugins/powermock-mockito-junit-1.5.4/powermock-easymock-1.5.4-full.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/lambdaj-2.4-with-dependencies.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/lambdaj-2.4.jar"/>
+	<classpathentry kind="var" path="ECLIPSE_HOME/plugins/org.apache.commons.math_2.1.0.v201105210652.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

@@ -41,6 +41,7 @@ public class DataStoreTest extends DataStoreTestBase {
 		assertEquals(1, shoppingLists.size());
 		ShoppingList shoppingList = shoppingLists.get(shoppingLists.size()-1);
 		PMF.retrieve(shoppingList);
+		shoppingList = PMF.getObjectById(ShoppingList.class, shoppingList.getId());
 		List<Product> products = shoppingList.getProducts("greengrocer");
 		assertEquals(5, products.size());
 		PMF.close();
