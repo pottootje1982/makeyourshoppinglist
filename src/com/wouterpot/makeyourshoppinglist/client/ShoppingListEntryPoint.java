@@ -9,8 +9,6 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.FontStyle;
 import com.google.gwt.dom.client.Style.FontWeight;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
@@ -29,19 +27,6 @@ import com.wouterpot.makeyourshoppinglist.shared.ShoppingListDto;
 
 public class ShoppingListEntryPoint implements EntryPoint {
 
-	private final class ClearShoppingListHandler implements ClickHandler {
-		private ShoppingListEntryPoint shoppingListEntryPoint;
-
-		public ClearShoppingListHandler(ShoppingListEntryPoint shoppingListEntryPoint) {
-					this.shoppingListEntryPoint = shoppingListEntryPoint;
-		}
-
-		@Override
-		public void onClick(ClickEvent event) {
-			shoppingListEntryPoint.clearShoppingList();
-		}
-	}
-
 	/**
 	 * Create a remote service proxy to talk to the server-side Greeting
 	 * service.
@@ -50,14 +35,23 @@ public class ShoppingListEntryPoint implements EntryPoint {
 	private VerticalPanel recipePanel;
 	private VerticalPanel shoppingListPanel;
 	private Map<String, ArrayList<ProductCheckBox>> shoppingList = new HashMap<String, ArrayList<ProductCheckBox>>();
+	private TextBox addSiteTextBox;
+	private ShoppingListCallback shoppingListCallback;
 
 	@Override
 	public void onModuleLoad() {
-		recipePanel = new VerticalPanel();
+		HorizontalPanel addSitePanel = new HorizontalPanel();
+		addSitePanel.add(new Label("Add recipe:"));
+		addSiteTextBox = new TextBox();
+		addSiteTextBox.setWidth("820");
+		addSiteTextBox.addKeyPressHandler(new AddSiteTextBoxHandler(this));
+		addSitePanel.add(addSiteTextBox);
+		RootPanel.get().add(addSitePanel);
 		
 		Label label = new Label("Recipes:");
 		RootPanel.get().add(label);
 
+		recipePanel = new VerticalPanel();
 		int parameterIndex = 1;
 		String site = null;
 		ArrayList<String> sites = new ArrayList<String>();
@@ -69,12 +63,12 @@ public class ShoppingListEntryPoint implements EntryPoint {
 
 		shoppingListPanel = new VerticalPanel();
 		RootPanel.get().add(shoppingListPanel);
-		ShoppingListCallback shoppingListCallback = new ShoppingListCallback(this);
-		greetingService.greetServer(sites.toArray(sitesArray), shoppingListCallback);
+		shoppingListCallback = new ShoppingListCallback(this);
+		querySites(sites.toArray(sitesArray));
 
 		RootPanel.get().add(new Label("Add custom shopping item:"));
 		TextBox customShoppingItemCheckbox = new TextBox();
-		customShoppingItemCheckbox.addKeyPressHandler(new CustomShoppingItemKeyHandler(this));
+		customShoppingItemCheckbox.addKeyPressHandler(new AddShoppingItemTextBoxKeyHandler(this));
 		RootPanel.get().add(customShoppingItemCheckbox);
 		
 		HorizontalPanel buttonPanel = new HorizontalPanel();
@@ -88,6 +82,10 @@ public class ShoppingListEntryPoint implements EntryPoint {
 		buttonPanel.add(unhideButton);
 		buttonPanel.add(clearButton);
 		RootPanel.get().add(buttonPanel);
+	}
+
+	void querySites(String[] sites) {
+		greetingService.greetServer(sites, shoppingListCallback);
 	}
 	
 	void clearShoppingList() {
