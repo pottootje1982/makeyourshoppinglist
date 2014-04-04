@@ -3,6 +3,7 @@ package com.wouterpot.makeyourshoppinglist.server.datastore;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jdo.annotations.Element;
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -27,6 +28,7 @@ public class Category implements Comparable<Category> {
 	private String categoryName;
 	
     @Persistent(mappedBy = "parent", defaultFetchGroup = "true")
+    @Element(dependent = "true")
 	private List<Product> products = new ArrayList<Product>();
 
     @Persistent
