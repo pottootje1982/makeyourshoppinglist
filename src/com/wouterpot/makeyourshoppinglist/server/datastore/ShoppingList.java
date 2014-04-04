@@ -122,7 +122,7 @@ public class ShoppingList {
 		this.languageDictionary = languageDictionary;
 	}
 
-	public static ShoppingListDto getShoppingList() {
+	public static ShoppingListDto getList() {
 		Map<String, ArrayList<ProductDto>> shoppingListMap = new TreeMap<String, ArrayList<ProductDto>>();
 		ArrayList<String> sites = new ArrayList<String>();
 		ShoppingListFactory shoppingListFactory = ShoppingListFactory.get();

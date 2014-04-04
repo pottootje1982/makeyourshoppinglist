@@ -1,6 +1,10 @@
 package com.wouterpot.makeyourshoppinglist.server.datastore;
 
 public enum UnitType {
+	m(1000),
+	dm(100),
+	cm(10),
+	mm(1),
 	l(1000),
 	dl(100),
 	cl(10),
@@ -11,16 +15,18 @@ public enum UnitType {
 	ts,
 	el,
 	tl, 
-	splashes, 
-	drops,
-	glas,
-	glass,
+	splashes(true), 
+	drops(true),
+	glas(true),
+	glass(true),
+	rashers(true),
 	
 	pieces,
 	NaN;
 	
 	private String value;
 	private int factor;
+	private boolean addSpace;
 	
 	UnitType() {
 		this(0);
@@ -29,6 +35,10 @@ public enum UnitType {
 	
 	UnitType(int factor) {
 		this.factor = factor;
+	}
+	
+	UnitType(boolean addSpace) {
+		this.addSpace = addSpace;		
 	}
 
 	public int getFactor() {
@@ -39,8 +49,18 @@ public enum UnitType {
 		return value;
 	}
 	
+	@Override
+	public String toString() {
+		String string = super.toString();
+		return addSpace ? " " + string : string;
+	}
+	
 	public static UnitType parse(String value) {
 		switch (value.toLowerCase().replaceAll("\\.", "")) {
+		case "mm": return mm;
+		case "cm": return cm;
+		case "dm": return dm;
+		case "m": return m;
 		case "liter":
 		case "l": return l;
 		case "dl": return dl;
@@ -59,6 +79,7 @@ public enum UnitType {
 		case "tl": return tl;
 		case "glass": return glass;
 		case "glas": return glas;
+		case "rashers": return rashers;
 		case "number": return pieces;
 		case "nan": return NaN;
 		}

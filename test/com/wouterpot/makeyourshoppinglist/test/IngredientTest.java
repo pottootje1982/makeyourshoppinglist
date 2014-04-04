@@ -15,12 +15,26 @@ import com.wouterpot.makeyourshoppinglist.server.datastore.UnitType;
 
 public class IngredientTest extends DataStoreTestBase {
 
-	// TODO: 2-3 rashers streaky bacon
+	@Test
+	public void lengthQuantity() {
+		Ingredient ingredient = new Ingredient("2.5 cm gember");
+		Unit unit = ingredient.getUnit(QuantityType.Length);
+		assertEquals("2.5cm", unit.toString());
+		assertEquals("gember", ingredient.getProductName());
+	}
 	
-	// TODO: 50ml olive oil, for frying & extra-virgin olive oil,	for drizzling
-	// shouldn't be added
-	
-	// TODO: add length as quantity type (2.5 cm gember, week 12)
+	@Test
+	public void ingredientWithRange() {
+		Ingredient ingredient = new Ingredient("2-3 rashers streaky bacon");
+		Unit unit = ingredient.getUnit(UnitType.rashers);
+		assertEquals("2-3 rashers", unit.toString());
+		assertEquals("streaky bacon", ingredient.getProductName());
+		
+		ingredient.add(new Ingredient("2-4 rashers streaky bacon"));
+		unit = ingredient.getUnit(UnitType.rashers);
+		assertEquals("4-6 rashers", unit.toString());
+		assertEquals("streaky bacon", ingredient.getProductName());				
+	}
 	
 	@Test
 	public void quantityNumber() {
