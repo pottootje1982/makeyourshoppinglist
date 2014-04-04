@@ -24,6 +24,8 @@ import com.wouterpot.makeyourshoppinglist.shared.ShoppingListDto;
 
 // TODO: option to expand added items (to not add)
 // TODO: setting page where you can set language
+// TODO: create dropdown where you can select different shopping lists
+// TODO: create settings page where you can define categories
 
 public class ShoppingListEntryPoint implements EntryPoint {
 
