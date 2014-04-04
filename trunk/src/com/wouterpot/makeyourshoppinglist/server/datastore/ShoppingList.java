@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import javax.jdo.JDOException;
+import javax.jdo.annotations.Element;
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -38,28 +39,34 @@ public class ShoppingList {
     private String      id;
 	
     @Persistent(mappedBy = "parent", defaultFetchGroup = "true")
-    List<Category> categoriesToProducts = new ArrayList<Category>();
+    @Element(dependent = "true")
+    List<Category> categoriesToProducts;
     
     @Persistent(defaultFetchGroup = "true")
-    ArrayList<String> sites = new ArrayList<String>();
+    ArrayList<String> sites;
         
 	private LanguageDictionary languageDictionary;
-
+	
 	public ShoppingList(LanguageDictionary languageDictionary) {
 		this.languageDictionary = languageDictionary;
 	}
 
 	public void addIngredients(String recipeId, List<String> ingredients, String language) {
-		if (!sites.contains(recipeId)) {
+		if (!getSites().contains(recipeId)) {
 			
 			CategoryDictionary categoryDictionary = languageDictionary.getCategoryDictionary(language);
 			for (String ingredient : ingredients) {
 				createProduct(categoryDictionary, ingredient);
 			}
-			sites.add(recipeId);
+			getSites().add(recipeId);
 		
 			makePersistent();
 		}
+	}
+
+	private ArrayList<String> getSites() {
+		if (sites == null) sites = new ArrayList<String>();
+		return sites;
 	}
 
 	private void makePersistent() {
@@ -109,7 +116,7 @@ public class ShoppingList {
 	}
 
 	public List<Category> getCategories() {
-		//Collections.sort(categoriesToProducts);
+		if (categoriesToProducts == null) categoriesToProducts = new ArrayList<Category>();
 		return categoriesToProducts;
 	}
 
@@ -134,7 +141,7 @@ public class ShoppingList {
 				
 				ShoppingList shoppingList = PMF.getObjectById(ShoppingList.class, shoppingListFactory.getShoppingList().getId());
 		
-				for (String site : shoppingList.sites)
+				for (String site : shoppingList.getSites())
 					sites.add(site);
 				List<Category> categories = shoppingList.getCategories();
 				for (Category category : categories) {
