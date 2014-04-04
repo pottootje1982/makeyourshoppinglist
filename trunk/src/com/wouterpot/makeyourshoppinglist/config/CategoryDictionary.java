@@ -6,7 +6,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.google.appengine.labs.repackaged.com.google.common.base.Strings;
@@ -84,7 +86,11 @@ public class CategoryDictionary {
 	}
 
 	public ProductInfo getProductInfo(String ingredient) {
-		for (String category : categoriesToProductInfos.keySet()) {
+		List<String> categories = new ArrayList<String>(categoriesToProductInfos.keySet());
+		// FIXME: This sorting is not such a nice way to ensure that supermarket category will be browsed last,
+		// to ensure that butternut squash will not be categorized as butter
+		Collections.sort(categories);		
+		for (String category : categories) {
 			ArrayList<ProductInfo> productInfos = categoriesToProductInfos.get(category);
 			for (ProductInfo productInfo : productInfos) {
 				if (productInfo.productMatches(ingredient))

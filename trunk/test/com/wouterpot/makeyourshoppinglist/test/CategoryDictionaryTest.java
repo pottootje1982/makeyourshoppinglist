@@ -11,6 +11,9 @@ import org.junit.Test;
 import com.wouterpot.makeyourshoppinglist.config.CategoryDictionary;
 import com.wouterpot.makeyourshoppinglist.config.ProductInfo;
 import com.wouterpot.makeyourshoppinglist.helpers.Resource;
+import com.wouterpot.makeyourshoppinglist.server.datastore.Ingredient;
+import com.wouterpot.makeyourshoppinglist.server.datastore.Unit;
+import com.wouterpot.makeyourshoppinglist.server.datastore.UnitType;
 
 public class CategoryDictionaryTest {
 
@@ -66,6 +69,13 @@ public class CategoryDictionaryTest {
 		assertEquals("baker", category);
 	}
 	
+	@Test
+	public void composedIngredient() {
+		String category = getCategory("butternut squash");
+		assertEquals("greengrocer", category);
+	}
+
+
 	@Test
 	public void testGetCategoryWithExcludes() throws URISyntaxException, IOException {
 		String category = getCategory("tomato");

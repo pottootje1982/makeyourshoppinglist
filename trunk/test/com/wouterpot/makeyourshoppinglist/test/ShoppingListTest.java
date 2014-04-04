@@ -145,4 +145,36 @@ public class ShoppingListTest extends DataStoreTestBase {
 		shoppingItems = shoppingList.getProducts("greengrocer");
 		assertEquals(8, shoppingItems.size());
 	}
+	
+	@Test // Butternut squash was in wrong category, because supermarket category was browsed first
+	public void categoryTest() {
+		ShoppingList shoppingList = getShoppingList("test/testdata/pages/bbcgoodfood.com.squash.html");
+		List<Product> shoppingItems = shoppingList.getProducts("greengrocer");
+		assertEquals(5, shoppingItems.size());
+		
+		assertEquals("1 butternut squash", shoppingItems.get(0).toString());
+	}
+	
+	@Test
+	public void composedIngredients() {
+		ShoppingList shoppingList = ShoppingListFactory.get().getShoppingList();
+		shoppingList.addIngredients("test", Arrays.asList("2 chicken stock cubes", "200 ml chicken stock", "200 ml vegetable stock"), "en");
+		List<Product> products = shoppingList.getProducts("supermarket");
+		assertEquals(2, products.size());
+		assertEquals("2 chicken stock cubes", products.get(0).toString()); // this one is in supermarket because cubes are exclude from butcher
+		assertEquals("200ml vegetable stock", products.get(1).toString());
+
+		products = shoppingList.getProducts("butcher");
+		assertEquals(1, products.size());
+		assertEquals("200ml chicken stock", products.get(0).toString());
+	}
+	
+	@Test
+	public void shouldNotAddCommonIngredients() {
+		ShoppingList shoppingList = ShoppingListFactory.get().getShoppingList();
+		shoppingList.addIngredients("test", Arrays.asList("1 can tomatoes", "1 can carrots"), "en");
+		Map<String, ArrayList<ProductDto>> shoppingListMap = shoppingList.getShoppingList().getShoppingListMap();
+		List<ProductDto> products = shoppingListMap.get("supermarket");
+		assertEquals(2, products.size());
+	}
 }

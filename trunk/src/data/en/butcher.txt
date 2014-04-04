@@ -5,3 +5,6 @@ lamb
 steak
 pork
 venison
+
+[EXCLUDE]
+cubes
