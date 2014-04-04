@@ -114,7 +114,7 @@ public class Product {
 	public String getProductKey() {
 		if (productInfo != null) {
 			String productKey = productInfo.getProductKey();
-			if (!Strings.isNullOrEmpty(productKey)) return productKey;			
+			if (!Strings.isNullOrEmpty(productKey) && !productInfo.isCommon()) return productKey;			
 		}
 		return ingredient.getProductName();
 	}

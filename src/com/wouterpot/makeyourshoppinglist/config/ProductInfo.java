@@ -63,6 +63,10 @@ public class ProductInfo {
 				+ category + ", isExcluded=" + isExcluded + ", isCommon="
 				+ isCommon + "]";
 	}
+
+	public boolean isCommon() {
+		return isCommon;
+	}
 	
 	
 }

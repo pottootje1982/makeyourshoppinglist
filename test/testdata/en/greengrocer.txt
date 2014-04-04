@@ -3,6 +3,7 @@ thyme
 tomatoe?
 sla
 sage
+Butternut squash
 
 [EXCLUDE]
 can
