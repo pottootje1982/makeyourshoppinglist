@@ -12,3 +12,6 @@ heilbot
 daurade
 dorade
 tilapia
+makreel
+inktvis
+forel
