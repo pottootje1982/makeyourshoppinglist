@@ -1,7 +1,7 @@
 package com.wouterpot.makeyourshoppinglist.server.datastore;
 
 public enum QuantityType {
-	Volume, Weight, Countable, Uncountable;
+	Volume, Weight, Length, Countable, Uncountable;
 	
 	private String value;
 	

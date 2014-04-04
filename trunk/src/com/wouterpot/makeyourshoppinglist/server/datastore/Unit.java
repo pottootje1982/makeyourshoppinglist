@@ -34,30 +34,39 @@ public class Unit implements Serializable {
 	private double amount;
     
     @Persistent
+	private double range;
+	
+    @Persistent
     @Extensions({
         @Extension(vendorName="datanucleus", key="enum-getter-by-value", value="parse"),
         @Extension(vendorName="datanucleus", key="enum-value-getter", value="getValue")
        })
 	private QuantityType quantityType;
 
+
 	public Unit(UnitType unitType) {
 		this(unitType == UnitType.pieces ? QuantityType.Countable : QuantityType.Uncountable, unitType);
 	}
 	
 	public Unit(Unit other) {
-		this(other.quantityType, other.unitType, other.amount);
+		this(other.quantityType, other.unitType, other.amount, other.range);
 	}
 	
 	public Unit(QuantityType quantityType, UnitType unitType) {
-		this(quantityType, unitType, 0);
+		this(quantityType, unitType, 0, 0);
 	}
-	
+
 	public Unit(QuantityType quantityType, UnitType unitType, double amount) {
+		this(quantityType, unitType, amount, 0);
+	}
+
+	public Unit(QuantityType quantityType, UnitType unitType, double amount, double range) {
 		if (quantityType == null) throw new IllegalArgumentException("Quantity type should be defined!");
 		if (unitType == null) throw new IllegalArgumentException("Unit type should be defined!");
 		this.quantityType = quantityType;
 		this.unitType = unitType;
 		this.amount = amount;
+		this.range = range;
 	}
 
 	public Unit add(Unit other) {
@@ -74,6 +83,7 @@ public class Unit implements Serializable {
 		else
 			result = new Unit(this);
 		result.amount += amountToAdd;
+		result.range += range;
 		return result;			 
 	}
 
@@ -87,9 +97,9 @@ public class Unit implements Serializable {
 	public String toString() {
 		DecimalFormat df = new DecimalFormat("#.##");
 		String unitTypeString = unitType != UnitType.NaN && unitType != UnitType.pieces ? unitType.toString() : "";
-		if (unitType == UnitType.glas || unitType == UnitType.glass) unitTypeString = " " + unitTypeString;
 		String amountString = unitType != UnitType.NaN ? df.format(amount) : "";
-		return String.format("%s%s", amountString, unitTypeString);
+		String rangeString = range != 0 ? "-" + df.format(amount+range) : "";
+		return String.format("%s%s%s", amountString, rangeString, unitTypeString);
 	}
 	
 	public UnitType getUnitType() {

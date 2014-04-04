@@ -24,10 +24,10 @@ public class IngredientsScraper {
 		getIngredientsClasses(Resource.getResource("config/ingredientsClasses.xml"));
 	}
 	
-	private void getIngredientsClasses(String url)
+	private void getIngredientsClasses(String fileName)
 	{
 		try {
-			File file = new File(url);
+			File file = new File(fileName);
 			Document doc = Jsoup.parse(file, "UTF-8");
 			Element sites = doc.getElementsByTag("sites").get(0);
 			List<Element> elements = sites.children();
@@ -38,10 +38,8 @@ public class IngredientsScraper {
 					siteInfos.add(new SiteInfo(attributes));
 			}
 		} catch (MalformedURLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

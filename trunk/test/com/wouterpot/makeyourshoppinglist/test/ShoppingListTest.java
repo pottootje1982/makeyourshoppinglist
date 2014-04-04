@@ -95,7 +95,7 @@ public class ShoppingListTest extends DataStoreTestBase {
 	@Test
 	public void getAggregatedShoppingList() throws IOException {
 		getShoppingList("test/testdata/pages/sites.google.com.html");
-		ShoppingListDto shoppingListDto = ShoppingList.getShoppingList();
+		ShoppingListDto shoppingListDto = ShoppingList.getList();
 		Map<String, ArrayList<ProductDto>> shoppingItems = shoppingListDto.getShoppingListMap();
 		
 		ArrayList<ProductDto> products = shoppingItems.get("greengrocer");
@@ -127,7 +127,7 @@ public class ShoppingListTest extends DataStoreTestBase {
 		Product product1 = products.get(0);
 		Product product2 = products.get(1);
 		
-		ShoppingListDto shoppingListDto = ShoppingList.getShoppingList();
+		ShoppingListDto shoppingListDto = ShoppingList.getList();
 		Map<String, ArrayList<ProductDto>> shoppingListMap = shoppingListDto.getShoppingListMap();
 		ArrayList<ProductDto> productDtos = shoppingListMap.get("supermarket");
 		assertEquals(1, productDtos.size());
@@ -173,7 +173,16 @@ public class ShoppingListTest extends DataStoreTestBase {
 	public void shouldNotAddCommonIngredients() {
 		ShoppingList shoppingList = ShoppingListFactory.get().getShoppingList();
 		shoppingList.addIngredients("test", Arrays.asList("1 can tomatoes", "1 can carrots"), "en");
-		Map<String, ArrayList<ProductDto>> shoppingListMap = shoppingList.getShoppingList().getShoppingListMap();
+		Map<String, ArrayList<ProductDto>> shoppingListMap = shoppingList.getList().getShoppingListMap();
+		List<ProductDto> products = shoppingListMap.get("supermarket");
+		assertEquals(2, products.size());
+	}
+	
+	@Test
+	public void shouldNotAddSpecializedProducts() {
+		ShoppingList shoppingList = ShoppingListFactory.get().getShoppingList();
+		shoppingList.addIngredients("test", Arrays.asList("extra-virgin olive oil", "olive oil"), "en");
+		Map<String, ArrayList<ProductDto>> shoppingListMap = shoppingList.getList().getShoppingListMap();
 		List<ProductDto> products = shoppingListMap.get("supermarket");
 		assertEquals(2, products.size());
 	}

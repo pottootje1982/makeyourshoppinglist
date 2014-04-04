@@ -60,7 +60,7 @@ ShoppingListInterface {
 			shoppingListFactory.addToShoppingList(site);	
 		}
 		
-		return ShoppingList.getShoppingList();
+		return ShoppingList.getList();
 	}
 
 	@Override
@@ -93,6 +93,6 @@ ShoppingListInterface {
 	public ShoppingListDto addCustomIngredient(String ingredient, String language) {
 		ShoppingList shoppingList = ShoppingListFactory.get().getShoppingList();		
 		shoppingList.addCustomIngredient(ingredient, language);
-		return ShoppingList.getShoppingList();
+		return ShoppingList.getList();
 	}
 }

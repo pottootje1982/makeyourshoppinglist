@@ -26,7 +26,7 @@ public class ProductTest {
 		product1.setIngredient(new Ingredient("olive oil"));
 		Product product2 = new Product(new ProductInfo("oil"));
 		product2.setIngredient(new Ingredient("50ml olive oil, for frying"));
-		assertEquals("50ml olive oil", product1.add(product2).toString());
+		assertEquals("olive oil", product1.add(product2).toString());
 	}
 	
 	

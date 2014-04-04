@@ -122,7 +122,7 @@ public class Product {
 
 	public List<String> getIds() {
 		List<String> result = new ArrayList<>(aggregatedIds);
-		result.add(id);
+		result.add(0, id);
 		return result;
 	}
 	

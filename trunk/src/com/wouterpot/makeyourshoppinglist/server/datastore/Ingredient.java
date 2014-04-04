@@ -22,6 +22,10 @@ public class Ingredient {
     private static List<Unit> availableUnits = new ArrayList<Unit>() { {
 		for (UnitType unitType : UnitType.values()) {
 			switch (unitType) {
+			case m: add(new Unit(QuantityType.Length, UnitType.m)); break;
+			case dm: add(new Unit(QuantityType.Length, UnitType.dm)); break;
+			case cm: add(new Unit(QuantityType.Length, UnitType.cm)); break;
+			case mm: add(new Unit(QuantityType.Length, UnitType.mm)); break;
 			case l: add(new Unit(QuantityType.Volume, UnitType.l)); break;
 			case dl: add(new Unit(QuantityType.Volume, UnitType.dl)); break;
 			case cl: add(new Unit(QuantityType.Volume, UnitType.cl)); break;
@@ -58,11 +62,11 @@ public class Ingredient {
 	}
 
 	private void parseIngredient(String ingredient) {
-		String[] groups = RegEx.findGroups(ingredient, "^(\\d*[ .,/]*\\d*[ /¼½¾]*\\d*)\\s*(\\S*)\\s*(.*)$");
+		String[] groups = RegEx.findGroups(ingredient, "^(\\d*[ .,/-]*\\d*[ /¼½¾]*\\d*)\\s*(\\S*)\\s*(.*)$");
 		
 		List<String> productNameParts = new ArrayList<String>();
 		UnitType parsedUnitType = null;
-		double parsedAmount = 0;
+		Range parsedAmount = null;
 		String numericalPart = groups[0];
 		if (!Strings.isNullOrEmpty(numericalPart)) {
 			try {
@@ -91,31 +95,41 @@ public class Ingredient {
 		addUnit(parsedUnitType, parsedAmount);
 	}
 
-	private double parseNumericalPart(String numericalPart) throws ParseException {
+	private Range parseNumericalPart(String numericalPart) throws ParseException {
+		double result = 0;
 		numericalPart = numericalPart.replaceAll("¼", "1/4");
 		numericalPart = numericalPart.replaceAll("½", "1/2");
 		numericalPart = numericalPart.replaceAll("¾", "3/4");
+		if (numericalPart.contains("-")) {
+			String[] groups = RegEx.findGroups(numericalPart, "(\\d*)[-]+(\\d*)");
+			if (groups.length != 2) throw new NumberFormatException("Range is not properly specified");
+			Range lower = parseNumericalPart(groups[0]);
+			Range upper = parseNumericalPart(groups[1]);
+			return Range.between(lower.getMinimum(), upper.getMinimum());
+		}
 		if (numericalPart.contains("/")) {
 			FractionFormat fractionFormat = new FractionFormat();
 			try {
 				Fraction fraction = fractionFormat.parse(numericalPart);
-				return fraction.doubleValue();
+				result = fraction.doubleValue();
 			}
 			catch (ParseException ex) {
 				// Divison might have been something like 1 1/2
 				String[] groups = RegEx.findGroups(numericalPart, "(\\d*) +(\\d*[ /]+\\d*)");
 				double unit = fractionFormat.parse(groups[0]).doubleValue();
 				double fraction = fractionFormat.parse(groups[1]).doubleValue();
-				return unit + fraction;
+				result = unit + fraction;
 			}
 		}
-		return Double.parseDouble(numericalPart);
+		else
+			result = Double.parseDouble(numericalPart);
+		return Range.between(result, result);
 	}
 
-	private void addUnit(UnitType parsedUnitType, double parsedAmount) {
+	private void addUnit(UnitType parsedUnitType, Range parsedAmount) {
 		if (parsedUnitType != UnitType.NaN) {
 			Unit unit = getAvailableUnit(parsedUnitType);
-			Unit newUnit = new Unit(unit.getQuantityType(), parsedUnitType, parsedAmount);
+			Unit newUnit = new Unit(unit.getQuantityType(), parsedUnitType, parsedAmount.getMinimum(), parsedAmount.getSize());
 			getUnits().add(newUnit);	
 		}
 	}
@@ -165,12 +179,16 @@ public class Ingredient {
 	public void add(Ingredient otherIngredient) {
 		if (productName == null)
 			productName = otherIngredient.productName;
+		else if (otherIngredient.units.size() == 0 || units.size() == 0) { // if other ingredient is unquantifiable, don't use units
+			units.clear();
+			return;
+		}
 		for (Unit otherUnit : otherIngredient.getUnits()) {
 			int unitIndex = getCompatibleUnit(otherUnit);
 			if (unitIndex != -1)
-				getUnits().set(unitIndex, getUnits().get(unitIndex).add(otherUnit));
+				units.set(unitIndex, units.get(unitIndex).add(otherUnit));
 			else
-				getUnits().add(otherUnit);
+				units.add(otherUnit);
 		}
 	}
 
