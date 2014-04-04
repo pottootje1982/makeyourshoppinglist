@@ -72,7 +72,8 @@ public class Product {
 		this.productInfo = product.productInfo;
 		this.visible = product.visible;
 		this.isCustom = product.isCustom;
-		aggregatedIds.add(product.id);
+		for (String id : product.aggregatedIds)
+			aggregatedIds.add(id);
 		aggregatedProductNames.add(product.getIngredient().toString());
 	}
 
@@ -120,7 +121,9 @@ public class Product {
 	}
 
 	public List<String> getIds() {
-		return aggregatedIds;
+		List<String> result = new ArrayList<>(aggregatedIds);
+		result.add(id);
+		return result;
 	}
 	
 	public String getAggregatedProductName() {
