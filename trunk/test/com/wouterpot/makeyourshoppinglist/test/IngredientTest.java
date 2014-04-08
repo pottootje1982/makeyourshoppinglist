@@ -15,6 +15,8 @@ import com.wouterpot.makeyourshoppinglist.server.datastore.UnitType;
 
 public class IngredientTest extends DataStoreTestBase {
 
+	// TODO: 680 g-700g jar tomato passata (week 6)
+	
 	@Test
 	public void lengthQuantity() {
 		Ingredient ingredient = new Ingredient("2.5 cm gember");

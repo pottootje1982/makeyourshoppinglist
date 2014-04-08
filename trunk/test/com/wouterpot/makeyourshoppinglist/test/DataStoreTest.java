@@ -31,6 +31,13 @@ public class DataStoreTest extends DataStoreTestBase {
     }
     
 	@Test
+	public void testNrcNlTooLong() {
+		ShoppingListFactory shoppingListFactory = ShoppingListFactory.get();
+		File file = new File("test/testdata/pages/nrc.nl.toolong.html");
+		shoppingListFactory.addToShoppingList(file);
+	}
+    
+	@Test
 	public void loadPersistedShoppingList() {
 		ShoppingListFactory shoppingListFactory = ShoppingListFactory.get();
 		File file = new File("test/testdata/pages/smulweb.nl.html");

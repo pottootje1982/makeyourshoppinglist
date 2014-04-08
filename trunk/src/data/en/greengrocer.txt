@@ -130,7 +130,7 @@ Hearts of Palm
 Horseradish
 Jerusalem Artichoke
 Sunchokes
-Jícama
+JÃ­cama
 Kale
 Curly
 Lacinato
@@ -186,6 +186,8 @@ Zucchini
 
 #Peppers
 red pepper
+green pepper
+yellow pepper
 Anaheim pepper
 Banana pepper
 Cayenne pepper
@@ -405,3 +407,7 @@ puree
 dried
 oil
 salt
+powder
+flakes
+passata
+ground

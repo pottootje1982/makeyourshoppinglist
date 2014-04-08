@@ -27,9 +27,9 @@ import com.wouterpot.makeyourshoppinglist.server.ShoppingListFactory;
 import com.wouterpot.makeyourshoppinglist.shared.ProductDto;
 import com.wouterpot.makeyourshoppinglist.shared.ShoppingListDto;
 
-// TODO: shopping list could be corrupt (i.e. categoriesToProducts is null for instance) due to premature,
-// shutdown of server or whatsoever. Make sure ShoppingList is robust to this. You will get a null pointer exception
-// in ShoppingList.getIngredients() if not
+// TODO: shopping list should be resilient to exceptions (e.g. exception due too long shopping list items > 500 chars)
+// TODO: buttons also on top of page
+// TODO: aspx sites like allrecipes.nl/recept/10257/andijvie-stamppot.aspx cannot be opened
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
 public class ShoppingList {
