@@ -16,5 +16,6 @@
 		<property name="datanucleus.appengine.singletonPMFForName"
 			value="true" />
 		<property name="datanucleus.appengine.ignorableMetaDataBehavior" value="NONE"></property>
+		<property name="datanucleus.appengine.datastoreEnableXGTransactions" value="true" />
 	</persistence-manager-factory>
 </jdoconfig>

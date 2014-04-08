@@ -7,4 +7,5 @@ pork
 venison
 
 [EXCLUDE]
-cubes
+cube
+paste

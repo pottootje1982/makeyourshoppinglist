@@ -1,6 +1,6 @@
 <sites> 
   <site url='bbcgoodfood.com' language='en' class="ingredient-lists separator-serated tab-content" childTagName='li'/> 
-  <site url='hoggan.co.uk' language='en' class="recipe" childTagName='li'/> 
+  <site url='hoggan.co.uk' language='en' class="recipe" tagName='ul' childTagName='li'/> 
   <site url='volkskrant.nl' language='nl' class="ingredient"/> 
   <site url='smulweb.nl' language='nl' class="ingredienten" tagName='p'  /> 
   <site url='vlees.nl' language='nl' class="ingredients" childTagName='li' /> 
@@ -12,6 +12,6 @@
   <site url='sites.google.com/site/walterreddock/recepten' language='nl' id="sites-canvas-main-content" tagName='ul' childTagName='li' /> 
   <site url='sites.google.com' language='nl' id="sites-canvas-main-content" tagName='ul' childTagName='li' /> 
   <site url='epicurious.com' language='en' class="ingredientsList first no-header" childTagName='span' /> 
-  <site url='nrc.nl' language='nl' tagName='blockquote' childTagName='p' /> 
+  <site url='nrc.nl' language='nl' id='broodtekst' tagName='blockquote' childTagName='p' /> 
   <site url='pastinaak.nl' language='nl' id='ingredients' childTagName='li' /> 
 </sites> 

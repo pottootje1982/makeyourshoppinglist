@@ -186,4 +186,26 @@ public class ShoppingListTest extends DataStoreTestBase {
 		List<ProductDto> products = shoppingListMap.get("supermarket");
 		assertEquals(2, products.size());
 	}
+	
+	@Test
+	public void testHogganUk() {
+		ShoppingList shoppingList = getShoppingList("test/testdata/pages/hoggan.co.uk.html");
+		List<Product> shoppingItems = shoppingList.getProducts("greengrocer");
+		assertEquals(5, shoppingItems.size());
+		shoppingItems = shoppingList.getProducts("supermarket");
+		assertEquals(6, shoppingItems.size());
+		shoppingItems = shoppingList.getProducts("butcher");
+		assertEquals(2, shoppingItems.size());
+	}
+	
+	@Test
+	public void testNrcNl() {
+		ShoppingList shoppingList = getShoppingList("test/testdata/pages/nrc.nl.html");
+		List<Product> shoppingItems = shoppingList.getProducts("greengrocer");
+		assertEquals(5, shoppingItems.size());
+		shoppingItems = shoppingList.getProducts("supermarket");
+		assertEquals(6, shoppingItems.size());
+		shoppingItems = shoppingList.getProducts("butcher");
+		assertEquals(1, shoppingItems.size());
+	}
 }
