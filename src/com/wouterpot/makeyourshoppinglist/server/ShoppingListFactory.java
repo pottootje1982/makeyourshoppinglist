@@ -59,6 +59,7 @@ public class ShoppingListFactory {
 
 	public void addToShoppingList(String url) {
 		try {
+			if (url.startsWith("www")) url = "http://" + url;
 			IngredientsList ingredientsList = ingredientsScraper.getIngredients(url);
 			addToShoppingList(url, ingredientsList);
 		} catch (IngredientsScraperException e) {

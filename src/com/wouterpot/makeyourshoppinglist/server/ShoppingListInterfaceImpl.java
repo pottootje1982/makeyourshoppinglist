@@ -11,8 +11,6 @@ import com.wouterpot.makeyourshoppinglist.server.datastore.ShoppingList;
 import com.wouterpot.makeyourshoppinglist.shared.ProductDto;
 import com.wouterpot.makeyourshoppinglist.shared.ShoppingListDto;
 
-// TODO: shouldn't fail on url's starting with www.
-
 public class ShoppingListInterfaceImpl extends RemoteServiceServlet implements
 ShoppingListInterface {
 
