@@ -32,6 +32,13 @@ public class ShoppingListTest extends DataStoreTestBase {
 		ShoppingList shoppingList = shoppingListFactory.getShoppingList();
 		return shoppingList;
 	}
+	
+	private ShoppingList getShoppingListOfUrl(String url) {
+		ShoppingListFactory shoppingListFactory = ShoppingListFactory.get();
+		shoppingListFactory.addToShoppingList(url);
+		ShoppingList shoppingList = shoppingListFactory.getShoppingList();
+		return shoppingList;
+	}
 
 	@Test
 	public void getShoppingList() throws IOException {
@@ -207,5 +214,11 @@ public class ShoppingListTest extends DataStoreTestBase {
 		assertEquals(6, shoppingItems.size());
 		shoppingItems = shoppingList.getProducts("butcher");
 		assertEquals(1, shoppingItems.size());
+	}
+	
+	// Shouldn't throw MalformedUrlException because of URL starting with www.
+	@Test
+	public void testWwwAddress() {
+		getShoppingListOfUrl("www.smulweb.nl/recepten/969027/Pasta-met-garnalen-en-courgettes");
 	}
 }
