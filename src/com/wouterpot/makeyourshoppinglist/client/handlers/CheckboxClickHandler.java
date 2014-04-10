@@ -1,4 +1,4 @@
-package com.wouterpot.makeyourshoppinglist.client;
+package com.wouterpot.makeyourshoppinglist.client.handlers;
 
 import com.google.gwt.dom.client.Style.TextDecoration;
 import com.google.gwt.event.dom.client.ClickEvent;

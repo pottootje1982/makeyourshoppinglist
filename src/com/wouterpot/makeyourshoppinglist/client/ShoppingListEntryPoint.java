@@ -19,6 +19,12 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.wouterpot.makeyourshoppinglist.client.handlers.AddShoppingItemTextBoxKeyHandler;
+import com.wouterpot.makeyourshoppinglist.client.handlers.AddSiteTextBoxHandler;
+import com.wouterpot.makeyourshoppinglist.client.handlers.CheckboxClickHandler;
+import com.wouterpot.makeyourshoppinglist.client.handlers.ClearShoppingListHandler;
+import com.wouterpot.makeyourshoppinglist.client.handlers.HideButtonHandler;
+import com.wouterpot.makeyourshoppinglist.client.handlers.HyperlinkHandler;
 import com.wouterpot.makeyourshoppinglist.shared.ProductDto;
 import com.wouterpot.makeyourshoppinglist.shared.ShoppingListDto;
 
@@ -87,11 +93,11 @@ public class ShoppingListEntryPoint implements EntryPoint {
 		RootPanel.get().add(buttonPanel);
 	}
 
-	void querySites(String[] sites) {
+	public void querySites(String[] sites) {
 		greetingService.greetServer(sites, shoppingListCallback);
 	}
 	
-	void clearShoppingList() {
+	public void clearShoppingList() {
 		recipePanel.clear();
 		shoppingListPanel.clear();
 		shoppingList.clear();

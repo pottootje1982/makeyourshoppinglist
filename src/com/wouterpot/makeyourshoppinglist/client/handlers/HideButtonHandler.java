@@ -1,4 +1,4 @@
-package com.wouterpot.makeyourshoppinglist.client;
+package com.wouterpot.makeyourshoppinglist.client.handlers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,9 +6,13 @@ import java.util.Map.Entry;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.wouterpot.makeyourshoppinglist.client.ProductCheckBox;
+import com.wouterpot.makeyourshoppinglist.client.ShoppingListEntryPoint;
+import com.wouterpot.makeyourshoppinglist.client.ShoppingListInterfaceAsync;
+import com.wouterpot.makeyourshoppinglist.client.VoidCallback;
 import com.wouterpot.makeyourshoppinglist.shared.ProductDto;
 
-final class HideButtonHandler implements ClickHandler {
+public final class HideButtonHandler implements ClickHandler {
 
 	private ShoppingListEntryPoint shoppingListEntryPoint;
 	private boolean unhide;
