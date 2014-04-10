@@ -1,11 +1,12 @@
-package com.wouterpot.makeyourshoppinglist.client;
+package com.wouterpot.makeyourshoppinglist.client.handlers;
 
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.user.client.ui.TextBox;
+import com.wouterpot.makeyourshoppinglist.client.ShoppingListEntryPoint;
 
-final class AddSiteTextBoxHandler implements KeyPressHandler {
+public final class AddSiteTextBoxHandler implements KeyPressHandler {
 	private ShoppingListEntryPoint shoppingListEntryPoint;
 
 	public AddSiteTextBoxHandler(ShoppingListEntryPoint shoppingListEntryPoint) {
