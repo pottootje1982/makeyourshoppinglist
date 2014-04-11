@@ -87,4 +87,17 @@ public class CategoryDictionaryTest {
 		String category = getCategory("can tomatoes");
 		assertEquals(null, category);
 	}
+	
+	@Test
+	public void testPluralAndDiminitive() throws URISyntaxException, IOException {
+		categoryDictionary = new CategoryDictionary("nl", "testdata");
+		String category = getCategory("kipkarbonade");
+		assertEquals("butcher", category);
+		category = getCategory("kipkarbonades");
+		assertEquals("butcher", category);
+		category = getCategory("kipkarbonaadje");
+		assertEquals("butcher", category);
+		category = getCategory("kipkarbonaadjes");
+		assertEquals("butcher", category);
+	}
 }
