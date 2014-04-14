@@ -154,7 +154,7 @@ snijboon
 snijselderij
 spekboo?n
 sopropo
-paré
+parÃ©
 sperzieboon
 spinazie
 spinaziezuring
@@ -164,14 +164,14 @@ duizendkoppige kool
 sponskomkommer
 nenwa
 spruitkool
-suikermaïs
+suikermaÃ¯s
 suikerwortel
 sugar snaps
 suikererwt
 Sojaboon
 takako
 taro
-taugé
+taugÃ©
 tayer
 tetragonia
 Nieuw-Zeelandse spinazie
@@ -252,6 +252,7 @@ uien
 oregano
 rozemarijn
 koriander
+dragon
 
 # Diversen
 Granaatappel

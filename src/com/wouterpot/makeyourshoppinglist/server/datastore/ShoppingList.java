@@ -25,7 +25,7 @@ import com.wouterpot.makeyourshoppinglist.helpers.RegEx;
 import com.wouterpot.makeyourshoppinglist.server.PMF;
 import com.wouterpot.makeyourshoppinglist.server.ShoppingListFactory;
 import com.wouterpot.makeyourshoppinglist.shared.ProductDto;
-import com.wouterpot.makeyourshoppinglist.shared.ShoppingListDto;
+import com.wouterpot.makeyourshoppinglist.shared.WelcomeDto;
 
 // TODO: shopping list should be resilient to exceptions (e.g. exception due too long shopping list items > 500 chars)
 // TODO: buttons also on top of page
@@ -129,7 +129,7 @@ public class ShoppingList {
 		this.languageDictionary = languageDictionary;
 	}
 
-	public static ShoppingListDto getList() {
+	public static WelcomeDto getList() {
 		Map<String, ArrayList<ProductDto>> shoppingListMap = new TreeMap<String, ArrayList<ProductDto>>();
 		ArrayList<String> sites = new ArrayList<String>();
 		ShoppingListFactory shoppingListFactory = ShoppingListFactory.get();
@@ -178,7 +178,7 @@ public class ShoppingList {
 			}
 		}
 		
-		return new ShoppingListDto(shoppingListMap, sites);
+		return new WelcomeDto(shoppingListMap, sites);
 	}
 
 	public boolean isEmpty() {

@@ -9,6 +9,8 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.FontStyle;
 import com.google.gwt.dom.client.Style.FontWeight;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
@@ -26,7 +28,7 @@ import com.wouterpot.makeyourshoppinglist.client.handlers.ClearShoppingListHandl
 import com.wouterpot.makeyourshoppinglist.client.handlers.HideButtonHandler;
 import com.wouterpot.makeyourshoppinglist.client.handlers.HyperlinkHandler;
 import com.wouterpot.makeyourshoppinglist.shared.ProductDto;
-import com.wouterpot.makeyourshoppinglist.shared.ShoppingListDto;
+import com.wouterpot.makeyourshoppinglist.shared.WelcomeDto;
 
 // TODO: option to expand added items (to not add)
 // TODO: setting page where you can set language
@@ -46,6 +48,7 @@ public class ShoppingListEntryPoint implements EntryPoint {
 	private Map<String, ArrayList<ProductCheckBox>> shoppingList = new HashMap<String, ArrayList<ProductCheckBox>>();
 	private TextBox addSiteTextBox;
 	private ShoppingListCallback shoppingListCallback;
+	private Anchor signInAnchor;
 
 	@Override
 	public void onModuleLoad() {
@@ -55,6 +58,8 @@ public class ShoppingListEntryPoint implements EntryPoint {
 		addSiteTextBox.setWidth("820");
 		addSiteTextBox.addKeyPressHandler(new AddSiteTextBoxHandler(this));
 		addSitePanel.add(addSiteTextBox);
+		signInAnchor = new Anchor("Sign in");
+		addSitePanel.add(signInAnchor);
 		RootPanel.get().add(addSitePanel);
 		
 		Label label = new Label("Recipes:");
@@ -125,10 +130,10 @@ public class ShoppingListEntryPoint implements EntryPoint {
 	}
 
 	public void addIngredient(String ingredient) {
-		greetingService.addCustomIngredient(ingredient, "nl", new AsyncCallback<ShoppingListDto>() {
+		greetingService.addCustomIngredient(ingredient, "nl", new AsyncCallback<WelcomeDto>() {
 			
 			@Override
-			public void onSuccess(ShoppingListDto result) {
+			public void onSuccess(WelcomeDto result) {
 				fillShoppingList(result);
 			}
 			
@@ -140,8 +145,8 @@ public class ShoppingListEntryPoint implements EntryPoint {
 		});		
 	}
 
-	public void fillShoppingList(ShoppingListDto shoppingListDto) {
-		Map<String, ArrayList<ProductDto>> productsToCategories = shoppingListDto.getShoppingListMap();
+	public void fillShoppingList(WelcomeDto welcomeDto) {
+		Map<String, ArrayList<ProductDto>> productsToCategories = welcomeDto.getShoppingListMap();
 		shoppingListPanel.clear();
 		recipePanel.clear();
 		shoppingList.clear();
@@ -170,12 +175,14 @@ public class ShoppingListEntryPoint implements EntryPoint {
 			this.shoppingList.put(entry.getKey(), productCheckBoxes);
 		}
 		
-		List<String> sites = shoppingListDto.getSites();
+		List<String> sites = welcomeDto.getSites();
 		for (String site : sites) {
 			Anchor hyperlink = new Anchor(site);
 			hyperlink.addClickHandler(new HyperlinkHandler(site));
 			recipePanel.add(hyperlink);
 		}
+		
+		signInAnchor.setHref(welcomeDto.getSignInUrl());
 	}
 	
 	public void showErrorMessage(String message) {

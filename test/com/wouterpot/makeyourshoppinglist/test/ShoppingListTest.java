@@ -16,7 +16,7 @@ import com.wouterpot.makeyourshoppinglist.server.ShoppingListFactory;
 import com.wouterpot.makeyourshoppinglist.server.datastore.Product;
 import com.wouterpot.makeyourshoppinglist.server.datastore.ShoppingList;
 import com.wouterpot.makeyourshoppinglist.shared.ProductDto;
-import com.wouterpot.makeyourshoppinglist.shared.ShoppingListDto;
+import com.wouterpot.makeyourshoppinglist.shared.WelcomeDto;
 
 public class ShoppingListTest extends DataStoreTestBase {
 	
@@ -102,7 +102,7 @@ public class ShoppingListTest extends DataStoreTestBase {
 	@Test
 	public void getAggregatedShoppingList() throws IOException {
 		getShoppingList("test/testdata/pages/sites.google.com.html");
-		ShoppingListDto shoppingListDto = ShoppingList.getList();
+		WelcomeDto shoppingListDto = ShoppingList.getList();
 		Map<String, ArrayList<ProductDto>> shoppingItems = shoppingListDto.getShoppingListMap();
 		
 		ArrayList<ProductDto> products = shoppingItems.get("greengrocer");
@@ -134,7 +134,7 @@ public class ShoppingListTest extends DataStoreTestBase {
 		Product product1 = products.get(0);
 		Product product2 = products.get(1);
 		
-		ShoppingListDto shoppingListDto = ShoppingList.getList();
+		WelcomeDto shoppingListDto = ShoppingList.getList();
 		Map<String, ArrayList<ProductDto>> shoppingListMap = shoppingListDto.getShoppingListMap();
 		ArrayList<ProductDto> productDtos = shoppingListMap.get("supermarket");
 		assertEquals(1, productDtos.size());

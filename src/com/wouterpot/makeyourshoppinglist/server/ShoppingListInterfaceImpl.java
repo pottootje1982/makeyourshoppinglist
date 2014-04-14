@@ -4,12 +4,15 @@ import java.util.List;
 
 import javax.jdo.JDOException;
 
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.wouterpot.makeyourshoppinglist.client.ShoppingListInterface;
+import com.wouterpot.makeyourshoppinglist.helpers.DevHelper;
 import com.wouterpot.makeyourshoppinglist.server.datastore.Product;
 import com.wouterpot.makeyourshoppinglist.server.datastore.ShoppingList;
 import com.wouterpot.makeyourshoppinglist.shared.ProductDto;
-import com.wouterpot.makeyourshoppinglist.shared.ShoppingListDto;
+import com.wouterpot.makeyourshoppinglist.shared.WelcomeDto;
 
 public class ShoppingListInterfaceImpl extends RemoteServiceServlet implements
 ShoppingListInterface {
@@ -52,13 +55,17 @@ ShoppingListInterface {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public ShoppingListDto greetServer(String[] sites) throws IllegalArgumentException {
+	public WelcomeDto greetServer(String[] sites) throws IllegalArgumentException {
 		ShoppingListFactory shoppingListFactory = ShoppingListFactory.get();
 		for (String site : sites) {
 			shoppingListFactory.addToShoppingList(site);	
 		}
 		
-		return ShoppingList.getList();
+		WelcomeDto welcomeDto = ShoppingList.getList();
+		UserService userService = UserServiceFactory.getUserService();
+		welcomeDto.setSignInUrl(userService.createLoginURL(DevHelper.getAppUrl()));
+		
+		return welcomeDto;
 	}
 
 	@Override
@@ -88,7 +95,7 @@ ShoppingListInterface {
 	}
 
 	@Override
-	public ShoppingListDto addCustomIngredient(String ingredient, String language) {
+	public WelcomeDto addCustomIngredient(String ingredient, String language) {
 		ShoppingList shoppingList = ShoppingListFactory.get().getShoppingList();		
 		shoppingList.addCustomIngredient(ingredient, language);
 		return ShoppingList.getList();
