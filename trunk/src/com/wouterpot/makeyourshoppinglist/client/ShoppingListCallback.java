@@ -1,9 +1,9 @@
 package com.wouterpot.makeyourshoppinglist.client;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.wouterpot.makeyourshoppinglist.shared.ShoppingListDto;
+import com.wouterpot.makeyourshoppinglist.shared.WelcomeDto;
 
-final class ShoppingListCallback implements	AsyncCallback<ShoppingListDto> {
+final class ShoppingListCallback implements	AsyncCallback<WelcomeDto> {
 	
 	private ShoppingListEntryPoint shoppingListEntryPoint;
 
@@ -15,7 +15,7 @@ final class ShoppingListCallback implements	AsyncCallback<ShoppingListDto> {
 		shoppingListEntryPoint.showErrorMessage("Error while trying to contact server...\n" + caught.getMessage());
 	}
 
-	public void onSuccess(ShoppingListDto shoppingListDto) {
+	public void onSuccess(WelcomeDto shoppingListDto) {
 		shoppingListEntryPoint.fillShoppingList(shoppingListDto);
 	}
 }
