@@ -1,0 +1,540 @@
+<div id="content" style="height: 875px;">
+
+
+	<div class="col3_left">
+		<div class="col3_left_viewport" style="width: 675px; height: 865px;">
+			<div class="overlay_shadow">
+				<div>&nbsp;</div>
+			</div>
+			<div class="overlay_indicator overlay_indicator_close">&nbsp;</div>
+			<div class="col3_overlay">
+				<form action="/recepten/" method="get"
+					class="f05_recipe_quick_search" name="recipe_quick_search">
+					<fieldset>
+						<legend>Informatie zoekformulier</legend>
+						<div class="col_small">
+							<select name="vissoort_home_accept">
+								<option value="0">Zoek recept op vissoort</option>
+								<option value="73">Ansjovis (3)</option>
+								<option value="9">Divers (22)</option>
+								<option value="10">Dorade (5)</option>
+								<option value="80">Europese kreeft (1)</option>
+								<option value="11">Forel (15)</option>
+								<option value="67">Forel (gerookt) (1)</option>
+								<option value="12">Gamba (tijgergarnaal) (15)</option>
+								<option value="13">Griet (3)</option>
+								<option value="14">Haring (43)</option>
+								<option value="79">Heek (7)</option>
+								<option value="69">Heilbot (7)</option>
+								<option value="15">Hollandse garnaal (78)</option>
+								<option value="16">Inktvis (1)</option>
+								<option value="17">Kabeljauw (38)</option>
+								<option value="19">Kibbeling (6)</option>
+								<option value="20">Kokkels (2)</option>
+								<option value="21">Koolvis (5)</option>
+								<option value="23">Krab (6)</option>
+								<option value="24">Langoustine (7)</option>
+								<option value="25">Lekkerbek (3)</option>
+								<option value="26">Lekkerbek (Wijting) (1)</option>
+								<option value="27">Makreel (32)</option>
+								<option value="28">Meerval (6)</option>
+								<option value="29">Mosselen (38)</option>
+								<option value="82">Mul (9)</option>
+								<option value="30">Nijlbaars (3)</option>
+								<option value="32">Oesters (8)</option>
+								<option value="33">Paling (24)</option>
+								<option value="71">Paling (gerookt) (1)</option>
+								<option value="34">Pangasius (10)</option>
+								<option value="35">Pijlinktvis (7)</option>
+								<option value="36">Poon (11)</option>
+								<option value="38">Rivierkreeft (2)</option>
+								<option value="84">Rog (4)</option>
+								<option value="40">Roodbaars (13)</option>
+								<option value="89">Roze garnaal (5)</option>
+								<option value="42">Sardine (9)</option>
+								<option value="64">Schar (10)</option>
+								<option value="66">Schelvis (7)</option>
+								<option value="43">Schol (48)</option>
+								<option value="44">Sliptong (11)</option>
+								<option value="45">Snoekbaars (4)</option>
+								<option value="86">Sprot (2)</option>
+								<option value="46">St. Jacobsschelp (5)</option>
+								<option value="48">Tarbot (7)</option>
+								<option value="49">Tijgergarnaal (gamba) (7)</option>
+								<option value="50">Tilapia (21)</option>
+								<option value="51">Tong (13)</option>
+								<option value="52">Tongschar (5)</option>
+								<option value="53">Tonijn (19)</option>
+								<option value="54">Tonijn (in blik) (17)</option>
+								<option value="55">Wijting (12)</option>
+								<option value="56">Zalm (50)</option>
+								<option value="57">Zalm (gerookt) (16)</option>
+								<option value="58">Zalm (in blik) (12)</option>
+								<option value="59">Zalmforel (3)</option>
+								<option value="60">Zeebaars (8)</option>
+								<option value="61">Zeeduivel (13)</option>
+								<option value="62">Zeewolf (12)</option>
+								<option value="63">Zwaardvis (3)</option>
+							</select>
+						</div>
+						<div class="col_small_double">
+							<input type="text" id="tx_visrecepten_pi6_sTerm"
+								name="vissoort_home_sTerm" onclick="clearSearchTerm(this)"
+								value="Zoek recept op zoekterm"> <a
+								href="javascript:void(0);" title="Zoeken"
+								class="component_button grey"><span>Zoeken</span></a>
+						</div>
+
+					</fieldset>
+				</form>
+
+
+				<div class="f12_recipe_information">
+					<div class="col_small">
+
+						<form class="component_rating_selector" action="" method="post"
+							enctype="multipart/form-data" id="xajax_form">
+							<fieldset>
+								<legend>Beoordelingsformulier</legend>
+								<input type="hidden" name="tx_visrecepten_pi4[showUid]"
+									value="731"> <input type="hidden" id="rating_field"
+									name="tx_visrecepten_pi4[rating]" value="0">
+								<ul id="rating_selector" class="rating00">
+									<li><a href="javascript:void(0);" title="0/5" class="zero">0/5</a></li>
+									<li><a href="javascript:void(0);" title="0,5/5">0,5/5</a></li>
+									<li><a href="javascript:void(0);" title="1/5">1/5</a></li>
+									<li><a href="javascript:void(0);" title="1,5/5">1,5/5</a></li>
+									<li><a href="javascript:void(0);" title="2/5">2/5</a></li>
+									<li><a href="javascript:void(0);" title="2,5/5">2,5/5</a></li>
+									<li><a href="javascript:void(0);" title="3/5">33/5</a></li>
+									<li><a href="javascript:void(0);" title="3,5/5">3,5/5</a></li>
+									<li><a href="javascript:void(0);" title="4/5">4/5</a></li>
+									<li><a href="javascript:void(0);" title="4,5/5">4,5/5</a></li>
+									<li><a href="javascript:void(0);" title="5/5">5/5</a></li>
+								</ul>
+								<span id="formResult"> <a id="BtnBeoordeel"
+									href="javascript:void(0);"
+									onclick="tx_visrecepten_pi4processFormData(xajax.getFormValues('xajax_form'));if(elRatingField.value == 0){alert('Selecteer eerst de gewenste waarde door op de bollen te klikken!')}"
+									title="Beoordeel" class="component_button "><span>Beoordeel</span></a>
+								</span>
+							</fieldset>
+						</form>
+
+					</div>
+					<div class="col_small_double">
+						<span id="viskookboek"><a href="javascript:void(0);"
+							onclick="tx_visrecepten_pi4viskookboek(731)"
+							title="Toevoegen aan mijn recepten" class="component_button "><span>Toevoegen
+									aan mijn recepten</span></a></span> <a
+							href="/recepten/recept/lightbox.html?tx_visrecepten_pi5%5Buid%5D=731"
+							title="Mail recept" class="component_button"
+							rel="shadowbox;width=450;height=430"><span>Mail recept</span></a>
+						<!--<a href="/recepten/recept/lightbox4.html?tx_visrecepten_pi4%5BshowUid%5D=731" rel="shadowbox;width=720;height=500" title="Print recept" class="component_button"><span>Print recept</span></a>-->
+						<a class="component_button"
+							href="/recepten/recept/?tx_visrecepten_pi4%5BshowUid%5D=731#"
+							onclick="window.print();return false"><span>Print
+								recept</span></a>
+						<div class="clear">&nbsp;</div>
+					</div>
+
+					<div class="col_small">
+						<h2>Andijviestamppotje met rode poon</h2>
+						<h3>
+							<a href="/vissoorten/vissoort/?tx_visrecepten_pi11%5Buid%5D=36">Poon</a>
+						</h3>
+						<div class="visual">
+							<span class="omega3 hidden">Omega3</span> <img
+								src="/typo3temp/pics/d01c01f882.jpg" width="191" height="191"
+								alt="Andijviestamppotje met rode poon"
+								title="Andijviestamppotje met rode poon">
+							<p></p>
+						</div>
+						<div class="clear">&nbsp;</div>
+
+
+					</div>
+
+					<div class="col_small">
+						<div class="evaluation">
+							<h4 class="evaluation">Waardering</h4>
+							<h4 class="hidden">Gerecht informatie</h4>
+							<div class="component_rating">
+								<span class="rating20" title="2/5">2/5</span>
+							</div>
+							<dl>
+								<dt>Type gerecht:</dt>
+								<dd>Hoofdgerecht</dd>
+								<dt>Bereidingstijd:</dt>
+								<dd>20 - 30 min.</dd>
+								<dt>Verkrijgbaarheid:</dt>
+								<dd>Goed</dd>
+								<!--###AANTALPERSONENWRAP###-->
+								<dt>Aantal personen:</dt>
+								<dd>4 personen</dd>
+								<!--###AANTALPERSONENWRAP###-->
+								<!--###ENERGIEWRAP###-->
+								<dt>Energie:</dt>
+								<dd>
+									<!--###KCALWRAP###-->
+									505 kCal
+									<!--###KCALWRAP###-->
+									<!--###SEPARATORWRAP###-->
+									|
+									<!--###SEPARATORWRAP###-->
+									<!--###KJWRAP###-->
+									2120 kJ
+									<!--###KJWRAP###-->
+								</dd>
+								<!--###ENERGIEWRAP###-->
+							</dl>
+
+							<div class="clear">&nbsp;</div>
+						</div>
+
+						<h4>Bereiding</h4>
+						<p>
+							• Kook de aardappelblokjes in een flinke bodem water in 10-15
+							minuten gaar. <br> • Wrijf de rode ponen rondom in met zout,
+							peper, paprikapoeder en olijfolie. Bak de ponen in een hete
+							grillpan in 12-16 minuten rondom mooi bruin en gaar. Fruit de ui
+							in een steelpan met 1 eetlepel olijfolie zachtjes glazig. <br>
+							• Giet de aardappelen af, stamp ze fijn en roer ze met de melk en
+							1 eetlepel olijfolie tot een smeuïge puree. Voeg hand voor hand
+							de andijvie toe en verwarm de stamppot tot de andijvie begint te
+							slinken. Voeg zout en peper naar smaak toe.<br> • Schep de
+							andijviestamppot op borden en zet de rode ponen ernaast. Schep de
+							uien over de stamppot.
+						</p>
+					</div>
+
+					<div class="col_small nomargin">
+						<h4>Ingrediënten</h4>
+						<ul class="ingredients_list">
+
+							<li>4 rode ponen, panklaar</li>
+
+							<li>1 kg kruimige aardappelen, geschild en in blokjes</li>
+
+							<li>1 eetlepel milde paprikapoeder</li>
+
+							<li>3-4 eetlepels olijfolie</li>
+
+							<li>1 grote ui, gesnipperd</li>
+
+							<li>150 ml melk</li>
+
+							<li>400 g panklare andijvie</li>
+
+						</ul>
+
+						<div class="tip_to_serve">
+							<div class="inner"></div>
+						</div>
+
+
+
+
+					</div>
+
+					<div class="col_small nomargin">
+
+						<!-- AddThis Button BEGIN -->
+						<script type="text/javascript">
+											var addthis_share = {
+												//templates: { twitter: '{{title}}: @ {{url}}' }
+												templates: { twitter: 'Visrecept Andijviestamppotje met rode poon Recept: {{url}} @visrecepten' }
+											}
+											</script>
+
+						<div class="addthis_toolbox addthis_default_style ">
+							<a
+								class="addthis_button_facebook addthis_button_preferred_1 at300b"
+								title="Facebook" href="#"><span
+								class="at16nc at300bs at15nc at15t_facebook at16t_facebook"><span
+									class="at_a11y">Share on facebook</span></span></a> <a
+								class="addthis_button_twitter addthis_button_preferred_2 at300b"
+								title="Tweet" href="#"><span
+								class="at16nc at300bs at15nc at15t_twitter at16t_twitter"><span
+									class="at_a11y">Share on twitter</span></span></a> <a
+								class="addthis_button_email addthis_button_preferred_3 at300b"
+								target="_blank" title="Email" href="#"><span
+								class="at16nc at300bs at15nc at15t_email at16t_email"><span
+									class="at_a11y">Share on email</span></span></a> <a
+								class="addthis_button_print addthis_button_preferred_4 at300b"
+								title="Print" href="#"><span
+								class="at16nc at300bs at15nc at15t_print at16t_print"><span
+									class="at_a11y">Share on print</span></span></a> <a
+								class="addthis_button_compact at300m" href="#"><span
+								class="at16nc at300bs at15nc at15t_compact at16t_compact"><span
+									class="at_a11y">More Sharing Services</span></span></a> <a
+								class="addthis_counter addthis_bubble_style" href="#"
+								style="display: inline-block;"><a
+								class="addthis_button_expanded" target="_blank"
+								title="View more services" href="#">3</a><a
+								class="atc_s addthis_button_compact"><span></span></a></a>
+							<div class="atclear"></div>
+						</div>
+						<script type="text/plain" class="cc-onconsent-social"
+							src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4dda0fa94ea21f2f"></script>
+						<script type="text/javascript"
+							src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4dda0fa94ea21f2f"></script>
+						<!-- AddThis Button END -->
+						<div id="_atssh"
+							style="visibility: hidden; height: 1px; width: 1px; position: absolute; z-index: 100000;">
+							<iframe id="_atssh355" title="AddThis utility frame"
+								style="height: 1px; width: 1px; position: absolute; z-index: 100000; border: 0px; left: 0px; top: 0px;"
+								src="//ct1.addthis.com/static/r07/sh165.html#iit=1405753556711&amp;tmr=load%3D1405753555250%26core%3D1405753555944%26main%3D1405753556702%26ifr%3D1405753556718&amp;cb=0&amp;cdn=1&amp;chr=UTF-8&amp;kw=&amp;ab=-&amp;dh=www.visrecepten.nl&amp;dr=&amp;du=http%3A%2F%2Fwww.visrecepten.nl%2Frecepten%2Frecept%2F%3Ftx_visrecepten_pi4%255BshowUid%255D%3D731&amp;dt=Visrecepten%20%C2%A0Recept&amp;dbg=0&amp;md=0&amp;cap=tc%3D0%26ab%3D0&amp;inst=1&amp;vcl=0&amp;jsl=33&amp;prod=undefined&amp;lng=nl&amp;ogt=&amp;pc=men&amp;pub=xa-4dda0fa94ea21f2f&amp;ssl=0&amp;sid=53ca18d32323e00c&amp;srpl=1&amp;srcs=1&amp;srd=1&amp;srf=1&amp;srx=1&amp;ver=300&amp;xck=0&amp;xtr=0&amp;og=&amp;aa=0&amp;csi=undefined&amp;rev=1405430506&amp;ct=1&amp;xld=1&amp;xd=1"></iframe>
+						</div>
+						<script type="text/javascript"
+							src="http://ct1.addthis.com/static/r07/core143.js"></script>
+					</div>
+
+					<div class="clear">&nbsp;</div>
+				</div>
+
+				<div class="col_small_triple">
+					<div class="f13_also_tasty">
+						<h2>Ook lekker</h2>
+
+						<div class="col_small">
+							<img src="/typo3temp/pics/98acae016c.jpg" width="94" height="96"
+								alt="Pikante kabeljauw met wilde rijst"
+								title="Pikante kabeljauw met wilde rijst">
+							<p>
+								<strong><a
+									href="/recepten/recept/?tx_visrecepten_pi4%5BshowUid%5D=441">Pikante
+										kabeljauw met wilde rijst</a></strong>
+							</p>
+							<div class="type_rate">
+								<p>Hoofdgerecht</p>
+								<div class="component_rating">
+									<span class="rating30" title="3/5">3/5</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="col_small">
+							<img src="/typo3temp/pics/40f0c5db38.jpg" width="94" height="96"
+								alt="Urker Scholvlootje van Baarssen"
+								title="Urker Scholvlootje van Baarssen">
+							<p>
+								<strong><a
+									href="/recepten/recept/?tx_visrecepten_pi4%5BshowUid%5D=543">Urker
+										Scholvlootje van Baarssen</a></strong>
+							</p>
+							<div class="type_rate">
+								<p>Ovengerecht</p>
+								<div class="component_rating">
+									<span class="rating35" title="3.5/5">3.5/5</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="clear">&nbsp;</div>
+					</div>
+
+					<div class="clear">&nbsp;</div>
+				</div>
+
+				<div class="f18_recipe_list">
+					<h2>Mijn recepten</h2>
+					<ul class="recipe_list">Geen recepten
+					</ul>
+					<div class="clear">&nbsp;</div>
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+	<div class="col3_center" style="height: 865px;">
+		<h1>Poon</h1>
+
+
+		<div class="f15_fish_information_extended">
+
+			<img src="/typo3temp/pics/6206e5ec36.jpg" width="100" height="57"
+				class="floatright" alt="Poon" title="Poon">
+			<h3>Trigla lucerna</h3>
+			<p>
+				Er zijn drie soorten ponen te onderscheiden: de <b>grauwe po</b>on,
+				de <b>rode poon</b> en de <b>Engelse poon</b>. Zoals de namen al
+				doen vermoeden, is de ene poon rood en de ander grauwbruin. De
+				Engelse poon is rood. Een van de bijnamen van poon is knorhaan, dit
+				vanwege het geluid dat ze maken om belagers af te schrikken en als
+				herkenning voor soortgenoten.
+			</p>
+
+			<hr>
+
+			<!--###VERKRIJGBAARHEID###-->
+			<h2>Verkrijgbaarheid</h2>
+
+			<p></p>
+
+			<table border="0" cellpadding="0" cellspacing="0"
+				class="component_availability_overview">
+				<thead>
+					<tr>
+						<th class="first">Maanden</th>
+						<th>jan</th>
+						<th>feb</th>
+						<th>mrt</th>
+						<th>apr</th>
+						<th>mei</th>
+						<th>jun</th>
+						<th>jul</th>
+						<th>aug</th>
+						<th>sep</th>
+						<th>okt</th>
+						<th>nov</th>
+						<th>dec</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<th>Verkrijgbaarheid</th>
+						<td class="availability_0" title="Seizoen gesloten">Seizoen
+							gesloten</td>
+						<td class="availability_0" title="Seizoen gesloten">Seizoen
+							gesloten</td>
+						<td class="availability_0" title="Seizoen gesloten">Seizoen
+							gesloten</td>
+						<td class="availability_0" title="Seizoen gesloten">Seizoen
+							gesloten</td>
+						<td class="availability_0" title="Seizoen gesloten">Seizoen
+							gesloten</td>
+						<td class="availability_0" title="Seizoen gesloten">Seizoen
+							gesloten</td>
+						<td class="availability_3" title="Goed">Goed</td>
+						<td class="availability_3" title="Goed">Goed</td>
+						<td class="availability_3" title="Goed">Goed</td>
+						<td class="availability_3" title="Goed">Goed</td>
+						<td class="availability_3" title="Goed">Goed</td>
+						<td class="availability_3" title="Goed">Goed</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<br>
+			<h2>Legenda</h2>
+			<dl class="legenda">
+				<dt>
+					<img
+						src="/fileadmin/templates/visrecepten/img/icon_availability_0.png"
+						alt="">
+				</dt>
+				<dd>seizoen gesloten</dd>
+				<dt>
+					<img
+						src="/fileadmin/templates/visrecepten/img/icon_availability_1.png"
+						alt="">
+				</dt>
+				<dd>kuit periode</dd>
+				<dt>
+					<img
+						src="/fileadmin/templates/visrecepten/img/icon_availability_2.png"
+						alt="">
+				</dt>
+				<dd>mager</dd>
+				<dt>
+					<img
+						src="/fileadmin/templates/visrecepten/img/icon_availability_3.png"
+						alt="">
+				</dt>
+				<dd>goed</dd>
+			</dl>
+
+			<hr>
+			<!--###VERKRIJGBAARHEID###-->
+
+
+			<div class="capture_area">
+
+				<h2>Vangstgebied</h2>
+				<div class="capture_area_worldmap" id="worldmap">
+					<ul>
+
+						<li><a
+							href="/recepten/recept/?tx_visrecepten_pi4%5BshowUid%5D=731#"
+							title="" style="top: 52px; left: 95px;">34</a></li>
+
+						<li><a
+							href="/recepten/recept/?tx_visrecepten_pi4%5BshowUid%5D=731#"
+							title="" style="top: 88px; left: 93px;">41</a></li>
+
+					</ul>
+				</div>
+
+				<ul>
+					<li>34 - Midden-oostelijk deel Atlantische Oceaan</li>
+					<li>41 - Zuidwestelijk deel Atlantische Oceaan</li>
+				</ul>
+
+				<div class="clear">&nbsp;</div>
+
+			</div>
+
+
+
+		</div>
+
+	</div>
+
+	<div class="col3_right" style="height: 865px;">
+
+		<form action="/zoeken/" method="get" class="f06_information_search">
+			<fieldset>
+				<legend>Informatie zoekformulier</legend>
+				<input type="text" name="tx_visrecepten_pi24[sTerm]"
+					onclick="clearSearchTerm(this)" value="Zoek informatie"> <a
+					href="javascript:void(0);" onclick="searchInformation()"
+					title="Zoeken" class="component_button grey"><span>Zoeken</span></a>
+			</fieldset>
+		</form>
+
+
+
+
+		<div class="f14_fish_information">
+			<!--###VISSOORTWRAP###-->
+			<h2>Poon</h2>
+			<p>De rug en bovenzijde van de poon zijn lichtrood. De onderzijde
+				is oranje of wit. De rode poon wordt maximaal 40 cm lang.</p>
+			<hr>
+			<!--###VISSOORTWRAP###-->
+
+			<!--###KOKENMETWRAP###-->
+			<h2>Koken met Poon</h2>
+			<p>Poon heeft een fijne smaak en is zoet-garnaalachtig. De poon
+				kan goed worden gestoofd, gebakken of gerookt.</p>
+			<hr>
+			<!--###KOKENMETWRAP###-->
+
+			<!--###VOEDINGSWAARDENWRAP###-->
+			<h2>Voedingswaarden</h2>
+			<p>Per 100 gram onbereid product:</p>
+			<ul>
+				<li>575 kJ</li>
+				<li>137 kCal,</li>
+				<li>6 g vet,</li>
+				<li>20 g eiwit</li>
+			</ul>
+			<p></p>
+			<hr>
+			<!--###VOEDINGSWAARDENWRAP###-->
+
+
+
+
+
+		</div>
+
+	</div>
+
+	<div class="clear">&nbsp;</div>
+
+
+</div>

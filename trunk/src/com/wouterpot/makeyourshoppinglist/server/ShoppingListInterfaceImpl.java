@@ -3,7 +3,9 @@ package com.wouterpot.makeyourshoppinglist.server;
 import java.util.List;
 
 import javax.jdo.JDOException;
+import javax.servlet.http.HttpSession;
 
+import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -53,6 +55,19 @@ ShoppingListInterface {
 	};
 
 	private static final long serialVersionUID = 1L;
+	
+	@Override
+	protected void doGet(javax.servlet.http.HttpServletRequest req, javax.servlet.http.HttpServletResponse resp) throws javax.servlet.ServletException, java.io.IOException {
+		UserService userService = UserServiceFactory.getUserService();
+		User currentUser = userService.getCurrentUser();
+		HttpSession session = req.getSession();
+		if (currentUser != null) {
+			
+		}
+		else {
+			
+		}
+	}
 
 	@Override
 	public WelcomeDto greetServer(String[] sites) throws IllegalArgumentException {

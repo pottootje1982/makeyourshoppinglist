@@ -46,6 +46,9 @@ public class ShoppingList {
     ArrayList<String> sites;
         
 	private LanguageDictionary languageDictionary;
+
+	@Persistent
+	private UserAccount parent;
 	
 	public ShoppingList(LanguageDictionary languageDictionary) {
 		this.languageDictionary = languageDictionary;
@@ -205,5 +208,9 @@ public class ShoppingList {
 		CategoryDictionary categoryDictionary = languageDictionary.getCategoryDictionary(language);
 		createProduct(categoryDictionary, ingredient, true);
 		makePersistent();
+	}
+
+	public void setParent(UserAccount userAccount) {
+		this.parent = userAccount;
 	}
 }

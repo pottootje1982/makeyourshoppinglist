@@ -60,7 +60,7 @@ public class SiteInfo
 	}
 
 	private void addIngredient(List<String> resIngredients, Element element) {
-		String ingredient = element.text().trim();
+		String ingredient = element.text().replace("\u00a0"," ").trim(); // replace is for &nbsp;
 		if (!StringUtils.isEmpty(ingredient))
 			resIngredients.add(ingredient);
 	}
