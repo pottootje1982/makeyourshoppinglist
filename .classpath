@@ -7,7 +7,7 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jsoup-1.7.3.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER"/>
-	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
+	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER/GWT 2.6.0"/>
 	<classpathentry kind="var" path="SDK_ROOT/lib/impl/appengine-api-stubs.jar"/>
 	<classpathentry kind="var" path="SDK_ROOT/lib/impl/appengine-api-labs.jar"/>
 	<classpathentry kind="var" path="SDK_ROOT/lib/impl/appengine-api.jar"/>
@@ -17,5 +17,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/lambdaj-2.4-with-dependencies.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/lambdaj-2.4.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/org.apache.commons.math_2.1.0.v201105210652.jar"/>
+	<classpathentry kind="var" path="M2_REPO"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

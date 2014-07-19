@@ -61,7 +61,9 @@ public class IngredientsScraper {
 	        }
 	        String tagName = siteInfo.getTagName();
 			if (tagName != null) { 
-	        	ingredients = ingredients != null && ingredients.size() != 0 ? ingredients.get(0).getElementsByTag(tagName) : document.getElementsByTag(tagName); 
+				Elements elements = ingredients != null && ingredients.size() != 0 ? ingredients.get(0).getElementsByTag(tagName) : document.getElementsByTag(tagName);
+				ingredients.clear();
+				ingredients.add(elements.first()); 
 	        } 
 	        if (ingredients.size() > 0) { 
 	          return siteInfo.createIngredientsList(ingredients); 
