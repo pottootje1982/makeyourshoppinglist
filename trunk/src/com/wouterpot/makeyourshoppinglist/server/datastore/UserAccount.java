@@ -22,8 +22,7 @@ public class UserAccount {
     @Persistent
 	String userId;
 	
-    @Persistent(mappedBy = "parent", defaultFetchGroup = "true")
-    @Element(dependent = "true")
+    @Persistent(defaultFetchGroup = "true")
     List<ShoppingList> shoppingLists = new ArrayList<>();
 
 	public UserAccount(String userId) {

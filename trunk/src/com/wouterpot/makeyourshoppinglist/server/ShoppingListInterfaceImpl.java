@@ -1,5 +1,7 @@
 package com.wouterpot.makeyourshoppinglist.server;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.jdo.JDOException;
@@ -28,6 +30,14 @@ ShoppingListInterface {
 			PMF.begin();
 	
 			List<ShoppingList> shoppingLists = PMF.retrieveAll(ShoppingList.class);
+			Collections.sort(shoppingLists, new Comparator<ShoppingList>(){
+
+				@Override
+				public int compare(ShoppingList o1, ShoppingList o2) {
+					return o1 != null && o2 != null ? o1.getDate().compareTo(o2.getDate()) : 0;
+				}
+			
+			});
 			if (shoppingLists.size() > 0) {
 				shoppingList = shoppingLists.get(shoppingLists.size() - 1);
 				PMF.retrieve(shoppingList);

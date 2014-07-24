@@ -33,18 +33,24 @@ public class ShoppingListFactory {
 	}
 	
 	public void createNewShoppingList() {
-		PMF.open();
-		PMF.begin();
 		shoppingList = new ShoppingList(languageDictionary);
-		PMF.makePersistent(shoppingList);
-		PMF.commit();
-		PMF.close();
+	}
+	
+	private void persist() {
+		if (shoppingList != null) {
+			PMF.open();
+			PMF.begin();
+			PMF.makePersistent(shoppingList);
+			PMF.commit();
+			PMF.close();			
+		}
 	}
 
 	private void addToShoppingList(String recipeId, IngredientsList ingredientsList) {
 		List<String> ingredients = ingredientsList.getIngredients();
 		String language = ingredientsList.getSiteInfo().getLanguage();
 		getShoppingList().addIngredients(recipeId, ingredients, language);
+		persist();
 	}
 
 	public void addToShoppingList(File file) {

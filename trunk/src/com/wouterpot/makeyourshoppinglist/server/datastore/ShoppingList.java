@@ -1,6 +1,7 @@
 package com.wouterpot.makeyourshoppinglist.server.datastore;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -44,11 +45,11 @@ public class ShoppingList {
     
     @Persistent(defaultFetchGroup = "true")
     ArrayList<String> sites;
+    
+    @Persistent
+    Date date = new Date();
         
 	private LanguageDictionary languageDictionary;
-
-	@Persistent
-	private UserAccount parent;
 	
 	public ShoppingList(LanguageDictionary languageDictionary) {
 		this.languageDictionary = languageDictionary;
@@ -211,6 +212,9 @@ public class ShoppingList {
 	}
 
 	public void setParent(UserAccount userAccount) {
-		this.parent = userAccount;
+	}
+	
+	public Date getDate() {
+		return date;
 	}
 }
