@@ -51,6 +51,8 @@ public class ShoppingListFactory {
 		String language = ingredientsList.getSiteInfo().getLanguage();
 		getShoppingList().addIngredients(recipeId, ingredients, language);
 		persist();
+		// TODO: find out why persisting has to be done twice for unit tests
+		persist();
 	}
 
 	public void addToShoppingList(File file) {

@@ -62,8 +62,6 @@ public class ShoppingList {
 				createProduct(categoryDictionary, ingredient);
 			}
 			getSites().add(recipeId);
-		
-			makePersistent();
 		}
 	}
 
