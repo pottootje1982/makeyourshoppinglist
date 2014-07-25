@@ -28,7 +28,6 @@ import com.wouterpot.makeyourshoppinglist.server.ShoppingListFactory;
 import com.wouterpot.makeyourshoppinglist.shared.ProductDto;
 import com.wouterpot.makeyourshoppinglist.shared.WelcomeDto;
 
-// TODO: shopping list should be resilient to exceptions (e.g. exception due too long shopping list items > 500 chars)
 // TODO: buttons also on top of page
 // TODO: aspx sites like allrecipes.nl/recept/10257/andijvie-stamppot.aspx cannot be opened
 
