@@ -92,6 +92,7 @@ public class Ingredient {
 		if (!Strings.isNullOrEmpty(groups[2]))
 			productNameParts.add(groups[2]);
 		productName = Joiner.on(" ").join(productNameParts);
+		productName = productName.substring(0, Math.min(500, productName.length()));
 		addUnit(parsedUnitType, parsedAmount);
 	}
 
