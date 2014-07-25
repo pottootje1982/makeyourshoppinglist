@@ -77,6 +77,7 @@ public class PMF<T> {
 
 	public static void close() {
 		if (pmInstance != null) {
+			pmInstance.flush();
 			pmInstance.close();
 			pmInstance = null;
 		}
