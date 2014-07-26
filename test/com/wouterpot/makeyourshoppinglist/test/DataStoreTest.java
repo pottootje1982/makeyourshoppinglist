@@ -10,7 +10,6 @@ import org.junit.Test;
 
 import com.wouterpot.makeyourshoppinglist.server.PMF;
 import com.wouterpot.makeyourshoppinglist.server.ShoppingListFactory;
-import com.wouterpot.makeyourshoppinglist.server.datastore.Category;
 import com.wouterpot.makeyourshoppinglist.server.datastore.Product;
 import com.wouterpot.makeyourshoppinglist.server.datastore.ShoppingList;
 
@@ -24,7 +23,6 @@ public class DataStoreTest extends DataStoreTestBase {
 		
     @Test
     public void storeShoppingList() {
-		ShoppingListFactory shoppingListFactory = ShoppingListFactory.get();
 		File file = new File("test/testdata/pages/sites.google.com.nl.html");
 		shoppingListFactory.addToShoppingList(file);
 		file = new File("test/testdata/pages/smulweb.nl.html");
@@ -42,7 +40,11 @@ public class DataStoreTest extends DataStoreTestBase {
 	public void loadPersistedShoppingList() {
 		ShoppingListFactory shoppingListFactory = ShoppingListFactory.get();
 		File file = new File("test/testdata/pages/smulweb.nl.html");
+
 		shoppingListFactory.addToShoppingList(file);
+		// TODO: Find out why is this extra makePersistent necessary?
+		// (otherwise shoppingLists.size() will be 0
+		shoppingListFactory.getShoppingList().makePersistent();
 		
 		PMF.open();
 		List<ShoppingList> shoppingLists = PMF.retrieveAll(ShoppingList.class);

@@ -62,6 +62,8 @@ public class ShoppingList {
 				createProduct(categoryDictionary, ingredient);
 			}
 			getSites().add(recipeId);
+			
+			makePersistent();
 		}
 	}
 
@@ -70,7 +72,7 @@ public class ShoppingList {
 		return sites;
 	}
 
-	private void makePersistent() {
+	public void makePersistent() {
 		PMF.open();
 		PMF.begin();
 		

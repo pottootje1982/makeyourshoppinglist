@@ -36,23 +36,22 @@ public class ShoppingListFactory {
 		shoppingList = new ShoppingList(languageDictionary);
 	}
 	
-	private void persist() {
+	private ShoppingList persist() {
 		if (shoppingList != null) {
 			PMF.open();
 			PMF.begin();
-			PMF.makePersistent(shoppingList);
+			ShoppingList persistedList = PMF.makePersistent(shoppingList);
 			PMF.commit();
 			PMF.close();			
+			return persistedList;
 		}
+		return null;
 	}
 
 	private void addToShoppingList(String recipeId, IngredientsList ingredientsList) {
 		List<String> ingredients = ingredientsList.getIngredients();
 		String language = ingredientsList.getSiteInfo().getLanguage();
 		getShoppingList().addIngredients(recipeId, ingredients, language);
-		persist();
-		// TODO: find out why persisting has to be done twice for unit tests
-		persist();
 	}
 
 	public void addToShoppingList(File file) {
