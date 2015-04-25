@@ -32,6 +32,8 @@ import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 import javax.jdo.Transaction;
 
+import com.google.appengine.api.datastore.Query.SortDirection;
+
 public class PMF<T> {
 
 	private static PersistenceManager pmInstance = null;
@@ -63,7 +65,15 @@ public class PMF<T> {
 	public static <T> List<T> retrieveAll(Class<T> classType) {
 		Query newQuery = pmInstance.newQuery(classType);
 		List<T> objects = (List<T>) newQuery.execute();
-		pmInstance.retrieveAll(objects);
+		pmInstance.retrieveAll(objects, false);
+		return objects;
+	}
+	
+	public static <T> List<T> retrieveLast(Class<T> classType) {
+		String query = "SELECT FROM " + classType.getName() + " ORDER BY date LIMIT 1";
+		Query newQuery = pmInstance.newQuery(query);
+		List<T> objects = (List<T>) newQuery.execute();
+		pmInstance.retrieveAll(objects, false);
 		return objects;
 	}
 

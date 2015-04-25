@@ -52,13 +52,18 @@ public class ShoppingListEntryPoint implements EntryPoint {
 
 	@Override
 	public void onModuleLoad() {
+		RootPanel.get().setWidth("400");
+
 		HorizontalPanel addSitePanel = new HorizontalPanel();
-		addSitePanel.add(new Label("Add recipe:"));
+		Label addRecipeLabel = new Label("Add recipe:");
+		addRecipeLabel.setWidth("20%");
+		addSitePanel.add(addRecipeLabel);
 		addSiteTextBox = new TextBox();
-		addSiteTextBox.setWidth("820");
+		addSiteTextBox.setWidth("400");
 		addSiteTextBox.addKeyPressHandler(new AddSiteTextBoxHandler(this));
 		addSitePanel.add(addSiteTextBox);
 		signInAnchor = new Anchor("Sign in");
+		signInAnchor.setWidth("20%");
 		addSitePanel.add(signInAnchor);
 		RootPanel.get().add(addSitePanel);
 		
@@ -81,9 +86,10 @@ public class ShoppingListEntryPoint implements EntryPoint {
 		querySites(sites.toArray(sitesArray));
 
 		RootPanel.get().add(new Label("Add custom shopping item:"));
-		TextBox customShoppingItemCheckbox = new TextBox();
-		customShoppingItemCheckbox.addKeyPressHandler(new AddShoppingItemTextBoxKeyHandler(this));
-		RootPanel.get().add(customShoppingItemCheckbox);
+		TextBox customShoppingItemTextBox = new TextBox();
+		customShoppingItemTextBox.setWidth("100%");
+		customShoppingItemTextBox.addKeyPressHandler(new AddShoppingItemTextBoxKeyHandler(this));
+		RootPanel.get().add(customShoppingItemTextBox);
 		
 		HorizontalPanel buttonPanel = new HorizontalPanel();
 		Button hideButton = new Button("Hide checked items");
