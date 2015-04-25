@@ -56,14 +56,11 @@ public class ShoppingListEntryPoint implements EntryPoint {
 
 		HorizontalPanel addSitePanel = new HorizontalPanel();
 		Label addRecipeLabel = new Label("Add recipe:");
-		addRecipeLabel.setWidth("20%");
 		addSitePanel.add(addRecipeLabel);
 		addSiteTextBox = new TextBox();
-		addSiteTextBox.setWidth("400");
 		addSiteTextBox.addKeyPressHandler(new AddSiteTextBoxHandler(this));
 		addSitePanel.add(addSiteTextBox);
 		signInAnchor = new Anchor("Sign in");
-		signInAnchor.setWidth("20%");
 		addSitePanel.add(signInAnchor);
 		RootPanel.get().add(addSitePanel);
 		
